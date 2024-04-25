@@ -1,0 +1,66 @@
+[gd_scene load_steps=2 format=3 uid="uid://0d8h8ffxuxrh"]
+
+[ext_resource type="Script" path="res://Scripts/UIElements/LoginWindow.cs" id="1_3npkb"]
+
+[node name="LoginWindow" type="Window"]
+title = "Login to Microsoft Account"
+size = Vector2i(450, 375)
+transient = true
+unresizable = true
+script = ExtResource("1_3npkb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -202.0
+offset_top = -167.0
+offset_right = 202.0
+offset_bottom = 167.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 29
+
+[node name="UsernameGroup" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="UsernameLabel" type="Label" parent="VBoxContainer/UsernameGroup"]
+layout_mode = 2
+text = "Enter your Microsoft ID:"
+
+[node name="UsernameTextBox" type="LineEdit" parent="VBoxContainer/UsernameGroup"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+placeholder_text = "Email address"
+
+[node name="PasswordGroup" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="PasswordLabel" type="Label" parent="VBoxContainer/PasswordGroup"]
+layout_mode = 2
+text = "Enter your Microsoft Password:"
+
+[node name="PasswordTextBox" type="LineEdit" parent="VBoxContainer/PasswordGroup"]
+layout_mode = 2
+placeholder_text = "Password"
+secret = true
+
+[node name="ErrorText" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0, 1)
+
+[node name="ButtonGroup" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="LoginButton" type="Button" parent="VBoxContainer/ButtonGroup"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+text = "Login"
+
+[node name="Button" type="Button" parent="VBoxContainer/ButtonGroup"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Cancel"

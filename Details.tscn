@@ -1,0 +1,164 @@
+[gd_scene load_steps=7 format=3 uid="uid://bwbjim208a8if"]
+
+[ext_resource type="Texture2D" uid="uid://nvouidos3nt7" path="res://Backgrounds/detailsBackground.png" id="1_33joy"]
+[ext_resource type="Script" path="res://Scripts/Scenes/Details.cs" id="1_g3xkl"]
+[ext_resource type="FontFile" uid="uid://yrqiukp85q2w" path="res://Fonts/Minecrafter.Reg.ttf" id="2_k30ga"]
+[ext_resource type="FontFile" uid="uid://dcxc7ljpw0mfm" path="res://Fonts/Moderustic-Bold.ttf" id="3_imtkh"]
+[ext_resource type="FontFile" uid="uid://stsqy4jht3hn" path="res://Fonts/Moderustic-Light.ttf" id="4_ul15b"]
+[ext_resource type="Texture2D" uid="uid://dva86i3kydk21" path="res://Icons/search.png" id="6_kup03"]
+
+[node name="Details" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_g3xkl")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_top = 42.0
+offset_right = 1060.0
+offset_bottom = 107.0
+texture = ExtResource("1_33joy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 1060.0
+offset_bottom = 430.0
+
+[node name="DetailsLabel" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_fonts/font = ExtResource("2_k30ga")
+theme_override_font_sizes/font_size = 24
+text = "Modpack DETAILS"
+vertical_alignment = 2
+
+[node name="DetailsMarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 5
+
+[node name="DetailsFlowContainer" type="VFlowContainer" parent="VBoxContainer/DetailsMarginContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/h_separation = 50
+
+[node name="ModName" type="HBoxContainer" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/ModName"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_imtkh")
+theme_override_font_sizes/font_size = 18
+text = "Modpack Name:"
+
+[node name="Value" type="Label" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/ModName"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ul15b")
+theme_override_font_sizes/font_size = 18
+text = "Modded Minecraft"
+
+[node name="ModLoader" type="HBoxContainer" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/ModLoader"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_imtkh")
+theme_override_font_sizes/font_size = 18
+text = "Mod Loader:"
+
+[node name="Value" type="Label" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/ModLoader"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ul15b")
+theme_override_font_sizes/font_size = 18
+text = "Value"
+
+[node name="MinecraftVersion" type="HBoxContainer" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/MinecraftVersion"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_imtkh")
+theme_override_font_sizes/font_size = 18
+text = "Minecraft Version:"
+
+[node name="Value" type="Label" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/MinecraftVersion"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ul15b")
+theme_override_font_sizes/font_size = 18
+text = "1.21.0"
+
+[node name="ModpackVersion" type="HBoxContainer" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/ModpackVersion"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_imtkh")
+theme_override_font_sizes/font_size = 18
+text = "Modpack Version:"
+
+[node name="Value" type="Label" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/ModpackVersion"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ul15b")
+theme_override_font_sizes/font_size = 18
+text = "100.0.0"
+
+[node name="ModCount" type="HBoxContainer" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/ModCount"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_imtkh")
+theme_override_font_sizes/font_size = 18
+text = "Number of Pack Files:"
+
+[node name="Value" type="Label" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/ModCount"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ul15b")
+theme_override_font_sizes/font_size = 18
+text = "250"
+
+[node name="LastUpdated" type="HBoxContainer" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/LastUpdated"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_imtkh")
+theme_override_font_sizes/font_size = 18
+text = "Last Updated:"
+
+[node name="Value" type="Label" parent="VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/LastUpdated"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ul15b")
+theme_override_font_sizes/font_size = 18
+text = "August 1st, 2024"
+
+[node name="ModpackFileListLabel" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(650, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_k30ga")
+theme_override_font_sizes/font_size = 24
+text = "Modpack File List"
+vertical_alignment = 2
+
+[node name="FileSearch" type="LineEdit" parent="VBoxContainer"]
+custom_minimum_size = Vector2(400, 20)
+layout_mode = 2
+size_flags_vertical = 8
+placeholder_text = "Search for a specific file"
+right_icon = ExtResource("6_kup03")
+
+[node name="ModListScroll" type="ScrollContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(2.08165e-12, 250)
+layout_mode = 2
+
+[node name="ModListContainer" type="VBoxContainer" parent="VBoxContainer/ModListScroll"]
+custom_minimum_size = Vector2(1050, 2.08165e-12)
+layout_mode = 2
+size_flags_horizontal = 4

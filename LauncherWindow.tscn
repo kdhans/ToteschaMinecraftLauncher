@@ -1,0 +1,257 @@
+[gd_scene load_steps=29 format=3 uid="uid://yhroynos75g3"]
+
+[ext_resource type="Script" path="res://Scripts/Scenes/LauncherWindow.cs" id="1_cl8de"]
+[ext_resource type="Texture2D" uid="uid://cxu4vtvsuuens" path="res://Backgrounds/background.jpg" id="2_3hofw"]
+[ext_resource type="FontFile" uid="uid://yrqiukp85q2w" path="res://Fonts/Minecrafter.Reg.ttf" id="3_2b26k"]
+[ext_resource type="FontFile" uid="uid://bqgi1gwwi5wqm" path="res://Fonts/Moderustic-Medium.ttf" id="4_y14iu"]
+[ext_resource type="Texture2D" uid="uid://dp3k7aim7ogxy" path="res://Icons/home.png" id="5_qmna6"]
+[ext_resource type="Script" path="res://Scripts/Buttons/HomeButton.cs" id="6_u8lij"]
+[ext_resource type="Texture2D" uid="uid://dj6u5k18qkwrp" path="res://Icons/details.png" id="7_lceq2"]
+[ext_resource type="Script" path="res://Scripts/Buttons/DetailsButton.cs" id="8_txr1u"]
+[ext_resource type="Texture2D" uid="uid://dqthkps11uv5v" path="res://Icons/settings.png" id="9_87i3p"]
+[ext_resource type="Script" path="res://Scripts/Buttons/SettingsButton.cs" id="10_rq5yy"]
+[ext_resource type="Texture2D" uid="uid://bcwj2dm82mcx6" path="res://Icons/profile.png" id="11_bxr1p"]
+[ext_resource type="Script" path="res://Scripts/Buttons/LoginButton.cs" id="12_3q366"]
+[ext_resource type="FontFile" uid="uid://bjktst4no8gel" path="res://Fonts/Moderustic-Regular.ttf" id="12_cu1y2"]
+[ext_resource type="Script" path="res://Scripts/UIElements/ProgressBar.cs" id="13_w2v4s"]
+[ext_resource type="Texture2D" uid="uid://dv8mta0b8djeb" path="res://ButtonTextures/launchButton_normal.png" id="14_rd3gb"]
+[ext_resource type="Texture2D" uid="uid://b4lfekfijv71d" path="res://ButtonTextures/launchButton_pressed.png" id="15_hexkn"]
+[ext_resource type="Texture2D" uid="uid://ck3hwp7jpi6n2" path="res://ButtonTextures/launchButton_hover.png" id="16_e80ia"]
+[ext_resource type="Texture2D" uid="uid://bhmqo2ofaihqq" path="res://ButtonTextures/launchButton_disabled.png" id="17_qyn4v"]
+[ext_resource type="Script" path="res://Scripts/Buttons/LaunchButton.cs" id="18_gv7l1"]
+[ext_resource type="Script" path="res://Scripts/UIHelpers/WebHelper.cs" id="19_s1xmo"]
+[ext_resource type="Script" path="res://Scripts/Logic/LauncherLogic.cs" id="21_cmlbv"]
+
+[sub_resource type="Gradient" id="Gradient_iquy2"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0.0666667, 0.0352941, 0.266667, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8rxm3"]
+gradient = SubResource("Gradient_iquy2")
+fill_to = Vector2(0, 1)
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_haq6t"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.164706, 0.207843, 0.423529, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_uluf2"]
+gradient = SubResource("Gradient_haq6t")
+
+[sub_resource type="LabelSettings" id="LabelSettings_igjpu"]
+font = ExtResource("3_2b26k")
+font_size = 60
+
+[sub_resource type="LabelSettings" id="LabelSettings_ddhe7"]
+font = ExtResource("3_2b26k")
+font_size = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sshrp"]
+bg_color = Color(0.109804, 0.776471, 0, 1)
+
+[node name="LauncherWindow" type="Control"]
+clip_contents = true
+custom_minimum_size = Vector2(1400, 750)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_cl8de")
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -5
+
+[node name="TextureRect" type="TextureRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_8rxm3")
+
+[node name="Menu Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="TextureRect" type="TextureRect" parent="Menu Background"]
+offset_right = 270.0
+offset_bottom = 750.0
+texture = SubResource("GradientTexture2D_uluf2")
+metadata/_edit_use_anchors_ = true
+
+[node name="Header" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="Header"]
+self_modulate = Color(0.517647, 0.658824, 0.831373, 1)
+offset_right = 1400.0
+offset_bottom = 157.0
+size_flags_horizontal = 3
+texture = ExtResource("2_3hofw")
+expand_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Title" type="Label" parent="Header/TextureRect"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 15.0
+offset_top = -37.5
+offset_right = 1101.0
+offset_bottom = 22.5
+grow_vertical = 2
+text = "Totescha SYNC LAUNCHER"
+label_settings = SubResource("LabelSettings_igjpu")
+
+[node name="Subtitle" type="Label" parent="Header/TextureRect"]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 96.0
+offset_right = 415.0
+offset_bottom = 120.0
+text = "Created by MRCATCHPHRASE"
+label_settings = SubResource("LabelSettings_ddhe7")
+
+[node name="DisplayAreaContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.675
+offset_top = 162.0
+offset_bottom = 110.75
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuMargin" type="MarginContainer" parent="DisplayAreaContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="MenuContainer" type="VBoxContainer" parent="DisplayAreaContainer/MenuMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HomeButton" type="Button" parent="DisplayAreaContainer/MenuMargin/MenuContainer"]
+custom_minimum_size = Vector2(230, 65)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_y14iu")
+theme_override_font_sizes/font_size = 20
+text = "      Home"
+icon = ExtResource("5_qmna6")
+flat = true
+alignment = 0
+script = ExtResource("6_u8lij")
+
+[node name="DetailsButton" type="Button" parent="DisplayAreaContainer/MenuMargin/MenuContainer"]
+custom_minimum_size = Vector2(230, 65)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_y14iu")
+theme_override_font_sizes/font_size = 20
+text = "      Pack Details"
+icon = ExtResource("7_lceq2")
+flat = true
+alignment = 0
+script = ExtResource("8_txr1u")
+
+[node name="SettingsButton" type="Button" parent="DisplayAreaContainer/MenuMargin/MenuContainer"]
+custom_minimum_size = Vector2(230, 65)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_y14iu")
+theme_override_font_sizes/font_size = 20
+text = "      Settings"
+icon = ExtResource("9_87i3p")
+flat = true
+alignment = 0
+script = ExtResource("10_rq5yy")
+
+[node name="MainMargin" type="MarginContainer" parent="DisplayAreaContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 10
+
+[node name="FooterContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -85.0
+offset_right = 1365.0
+offset_bottom = -8.0
+grow_vertical = 0
+
+[node name="LoginMargin" type="MarginContainer" parent="FooterContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="LoginButton" type="Button" parent="FooterContainer/LoginMargin"]
+custom_minimum_size = Vector2(230, 65)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("4_y14iu")
+theme_override_font_sizes/font_size = 20
+text = "      Sign In"
+icon = ExtResource("11_bxr1p")
+flat = true
+alignment = 0
+script = ExtResource("12_3q366")
+
+[node name="MarginContainer" type="MarginContainer" parent="FooterContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ProgressBarContainer" type="VBoxContainer" parent="FooterContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ProgressLabel" type="Label" parent="FooterContainer/MarginContainer/ProgressBarContainer"]
+custom_minimum_size = Vector2(800, 20)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("12_cu1y2")
+text = " Press \"Play\" to begin!"
+autowrap_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="FooterContainer/MarginContainer/ProgressBarContainer"]
+custom_minimum_size = Vector2(800, 40)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_sshrp")
+fill_mode = 1
+show_percentage = false
+script = ExtResource("13_w2v4s")
+
+[node name="LaunchButtonContainer" type="CenterContainer" parent="FooterContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="LaunchButton" type="TextureButton" parent="FooterContainer/LaunchButtonContainer"]
+custom_minimum_size = Vector2(2.08165e-12, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+texture_normal = ExtResource("14_rd3gb")
+texture_pressed = ExtResource("15_hexkn")
+texture_hover = ExtResource("16_e80ia")
+texture_disabled = ExtResource("17_qyn4v")
+script = ExtResource("18_gv7l1")
+
+[node name="LaunchLabel" type="Label" parent="FooterContainer/LaunchButtonContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_2b26k")
+theme_override_font_sizes/font_size = 32
+text = "Launch"
+vertical_alignment = 2
+
+[node name="WebHelper" type="Node" parent="."]
+script = ExtResource("19_s1xmo")
+
+[node name="LauncherLogic" type="Node" parent="."]
+script = ExtResource("21_cmlbv")

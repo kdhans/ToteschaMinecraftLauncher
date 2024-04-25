@@ -1,0 +1,83 @@
+[gd_scene load_steps=8 format=3 uid="uid://cosddkg2m7ijy"]
+
+[ext_resource type="Script" path="res://Scripts/Scenes/Home.cs" id="1_8hesw"]
+[ext_resource type="Texture2D" uid="uid://cgsxghkuslbna" path="res://Backgrounds/newsBackground.png" id="2_5r0so"]
+[ext_resource type="FontFile" uid="uid://yrqiukp85q2w" path="res://Fonts/Minecrafter.Reg.ttf" id="3_nf2cq"]
+[ext_resource type="Texture2D" uid="uid://cbe1dpeg7wbwl" path="res://ButtonTextures/reloadButton_normal.png" id="4_o48n4"]
+[ext_resource type="Texture2D" uid="uid://r8ulkm1m8ig3" path="res://ButtonTextures/reloadButton_Pressed.png" id="5_qhk1d"]
+[ext_resource type="Texture2D" uid="uid://dmgwin0ocxokc" path="res://ButtonTextures/reloadButton_highlighted.png" id="6_1ndqt"]
+[ext_resource type="Script" path="res://Scripts/Buttons/ReloadButton.cs" id="7_0ehvx"]
+
+[node name="Home" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8hesw")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 2
+offset_top = 182.0
+offset_right = 1060.0
+offset_bottom = 432.0
+texture = ExtResource("2_5r0so")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 1070.0
+offset_bottom = 412.0
+
+[node name="ModpackSelectLabel" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_nf2cq")
+theme_override_font_sizes/font_size = 24
+text = "SELECT YOUR MODPACK"
+vertical_alignment = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+vertical_scroll_mode = 0
+
+[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer"]
+custom_minimum_size = Vector2(1060, 55)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="reloadButton" type="TextureButton" parent="VBoxContainer/ScrollContainer/ButtonContainer"]
+custom_minimum_size = Vector2(125, 55)
+layout_mode = 2
+texture_normal = ExtResource("4_o48n4")
+texture_pressed = ExtResource("5_qhk1d")
+texture_hover = ExtResource("6_1ndqt")
+script = ExtResource("7_0ehvx")
+
+[node name="NewsLabel" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_nf2cq")
+theme_override_font_sizes/font_size = 24
+text = "LATEST NEWS"
+vertical_alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 275)
+layout_mode = 2
+
+[node name="NewsImage" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(275, 275)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+bbcode_enabled = true
+fit_content = true
+autowrap_mode = 2
+
+[node name="Node" type="Node" parent="."]

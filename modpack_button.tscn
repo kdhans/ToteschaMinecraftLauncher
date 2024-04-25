@@ -1,0 +1,69 @@
+[gd_scene load_steps=8 format=3 uid="uid://dwsj703wd56jq"]
+
+[ext_resource type="Texture2D" uid="uid://d2ahhwrqiphui" path="res://ButtonTextures/modpackButton_normal.png" id="1_7x6dj"]
+[ext_resource type="Texture2D" uid="uid://dmeineyqoyty1" path="res://ButtonTextures/modpackButton_selected.png" id="2_mbo3f"]
+[ext_resource type="Texture2D" uid="uid://d38gji3yhxv36" path="res://ButtonTextures/modpackButton_highlighted.png" id="3_8ktfm"]
+[ext_resource type="Script" path="res://Scripts/Buttons/ModpackButton.cs" id="4_oq2at"]
+[ext_resource type="FontFile" uid="uid://dcxc7ljpw0mfm" path="res://Fonts/Moderustic-Bold.ttf" id="5_mifc1"]
+[ext_resource type="FontFile" uid="uid://stsqy4jht3hn" path="res://Fonts/Moderustic-Light.ttf" id="6_pdeix"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_r7d5f"]
+resource_local_to_scene = false
+resource_name = "ModpackButtonGroup"
+
+[node name="ModpackButton" type="TextureButton"]
+offset_right = 275.0
+offset_bottom = 75.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_r7d5f")
+texture_normal = ExtResource("1_7x6dj")
+texture_pressed = ExtResource("2_mbo3f")
+texture_hover = ExtResource("3_8ktfm")
+stretch_mode = 3
+script = ExtResource("4_oq2at")
+
+[node name="ButtonHContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="IconMargin" type="MarginContainer" parent="ButtonHContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 10
+
+[node name="ButtonIcon" type="TextureRect" parent="ButtonHContainer/IconMargin"]
+custom_minimum_size = Vector2(55, 55)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+stretch_mode = 2
+
+[node name="ButtonVContainer" type="VBoxContainer" parent="ButtonHContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = -1
+
+[node name="ModpackNameLabel" type="Label" parent="ButtonHContainer/ButtonVContainer"]
+custom_minimum_size = Vector2(180, 2.08165e-12)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_mifc1")
+theme_override_font_sizes/font_size = 20
+text = "Awesome Modpack"
+clip_text = true
+
+[node name="ModpackVersionLabel" type="Label" parent="ButtonHContainer/ButtonVContainer"]
+custom_minimum_size = Vector2(160, 2.08165e-12)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_pdeix")
+theme_override_font_sizes/font_size = 16
+text = "Version Label"
+clip_text = true

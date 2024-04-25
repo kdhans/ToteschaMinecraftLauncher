@@ -1,0 +1,250 @@
+[gd_scene load_steps=11 format=3 uid="uid://b52g57x8bkqei"]
+
+[ext_resource type="Script" path="res://Scripts/Scenes/Settings.cs" id="1_4aw0e"]
+[ext_resource type="FontFile" uid="uid://dcxc7ljpw0mfm" path="res://Fonts/Moderustic-Bold.ttf" id="2_swtf0"]
+[ext_resource type="FontFile" uid="uid://bqgi1gwwi5wqm" path="res://Fonts/Moderustic-Medium.ttf" id="3_8ro32"]
+[ext_resource type="Texture2D" uid="uid://dm4ebesb5i4xi" path="res://ButtonTextures/sliderButton_normal.png" id="4_nm8vy"]
+[ext_resource type="Script" path="res://Scripts/UIElements/RamSlider.cs" id="5_icn2x"]
+[ext_resource type="Texture2D" uid="uid://cum75dpgpydf6" path="res://ButtonTextures/checkSlide_Normal.png" id="6_cytlu"]
+[ext_resource type="Texture2D" uid="uid://dto44fh0btcsa" path="res://ButtonTextures/checkSlide_selected.png" id="7_lcvfd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_awf5i"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.164706, 0.207843, 0.423529, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_temkc"]
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.164706, 0.207843, 0.423529, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3r7s2"]
+bg_color = Color(0.364706, 0.764706, 0.223529, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4aw0e")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 1070.0
+offset_bottom = 430.0
+theme_override_constants/separation = 45
+
+[node name="DirectoryBoxes" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="FileLocationBox" type="VBoxContainer" parent="VBoxContainer/DirectoryBoxes"]
+layout_mode = 2
+
+[node name="LocationLabel" type="Label" parent="VBoxContainer/DirectoryBoxes/FileLocationBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_swtf0")
+theme_override_font_sizes/font_size = 20
+text = "Minecraft File Location"
+
+[node name="DirectoryContainer" type="HBoxContainer" parent="VBoxContainer/DirectoryBoxes/FileLocationBox"]
+layout_mode = 2
+
+[node name="DirectoryTextField" type="LineEdit" parent="VBoxContainer/DirectoryBoxes/FileLocationBox/DirectoryContainer"]
+custom_minimum_size = Vector2(950, 2.08165e-12)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_8ro32")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_awf5i")
+text = "C:\\someDirectory\\minecraft"
+
+[node name="FolderButton" type="TextureButton" parent="VBoxContainer/DirectoryBoxes/FileLocationBox/DirectoryContainer"]
+layout_mode = 2
+
+[node name="ServerBox" type="VBoxContainer" parent="VBoxContainer/DirectoryBoxes"]
+layout_mode = 2
+
+[node name="ServerLabel" type="Label" parent="VBoxContainer/DirectoryBoxes/ServerBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_swtf0")
+theme_override_font_sizes/font_size = 20
+text = "Modpack Server Location"
+vertical_alignment = 2
+
+[node name="ServerTextField" type="LineEdit" parent="VBoxContainer/DirectoryBoxes/ServerBox"]
+custom_minimum_size = Vector2(950, 2.08165e-12)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("3_8ro32")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_awf5i")
+text = "http://www.SomeMinecraftServer.com"
+
+[node name="RamBox" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="RamLabel" type="Label" parent="VBoxContainer/RamBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_swtf0")
+theme_override_font_sizes/font_size = 20
+text = "RAM Allocation"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/RamBox"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="RamSlider" type="HSlider" parent="VBoxContainer/RamBox/HBoxContainer"]
+custom_minimum_size = Vector2(950, 2.08165e-12)
+layout_mode = 2
+tooltip_text = "lel"
+theme_override_icons/grabber = ExtResource("4_nm8vy")
+theme_override_icons/grabber_highlight = ExtResource("4_nm8vy")
+theme_override_styles/slider = SubResource("StyleBoxFlat_temkc")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_3r7s2")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_3r7s2")
+min_value = 1024.0
+max_value = 12288.0
+step = 512.0
+value = 4096.0
+ticks_on_borders = true
+script = ExtResource("5_icn2x")
+
+[node name="RamAmountLabel" type="Label" parent="VBoxContainer/RamBox/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_swtf0")
+theme_override_font_sizes/font_size = 20
+
+[node name="AdditionalSettingsBox" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="AdditionalSettingsLabel" type="Label" parent="VBoxContainer/AdditionalSettingsBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_swtf0")
+theme_override_font_sizes/font_size = 20
+text = "Additional Settings"
+
+[node name="HFlowContainer" type="HFlowContainer" parent="VBoxContainer/AdditionalSettingsBox"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+
+[node name="DownloadPreferencesSettingsButton" type="TextureButton" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+toggle_mode = true
+texture_normal = ExtResource("6_cytlu")
+texture_pressed = ExtResource("7_lcvfd")
+
+[node name="SettingsLabel" type="Label" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer/DownloadPreferencesSettingsButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.5
+offset_top = -12.0
+offset_right = 130.5
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "Includes the settings and prefrences file with the modpack. Will overwrite any personal changes made to keybindings"
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("3_8ro32")
+theme_override_font_sizes/font_size = 18
+text = "Download Suggested Settings File          "
+
+[node name="DeleteExpiredModsSettingButton" type="TextureButton" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+toggle_mode = true
+texture_normal = ExtResource("6_cytlu")
+texture_pressed = ExtResource("7_lcvfd")
+
+[node name="SettingsLabel" type="Label" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer/DeleteExpiredModsSettingButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.5
+offset_top = -12.0
+offset_right = 130.5
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "If selected, will delete modpacks that are no longer in sync with the server location. Useful if you want to save space on your computer and only play in sync modpacks. 
+If unselected, modpacks are still available at the file location specified above and will not be removed if not in sync."
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("3_8ro32")
+theme_override_font_sizes/font_size = 18
+text = "Delete Expired Modpacks          "
+
+[node name="RedownloadSettingsButton" type="TextureButton" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+toggle_mode = true
+texture_normal = ExtResource("6_cytlu")
+texture_pressed = ExtResource("7_lcvfd")
+
+[node name="SettingsLabel" type="Label" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer/RedownloadSettingsButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.5
+offset_top = -12.0
+offset_right = 130.5
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "Will redownload all modpack files on load. Should only be used sparingly if you are experiencing issues loading after an update."
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("3_8ro32")
+theme_override_font_sizes/font_size = 18
+text = "Force Redownload Of Files          "
+
+[node name="DownloadServerOnlySettingButton" type="TextureButton" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+toggle_mode = true
+texture_normal = ExtResource("6_cytlu")
+texture_pressed = ExtResource("7_lcvfd")
+
+[node name="SettingsLabel" type="Label" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer/DownloadServerOnlySettingButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.5
+offset_top = -12.0
+offset_right = 130.5
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "Forces download of \"server-side\" mods that have zero effect on the client. Check this if you want to host your own server with the modpack."
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("3_8ro32")
+theme_override_font_sizes/font_size = 18
+text = "Download Server-Only Mods          "
