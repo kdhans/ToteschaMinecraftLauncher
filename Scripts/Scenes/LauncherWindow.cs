@@ -110,11 +110,11 @@ public partial class LauncherWindow : Control
 	}
 
 
-	private void ResizeAppWindow()
+	private void ResizeAppWindowOld()
 	{
 		var window = GetWindow();
 		var display = DisplayServer.GetDisplaySafeArea();
-
+		window.ContentScaleSize = new Vector2I(MinimumWidth, MinimumHeight);
 		//If the monitor resolution is more than double the size, set it PercentOfDisplaySafeArea size
 		if (display.Size.X / 2 > MinimumWidth)
 		{
@@ -130,6 +130,39 @@ public partial class LauncherWindow : Control
 			window.Position = new Vector2I((int)(display.Size.X - length) / 2, (int)(display.Size.Y - width) / 2);
 		}
 	}
+	public void ResizeAppWindow()
+	{
+		var window = GetWindow();
+		window.ContentScaleSize = new Vector2I(MinimumWidth, MinimumHeight);
+		
+		
+		var displayDPI = DisplayServer.ScreenGetDpi();
+		var display = DisplayServer.GetDisplaySafeArea();
+		var standardDPI = 96;		
+
+		var displaySizeOnStandardScreen = ((float)MinimumWidth/(float)standardDPI);
+
+
+		if (displayDPI > standardDPI)
+		{
+			var actualScreenEquity = ((float)MinimumWidth/(float)displayDPI);
+			var ratio = 1+ actualScreenEquity/displaySizeOnStandardScreen;
+
+			GD.Print($"{displaySizeOnStandardScreen} {actualScreenEquity} {ratio}");
+
+			var length = MinimumWidth * ratio;
+			var width = MinimumHeight * ratio;
+
+			//Resize the window
+			window.Size = new Vector2I((int)length, (int)width);
+
+			//Calculate the new position of the window. Center the window on the screen.
+			//The position is calculated by subtracting the window size from the display size and dividing by 2.
+			window.Position = new Vector2I((int)(display.Size.X - length) / 2, (int)(display.Size.Y - width) / 2);
+		}
+	}
+
+
 	private void SetLoadingStateForUI(bool enabled, string statusText = "", bool modpackRequiredButtons = true)
 	{
 		var loadingBar = GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar");
