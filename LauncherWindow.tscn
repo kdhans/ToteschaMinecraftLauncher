@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://yhroynos75g3"]
+[gd_scene load_steps=30 format=3 uid="uid://yhroynos75g3"]
 
 [ext_resource type="Script" path="res://Scripts/Scenes/LauncherWindow.cs" id="1_cl8de"]
 [ext_resource type="Texture2D" uid="uid://cxu4vtvsuuens" path="res://Backgrounds/background.jpg" id="2_3hofw"]
@@ -21,6 +21,7 @@
 [ext_resource type="Script" path="res://Scripts/Buttons/LaunchButton.cs" id="18_gv7l1"]
 [ext_resource type="Script" path="res://Scripts/UIHelpers/WebHelper.cs" id="19_s1xmo"]
 [ext_resource type="Script" path="res://Scripts/Logic/LauncherLogic.cs" id="21_cmlbv"]
+[ext_resource type="PackedScene" uid="uid://0d8h8ffxuxrh" path="res://login.tscn" id="22_pjguh"]
 
 [sub_resource type="Gradient" id="Gradient_iquy2"]
 offsets = PackedFloat32Array(1)
@@ -255,3 +256,6 @@ script = ExtResource("19_s1xmo")
 
 [node name="LauncherLogic" type="Node" parent="."]
 script = ExtResource("21_cmlbv")
+
+[node name="LoginWindow" parent="." instance=ExtResource("22_pjguh")]
+visible = false

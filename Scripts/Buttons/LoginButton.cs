@@ -4,22 +4,20 @@ using ToteschaMinecraftLauncher.Scripts.Logic;
 
 public partial class LoginButton : Button
 {
-	
+	LoginWindow loginWindow;
+	LauncherWindow launcherWindow;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		launcherWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
+		loginWindow = GetNode<LoginWindow>("/root/LauncherWindow/LoginWindow");
 		this.ButtonDown += OnLoginClicked;
 	}
 
-	private async void OnLoginClicked()
+	private void OnLoginClicked()
 	{
-		var thisWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
-		var scene = GD.Load<PackedScene>("res://login.tscn");
-		var loginwindow = (Window)scene.Instantiate();
-		thisWindow.AddChild(loginwindow);
-		var position = thisWindow.GetScreenPosition();
-		loginwindow.Position= new Vector2I((int)position.X, (int)position.Y);
-		//loginwindow.Show();
+		loginWindow.ResizeWindow();
+		loginWindow.Show();
 		Disabled = true;
 	}
 
