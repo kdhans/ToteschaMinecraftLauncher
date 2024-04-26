@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using ToteschaMinecraftLauncher.Scripts.Logic;
 
 public partial class LoginButton : Button
 {
@@ -11,11 +10,19 @@ public partial class LoginButton : Button
 	{
 		launcherWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
 		loginWindow = GetNode<LoginWindow>("/root/LauncherWindow/LoginWindow");
-		this.ButtonDown += OnLoginClicked;
+		this.ButtonDown += OnLoginClickedAsync;
 	}
 
-	private void OnLoginClicked()
+	private async void OnLoginClickedAsync()
 	{
+		var username = launcherWindow.ToteschaSettings.Username;
+		var password = launcherWindow.ToteschaSettings.Password;
+
+		if (!string.IsNullOrWhiteSpace(username) && 
+			!string.IsNullOrWhiteSpace(password)) 
+		{
+			await loginWindow.SetUsernameAndPassword(username, password);
+		}
 		loginWindow.ResizeWindow();
 		loginWindow.Show();
 		Disabled = true;

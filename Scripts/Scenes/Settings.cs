@@ -9,15 +9,17 @@ public partial class Settings : Control
 	private HSlider ramSlider;
 	private LineEdit directoryField;
 	private LineEdit serverField;
-	private BaseButton downloadServerFiles, clearUnusedPacks, forceDownload, downloadSettings;
+	private BaseButton downloadServerOnlyFiles, deleteExpiredModpacks, forceRedownload, downloadSuggestedSettings;
 	private LauncherWindow launcherWindow;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		downloadServerFiles = GetNode<BaseButton>("VBoxContainer/AdditionalSettingsBox/HFlowContainer/DownloadServerOnlySettingButton");
-		clearUnusedPacks = GetNode<BaseButton>("VBoxContainer/AdditionalSettingsBox/HFlowContainer/DeleteExpiredModsSettingButton");
-		forceDownload = GetNode<BaseButton>("VBoxContainer/AdditionalSettingsBox/HFlowContainer/RedownloadSettingsButton");
-		downloadSettings = GetNode<BaseButton>("VBoxContainer/AdditionalSettingsBox/HFlowContainer/DownloadPreferencesSettingsButton");
+		downloadSuggestedSettings = GetNode<BaseButton>("VBoxContainer/AdditionalSettingsBox/HFlowContainer/DownloadPreferencesSettingsButton");
+		deleteExpiredModpacks = GetNode<BaseButton>("VBoxContainer/AdditionalSettingsBox/HFlowContainer/DeleteExpiredModsSettingButton");
+		forceRedownload = GetNode<BaseButton>("VBoxContainer/AdditionalSettingsBox/HFlowContainer/ForceRedownloadButton");
+		downloadServerOnlyFiles = GetNode<BaseButton>("VBoxContainer/AdditionalSettingsBox/HFlowContainer/DownloadServerOnlySettingButton");
+
+
 		ramSlider = GetNode<HSlider>("VBoxContainer/RamBox/HBoxContainer/RamSlider");
 		
 		launcherWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
@@ -30,6 +32,19 @@ public partial class Settings : Control
 		serverField.FocusExited += SetSettingsValues;
 		serverField.TextChanged += OnServerLocationChanged;
 
+		downloadServerOnlyFiles.Toggled += SetButtonSettings;
+		deleteExpiredModpacks.Toggled += SetButtonSettings;
+		forceRedownload.Toggled += SetButtonSettings;
+		downloadSuggestedSettings.Toggled += SetButtonSettings;
+
+	}
+
+	private void SetButtonSettings(bool toggledOn)
+	{
+		toteschaSettings.DownloadSettingsFile = downloadSuggestedSettings.ButtonPressed;
+		toteschaSettings.ForceDownload = forceRedownload.ButtonPressed;
+		toteschaSettings.DownloadServerFiles = downloadServerOnlyFiles.ButtonPressed;
+		toteschaSettings.CleanUpOldPacks = deleteExpiredModpacks.ButtonPressed;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -49,20 +64,24 @@ public partial class Settings : Control
 
 		directoryField.Text = toteschaSettings.MinecraftInstallationPath;
 		serverField.Text = toteschaSettings.ServerURL;
-		downloadSettings.ButtonPressed = toteschaSettings.DownloadSettingsFile;
-		forceDownload.ButtonPressed = toteschaSettings.ForceDownload;
-		downloadServerFiles.ButtonPressed = toteschaSettings.DownloadServerFiles;
-		clearUnusedPacks.ButtonPressed = toteschaSettings.CleanUpOldPacks;
+
+		downloadSuggestedSettings.ButtonPressed = toteschaSettings.DownloadSettingsFile;
+		forceRedownload.ButtonPressed = toteschaSettings.ForceDownload;
+		downloadServerOnlyFiles.ButtonPressed = toteschaSettings.DownloadServerFiles;
+		deleteExpiredModpacks.ButtonPressed = toteschaSettings.CleanUpOldPacks;
 	}
 
 	private void SetSettingsValues()
 	{
 		toteschaSettings.MinecraftInstallationPath = directoryField.Text;
 		toteschaSettings.ServerURL = serverField.Text;
-		toteschaSettings.DownloadSettingsFile = downloadSettings.ButtonPressed;
-		toteschaSettings.ForceDownload = forceDownload.ButtonPressed;
-		toteschaSettings.DownloadServerFiles = downloadServerFiles.ButtonPressed;
-		toteschaSettings.CleanUpOldPacks = clearUnusedPacks.ButtonPressed;
+
+		toteschaSettings.DownloadSettingsFile = downloadSuggestedSettings.ButtonPressed;
+		toteschaSettings.ForceDownload = forceRedownload.ButtonPressed;
+		toteschaSettings.DownloadServerFiles = downloadServerOnlyFiles.ButtonPressed;
+		toteschaSettings.CleanUpOldPacks = deleteExpiredModpacks.ButtonPressed;
+
+
 
 		launcherWindow.ToteschaSettings = toteschaSettings;
 	}

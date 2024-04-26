@@ -195,7 +195,7 @@ theme_override_fonts/font = ExtResource("3_8ro32")
 theme_override_font_sizes/font_size = 18
 text = "Delete Expired Modpacks          "
 
-[node name="RedownloadSettingsButton" type="TextureButton" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer"]
+[node name="ForceRedownloadButton" type="TextureButton" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
@@ -203,7 +203,7 @@ toggle_mode = true
 texture_normal = ExtResource("6_cytlu")
 texture_pressed = ExtResource("7_lcvfd")
 
-[node name="SettingsLabel" type="Label" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer/RedownloadSettingsButton"]
+[node name="SettingsLabel" type="Label" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer/ForceRedownloadButton"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

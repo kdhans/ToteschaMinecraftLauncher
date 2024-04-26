@@ -23,6 +23,6 @@ public partial class HomeButton : Button
 		
 		var launcherWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
 		var parentNode = GetNode<MarginContainer>(LauncherWindow.DisplayBoxNodePath);
-		launcherWindow.SetupButtonScene(relatedScene, parentNode);
+		launcherWindow.SetupSceneForButton(relatedScene, parentNode);
 	}
 }

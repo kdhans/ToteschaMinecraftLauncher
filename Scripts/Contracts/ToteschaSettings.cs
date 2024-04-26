@@ -14,6 +14,8 @@ public class ToteschaSettings
     public bool CleanUpOldPacks { get; set; }
     public bool DownloadSettingsFile { get; set; }
     public string LastSelectedModpack { get; set; }
+    public string Username { get; set; }
+    public string Password { get; set; }
     public List<Modpack> InstalledModpacks { get; set; }
 
 }

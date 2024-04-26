@@ -20,7 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://bhmqo2ofaihqq" path="res://ButtonTextures/launchButton_disabled.png" id="17_qyn4v"]
 [ext_resource type="Script" path="res://Scripts/Buttons/LaunchButton.cs" id="18_gv7l1"]
 [ext_resource type="Script" path="res://Scripts/UIHelpers/WebHelper.cs" id="19_s1xmo"]
-[ext_resource type="Script" path="res://Scripts/Logic/LauncherLogic.cs" id="21_cmlbv"]
+[ext_resource type="Script" path="res://Scripts/UIHelpers/FileHelper.cs" id="22_1ubk4"]
 [ext_resource type="PackedScene" uid="uid://0d8h8ffxuxrh" path="res://login.tscn" id="22_pjguh"]
 
 [sub_resource type="Gradient" id="Gradient_iquy2"]
@@ -251,11 +251,11 @@ theme_override_font_sizes/font_size = 32
 text = "Launch"
 vertical_alignment = 2
 
+[node name="LoginWindow" parent="." instance=ExtResource("22_pjguh")]
+visible = false
+
 [node name="WebHelper" type="Node" parent="."]
 script = ExtResource("19_s1xmo")
 
-[node name="LauncherLogic" type="Node" parent="."]
-script = ExtResource("21_cmlbv")
-
-[node name="LoginWindow" parent="." instance=ExtResource("22_pjguh")]
-visible = false
+[node name="FileHelper" type="Node" parent="."]
+script = ExtResource("22_1ubk4")

@@ -13,4 +13,7 @@
     <PackageReference Include="XboxAuthNet.Game" Version="1.2.3" />
     <PackageReference Include="XboxAuthNet.Game.Msal" Version="0.0.6" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\Logic\" />
+  </ItemGroup>
 </Project>

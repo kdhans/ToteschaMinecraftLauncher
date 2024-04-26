@@ -1,4 +1,5 @@
 using Godot;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Reflection.Metadata.Ecma335;
@@ -9,11 +10,11 @@ using ToteschaMinecraftLauncher.Scripts.Helpers;
 #nullable enable
 public partial class LauncherWindow : Control
 {
-	public ToteschaSettings ToteschaSettings { get; set; }
-	public ServerDetails ServerDetails { get; set; }
-	public Modpack SelectedModpack { get; set; }
-	public string LatestNews { get; set; }
-	public ImageTexture LatestNewsPicture { get; set; }
+	public ToteschaSettings? ToteschaSettings { get; set; }
+	public ServerDetails? ServerDetails { get; set; }
+	public Modpack? SelectedModpack { get; set; }
+	public string? LatestNews { get; set; }
+	public ImageTexture? LatestNewsPicture { get; set; }
 	public bool IsLoadingServerData { get; set; } = true;
 	public static Node? SelectedNode { get; set; }
 	public static string DisplayBoxNodePath = "/root/LauncherWindow/DisplayAreaContainer/MainMargin";
@@ -22,22 +23,32 @@ public partial class LauncherWindow : Control
 	private const float PercentOfDisplaySafeArea = 0.65f;
 	private const int MinimumWidth = 1400;
 	private const int MinimumHeight = 750;
-	private string settingsDirectory;
+	private string? settingsDirectory;
 	// Called when the node enters the scene tree for the first time.
 	public override async void _Ready()
 	{
 		settingsDirectory = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData), "ToteschaMinecraft");
 		LoadSettings();
 		ResizeAppWindow();
+		var window = GetWindow();
+		window.CloseRequested += OnCloseRequested;
 		await LoadServerDetailsAsync();
+
+		var helperClient = new SystemHelper();
+		GD.Print("Key: " + Convert.ToBase64String(helperClient.GetEnvironmentHashKey()));
+		GD.Print("IV: " + Convert.ToBase64String(helperClient.GetEnvironmentIV()));
+	}
+
+	private void OnCloseRequested()
+	{
+		SaveSettings();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 	}
-
-	public void SetupButtonScene(PackedScene scene, Node parentNode)
+	public void SetupSceneForButton(PackedScene scene, Node parentNode)
 	{
 		if (scene.ResourcePath != sceneName)
 			sceneName = scene.ResourcePath;
@@ -54,7 +65,7 @@ public partial class LauncherWindow : Control
 		IsLoadingServerData = true;
 		SetLoadingStateForUI(false);
 		var webHelper = GetNode<WebHelper>("WebHelper");
-		var result = await webHelper.CallJsonGetRequestAsync<ServerDetails>("https://script.google.com/macros/s/AKfycbzg9gGz0lTj0hh_jr5ySLwoz-NUNQcJAg9aRqBf-L5_tR0KWOBP0CpZ-XYcPF56Sc1z/exec");
+		var result = await webHelper.CallJsonGetRequestAsync<ServerDetails>(ToteschaSettings!.ServerURL);
 		string statusText = null;
 		bool enableModpackRequiredButtons = true;
 
@@ -72,8 +83,33 @@ public partial class LauncherWindow : Control
 		SetLoadingStateForUI(true, statusText, enableModpackRequiredButtons);
 		IsLoadingServerData = false;
 	}
-	
-	
+	public void SaveSettings()
+	{
+		ToteschaSettings!.LastSelectedModpack = SelectedModpack?.Name;
+
+		GD.Print("Saving settings");
+		if (string.IsNullOrWhiteSpace(settingsDirectory))
+			return;
+
+		var fileHelper = new FileHelper();
+		var filename = Path.Combine(settingsDirectory, "settings.json");
+
+		if (!Directory.Exists(settingsDirectory))
+			Directory.CreateDirectory(settingsDirectory);
+
+		try
+		{
+			var contents = JsonConvert.SerializeObject(ToteschaSettings);
+			if (!fileHelper.TryWriteAppTextFile(filename, contents))
+				throw new ApplicationException("File did not write") ;
+		}
+		catch (Exception ex) 
+		{
+			GD.Print($"Could not save {filename} - {ex.Message}");
+		}
+	}
+
+
 	private void ResizeAppWindow()
 	{
 		var window = GetWindow();
@@ -94,21 +130,13 @@ public partial class LauncherWindow : Control
 			window.Position = new Vector2I((int)(display.Size.X - length) / 2, (int)(display.Size.Y - width) / 2);
 		}
 	}
-	private async Task GetLatestNews()
-	{
-		var helper = GetNode<WebHelper>("WebHelper");
-		var image = await helper.GetImageDataAsync(ServerDetails.NewsImageUrl);
-
-		LatestNewsPicture = image.Data;
-		LatestNews = ServerDetails.News ?? string.Empty;
-	}
 	private void SetLoadingStateForUI(bool enabled, string statusText = "", bool modpackRequiredButtons = true)
 	{
 		var loadingBar = GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar");
 		if (!enabled)
 		{
 			SelectedModpack = null;
-			loadingBar.StartInfiniteLoading();
+			_ = loadingBar.StartInfiniteLoading();
 		}
 		else
 			loadingBar.StopInfiniteLoading();
@@ -116,7 +144,15 @@ public partial class LauncherWindow : Control
 		GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/DetailsButton").Disabled = !(enabled && modpackRequiredButtons);
 		GetNode<TextureButton>("/root/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchButton").Disabled = !(enabled && modpackRequiredButtons);
 		GetNode<Label>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressLabel").Text = statusText;
+		GetNode<Button>("FooterContainer/LoginMargin/LoginButton").Disabled = !enabled;
+	}
+	private async Task GetLatestNews()
+	{
+		var helper = GetNode<WebHelper>("WebHelper");
+		var image = await helper.GetImageDataAsync(ServerDetails.NewsImageUrl);
 
+		LatestNewsPicture = image.Data;
+		LatestNews = ServerDetails.News ?? string.Empty;
 	}
 	private void LoadSettings()
 	{
@@ -132,28 +168,41 @@ public partial class LauncherWindow : Control
 				DownloadServerFiles = false,
 				CleanUpOldPacks = true,
 				MinecraftInstallationPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "ToteschaMinecraft"),
-				ServerURL = "https://minecraft.totescha.com"
+				ServerURL = "https://minecraft.totescha.com",
+				MemoryToAllocate = 0,
+				MaxMemory = 0,
 			};
-			GetSystemMemoryDetails();
 		}
+
+		GetSystemMemoryDetails();
 	}
 	private void LoadSettingsFromFile()
 	{
+		GD.Print("Loading settings file");
+		if (string.IsNullOrWhiteSpace(settingsDirectory))
+			return;
+
+		var fileHelper = new FileHelper();
+		var filename = Path.Combine(settingsDirectory, "settings.json");
+
+
 		if (!Directory.Exists(settingsDirectory))
 			Directory.CreateDirectory(settingsDirectory);
-		else if (File.Exists(Path.Combine(settingsDirectory, "settings.json")))
+		else if (File.Exists(filename) && fileHelper.TryReadAppTextFile(filename, out var contents))
 		{
-
+			try
+			{
+				ToteschaSettings = JsonConvert.DeserializeObject<ToteschaSettings>(contents);
+			} catch 
+			{
+				GD.Print($"Could not read {filename}");
+			}
 		}
-	}
-	public void SaveSettings()
-	{
-		//Save settings to json file
 	}
 
 	private void GetSystemMemoryDetails()
 	{
-		var memoryHelperClient = new MemoryHelper();
+		var memoryHelperClient = new SystemHelper();
 
 		var backgroundSafeMemory = memoryHelperClient.AvailableMemory() / 1048576.0;
 		var reccomended = .6 * backgroundSafeMemory;
@@ -161,11 +210,13 @@ public partial class LauncherWindow : Control
 		double i = 0, j = 0;
 		while (i < reccomended && i < 10240)
 			i += 512;
-		ToteschaSettings.MemoryToAllocate = i;
+		
 		while (j + 512 <= backgroundSafeMemory)
 			j += 512;
 		ToteschaSettings.MaxMemory = j;
 
+		if (ToteschaSettings.MemoryToAllocate != 0 && ToteschaSettings.MemoryToAllocate > j)
+			ToteschaSettings.MemoryToAllocate = i;
 
 	}
 }
