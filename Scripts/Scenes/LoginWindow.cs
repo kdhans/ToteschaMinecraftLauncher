@@ -22,27 +22,6 @@ public partial class LoginWindow : Window
 	{
 	}
 
-	public void ResizeWindowOld()
-	{
-		var window = GetWindow();
-		var display = DisplayServer.GetDisplaySafeArea();
-		//window.ContentScaleSize = new Vector2I(MinimumWidth, MinimumHeight);
-
-		//If the monitor resolution is more than double the size, set it PercentOfDisplaySafeArea size
-		if (display.Size.X / 3 > MinimumWidth)
-		{
-			var ratio = (display.Size.X * PercentOfDisplaySafeArea) / MinimumWidth;
-			var length = MinimumWidth * ratio;
-			var width = MinimumHeight * ratio;
-
-			//Resize the window
-			window.Size = new Vector2I((int)length, (int)width);
-
-			//Calculate the new position of the window. Center the window on the screen.
-			//The position is calculated by subtracting the window size from the display size and dividing by 2.
-			window.Position = new Vector2I((int)(display.Size.X - length) / 2, (int)(display.Size.Y - width) / 2);
-		}
-	}
 	public void ResizeWindow()
 	{
 		var window = GetWindow();
@@ -51,20 +30,18 @@ public partial class LoginWindow : Window
 		
 		var displayDPI = DisplayServer.ScreenGetDpi();
 		var display = DisplayServer.GetDisplaySafeArea();
-		var standardDPI = 96;		
+		var developerDPI = 106f;		
 
-		var displaySizeOnStandardScreen = ((float)MinimumWidth/(float)standardDPI);
+		var displaySizeOnDeveloperScreen = ((float)MinimumWidth/(float)developerDPI);
 
 
-		if (displayDPI > standardDPI)
+		if (Math.Abs(displayDPI - developerDPI) > 15)
 		{
-			var actualScreenEquity = ((float)MinimumWidth/(float)displayDPI);
-			var ratio = 1+ actualScreenEquity/displaySizeOnStandardScreen;
+			var displaySizeOnPlayerScreen = ((float)MinimumWidth/(float)displayDPI);
+			var percentIncrease = 2f - displaySizeOnPlayerScreen/displaySizeOnDeveloperScreen;
 
-			GD.Print($"{displaySizeOnStandardScreen} {actualScreenEquity} {ratio}");
-
-			var length = MinimumWidth * ratio;
-			var width = MinimumHeight * ratio;
+			var length = MinimumWidth * percentIncrease;
+			var width = MinimumHeight * percentIncrease;
 
 			//Resize the window
 			window.Size = new Vector2I((int)length, (int)width);
