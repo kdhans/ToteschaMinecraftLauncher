@@ -145,10 +145,10 @@ public partial class LauncherWindow : Control
 
 		if (displayDPI > standardDPI)
 		{
-			var actualScreenEquity = ((float)MinimumWidth/(float)displayDPI);
-			var ratio = (1 - actualScreenEquity/displaySizeOnStandardScreen) + 1;
+			var displaySizeOnPlayerScreen = ((float)MinimumWidth/(float)displayDPI);
+			var ratio = (1f - displaySizeOnPlayerScreen/displaySizeOnStandardScreen) + 1f;
 
-			GD.Print($"{displaySizeOnStandardScreen} {actualScreenEquity} {ratio}");
+			GD.Print($"{displaySizeOnStandardScreen} {displaySizeOnPlayerScreen} {ratio}");
 
 			var length = MinimumWidth * ratio;
 			var width = MinimumHeight * ratio;
