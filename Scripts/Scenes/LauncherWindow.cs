@@ -20,7 +20,7 @@ public partial class LauncherWindow : Control
 	public static string DisplayBoxNodePath = "/root/LauncherWindow/DisplayAreaContainer/MainMargin";
 
 	private static string? sceneName = null;
-	private const float PercentOfDisplaySafeArea = 0.65f;
+	private const float PercentOfDisplaySafeArea = 0.55f;
 	private const int MinimumWidth = 1400;
 	private const int MinimumHeight = 750;
 	private string? settingsDirectory;
