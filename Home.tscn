@@ -66,11 +66,14 @@ vertical_alignment = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 275)
 layout_mode = 2
+size_flags_vertical = 6
 
 [node name="NewsImage" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(275, 275)
+custom_minimum_size = Vector2(275, 200)
 layout_mode = 2
 size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2

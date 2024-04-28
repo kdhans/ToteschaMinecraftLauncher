@@ -85,7 +85,7 @@ public partial class Home : Control
 		{
 			var installedState = CheckIfModpackIsUpToDate(modpack);
 			ModpackButton modpackButton = (ModpackButton)scene.Instantiate();
-			modpackButton.SetText(modpack.Name, modpack.ModpackVersion);
+			modpackButton.SetText(modpack.Name, $"{modpack.ModLoader}-{modpack.MineceaftVersion}");
 			modpackButton.InstalledState = installedState;
 
 			if (modpack.Name == toteschaSettings.LastSelectedModpack)

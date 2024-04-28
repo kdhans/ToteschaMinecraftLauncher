@@ -22,27 +22,6 @@ public partial class LoginWindow : Window
 	{
 	}
 
-	public void ResizeWindowOld()
-	{
-		var window = GetWindow();
-		var display = DisplayServer.GetDisplaySafeArea();
-		//window.ContentScaleSize = new Vector2I(MinimumWidth, MinimumHeight);
-
-		//If the monitor resolution is more than double the size, set it PercentOfDisplaySafeArea size
-		if (display.Size.X / 3 > MinimumWidth)
-		{
-			var ratio = (display.Size.X * PercentOfDisplaySafeArea) / MinimumWidth;
-			var length = MinimumWidth * ratio;
-			var width = MinimumHeight * ratio;
-
-			//Resize the window
-			window.Size = new Vector2I((int)length, (int)width);
-
-			//Calculate the new position of the window. Center the window on the screen.
-			//The position is calculated by subtracting the window size from the display size and dividing by 2.
-			window.Position = new Vector2I((int)(display.Size.X - length) / 2, (int)(display.Size.Y - width) / 2);
-		}
-	}
 	public void ResizeWindow()
 	{
 		var window = GetWindow();
@@ -51,7 +30,7 @@ public partial class LoginWindow : Window
 		
 		var displayDPI = DisplayServer.ScreenGetDpi();
 		var display = DisplayServer.GetDisplaySafeArea();
-		var standardDPI = 96;		
+		var standardDPI = 120;		
 
 		var displaySizeOnStandardScreen = ((float)MinimumWidth/(float)standardDPI);
 
@@ -73,25 +52,28 @@ public partial class LoginWindow : Window
 			//The position is calculated by subtracting the window size from the display size and dividing by 2.
 			window.Position = new Vector2I((int)(display.Size.X - length) / 2, (int)(display.Size.Y - width) / 2);
 		}
+
+		var loginButton = GetNode<LWLoginButton>("/root/LauncherWindow/LoginWindow/VBoxContainer/ButtonGroup/LWLoginButton");
+		loginButton.ResetLoginButton();
 	}
 
 	public async Task HideAndReenableLoginButton(bool isLoginSuccessful)
 	{
+		var loginButton = GetNode<Button>("/root/LauncherWindow/FooterContainer/LoginMargin/LoginButton");
 		if (isLoginSuccessful)
 		{
-
 			var encryptor = new ToteschaEncryptor();
 			var username = GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/UsernameGroup/LWUsernameTextBox").Text;
 			var password = GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/PasswordGroup/LWPasswordTextBox").Text;
 			Username = await encryptor.EncryptStringAsync(username);
 			Password = await encryptor.EncryptStringAsync(password);
+			GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/UsernameGroup/LWUsernameTextBox").Text = string.Empty;
+			GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/PasswordGroup/LWPasswordTextBox").Text = string.Empty;
 		}
 
-		var loginButton = GetNode<Button>("/root/LauncherWindow/FooterContainer/LoginMargin/LoginButton");
 		loginButton.Disabled = false;
 		this.Hide();
 	}
-
 	public async Task SetUsernameAndPassword(string username, string password)
 	{
 		var encryptor = new ToteschaEncryptor();
@@ -106,7 +88,7 @@ public partial class LoginWindow : Window
 		{
 			GetNode<LauncherWindow>("/root/LauncherWindow").ToteschaSettings.Username = string.Empty;
 			GetNode<LauncherWindow>("/root/LauncherWindow").ToteschaSettings.Password = string.Empty;
-
 		}
 	}
+	public string SetErrorText(string errorText) => GetNode<Label>("VBoxContainer/ErrorText").Text = errorText;
 }

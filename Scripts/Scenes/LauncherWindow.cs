@@ -1,11 +1,14 @@
 using Godot;
 using Newtonsoft.Json;
+using SevenZip.Compression.LZ;
 using System;
 using System.IO;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using ToteschaMinecraftLauncher;
 using ToteschaMinecraftLauncher.Scripts.Helpers;
+using ToteschaMinecraftLauncher.Scripts.UIHelpers;
+using static ToteschaMinecraftLauncher.Scripts.UIHelpers.LoginHelper;
 
 #nullable enable
 public partial class LauncherWindow : Control
@@ -13,6 +16,7 @@ public partial class LauncherWindow : Control
 	public ToteschaSettings? ToteschaSettings { get; set; }
 	public ServerDetails? ServerDetails { get; set; }
 	public Modpack? SelectedModpack { get; set; }
+	public MinecraftSession? Session { get; set; }
 	public string? LatestNews { get; set; }
 	public ImageTexture? LatestNewsPicture { get; set; }
 	public bool IsLoadingServerData { get; set; } = true;
@@ -35,8 +39,7 @@ public partial class LauncherWindow : Control
 		await LoadServerDetailsAsync();
 
 		var helperClient = new SystemHelper();
-		GD.Print("Key: " + Convert.ToBase64String(helperClient.GetEnvironmentHashKey()));
-		GD.Print("IV: " + Convert.ToBase64String(helperClient.GetEnvironmentIV()));
+		await TryLoginToMinecraft(ToteschaSettings?.Username, ToteschaSettings?.Password);
 	}
 
 	private void OnCloseRequested()
@@ -108,28 +111,6 @@ public partial class LauncherWindow : Control
 			GD.Print($"Could not save {filename} - {ex.Message}");
 		}
 	}
-
-
-	private void ResizeAppWindowOld()
-	{
-		var window = GetWindow();
-		var display = DisplayServer.GetDisplaySafeArea();
-		window.ContentScaleSize = new Vector2I(MinimumWidth, MinimumHeight);
-		//If the monitor resolution is more than double the size, set it PercentOfDisplaySafeArea size
-		if (display.Size.X / 2 > MinimumWidth)
-		{
-			var ratio = (display.Size.X * PercentOfDisplaySafeArea) / MinimumWidth;
-			var length = MinimumWidth * ratio;
-			var width = MinimumHeight * ratio;
-
-			//Resize the window
-			window.Size = new Vector2I((int)length, (int)width);
-
-			//Calculate the new position of the window. Center the window on the screen.
-			//The position is calculated by subtracting the window size from the display size and dividing by 2.
-			window.Position = new Vector2I((int)(display.Size.X - length) / 2, (int)(display.Size.Y - width) / 2);
-		}
-	}
 	public void ResizeAppWindow()
 	{
 		var window = GetWindow();
@@ -138,12 +119,12 @@ public partial class LauncherWindow : Control
 		
 		var displayDPI = DisplayServer.ScreenGetDpi();
 		var display = DisplayServer.GetDisplaySafeArea();
-		var standardDPI = 96;		
+		var developerDPI = 120;		
+		GD.Print($"{displayDPI}");
+		var displaySizeOnStandardScreen = ((float)MinimumWidth/(float)developerDPI);
 
-		var displaySizeOnStandardScreen = ((float)MinimumWidth/(float)standardDPI);
 
-
-		if (displayDPI > standardDPI)
+		if (displayDPI > developerDPI)
 		{
 			var displaySizeOnPlayerScreen = ((float)MinimumWidth/(float)displayDPI);
 			var ratio = (1f - displaySizeOnPlayerScreen/displaySizeOnStandardScreen) + 1f;
@@ -232,7 +213,6 @@ public partial class LauncherWindow : Control
 			}
 		}
 	}
-
 	private void GetSystemMemoryDetails()
 	{
 		var memoryHelperClient = new SystemHelper();
@@ -251,5 +231,29 @@ public partial class LauncherWindow : Control
 		if (ToteschaSettings.MemoryToAllocate != 0 && ToteschaSettings.MemoryToAllocate > j)
 			ToteschaSettings.MemoryToAllocate = i;
 
+	}
+
+	public async Task<Tuple<bool, string>> TryLoginToMinecraft(string encyUsername, string encyPassword, bool isEncrypted = true)
+	{
+		var loginButton = GetNode<Button>("FooterContainer/LoginMargin/LoginButton");
+		Tuple<bool, string> success;
+		var encryptor = new ToteschaEncryptor();
+		try
+		{
+			loginButton.Disabled = true;
+			var username = isEncrypted ? await encryptor.DecryptStringAsync(encyUsername) : encyUsername;
+			var password = isEncrypted ? await encryptor.DecryptStringAsync(encyPassword) : encyPassword;
+			GD.Print($"{username} {password}");
+			Session = await GetMinecraftSession(username,password);
+			success = new Tuple<bool, string>(true, string.Empty);
+			loginButton.Disabled = false;
+			loginButton.Text = $"      Welcome, {System.Environment.NewLine}      {Session.username}!";
+		}
+		catch (Exception ex)
+		{
+			loginButton.Disabled = false;
+			success = new Tuple<bool, string>(false, ex.Message);
+		}
+		return success;
 	}
 }
