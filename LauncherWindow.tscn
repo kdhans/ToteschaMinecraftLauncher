@@ -126,6 +126,7 @@ offset_top = 162.0
 offset_bottom = 110.75
 grow_horizontal = 2
 grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="MenuMargin" type="MarginContainer" parent="DisplayAreaContainer"]
 layout_mode = 2
@@ -184,6 +185,7 @@ offset_top = -85.0
 offset_right = 1365.0
 offset_bottom = -8.0
 grow_vertical = 0
+metadata/_edit_use_anchors_ = true
 
 [node name="LoginMargin" type="MarginContainer" parent="FooterContainer"]
 layout_mode = 2
