@@ -90,7 +90,6 @@ public partial class LauncherWindow : Control
 	{
 		ToteschaSettings!.LastSelectedModpack = SelectedModpack?.Name;
 
-		GD.Print("Saving settings");
 		if (string.IsNullOrWhiteSpace(settingsDirectory))
 			return;
 
@@ -120,7 +119,6 @@ public partial class LauncherWindow : Control
 		var displayDPI = DisplayServer.ScreenGetDpi();
 		var display = DisplayServer.GetDisplaySafeArea();
 		var developerDPI = 120;		
-		GD.Print($"{displayDPI}");
 		var displaySizeOnStandardScreen = ((float)MinimumWidth/(float)developerDPI);
 
 
@@ -128,8 +126,6 @@ public partial class LauncherWindow : Control
 		{
 			var displaySizeOnPlayerScreen = ((float)MinimumWidth/(float)displayDPI);
 			var ratio = (1f - displaySizeOnPlayerScreen/displaySizeOnStandardScreen) + 1f;
-
-			GD.Print($"{displaySizeOnStandardScreen} {displaySizeOnPlayerScreen} {ratio}");
 
 			var length = MinimumWidth * ratio;
 			var width = MinimumHeight * ratio;
@@ -192,7 +188,6 @@ public partial class LauncherWindow : Control
 	}
 	private void LoadSettingsFromFile()
 	{
-		GD.Print("Loading settings file");
 		if (string.IsNullOrWhiteSpace(settingsDirectory))
 			return;
 
@@ -243,7 +238,6 @@ public partial class LauncherWindow : Control
 			loginButton.Disabled = true;
 			var username = isEncrypted ? await encryptor.DecryptStringAsync(encyUsername) : encyUsername;
 			var password = isEncrypted ? await encryptor.DecryptStringAsync(encyPassword) : encyPassword;
-			GD.Print($"{username} {password}");
 			Session = await GetMinecraftSession(username,password);
 			success = new Tuple<bool, string>(true, string.Empty);
 			loginButton.Disabled = false;

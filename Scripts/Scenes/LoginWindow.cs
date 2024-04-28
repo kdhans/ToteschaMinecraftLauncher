@@ -40,8 +40,6 @@ public partial class LoginWindow : Window
 			var actualScreenEquity = ((float)MinimumWidth/(float)displayDPI);
 			var ratio = 1+ actualScreenEquity/displaySizeOnStandardScreen;
 
-			GD.Print($"{displaySizeOnStandardScreen} {actualScreenEquity} {ratio}");
-
 			var length = MinimumWidth * ratio;
 			var width = MinimumHeight * ratio;
 
