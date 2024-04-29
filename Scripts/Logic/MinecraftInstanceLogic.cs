@@ -93,14 +93,20 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         {
             if (Modpack.Files?.Any() ?? false)
             {
+
+                GD.Print("Mods are downloading");
                 var progressAmount = .5f / (float)Modpack.Files.Count;
-                var filesToDownload = (Settings.DownloadServerFiles) ? Modpack.Files : Modpack.Files.Where(x => !x.ClientSide);
+                var filesToDownload = (Settings.DownloadServerFiles) ? Modpack.Files : Modpack.Files.Where(x => !x.ServerSide);
                 if (filesToDownload?.Any() ?? false)
+                {
+
+            GD.Print("Mods are found to download");
                     await Task.WhenAll(filesToDownload.Select(file => DownloadFileAsync(file.DownloadURL,
                                                                                  file.Filename,
                                                                                  Settings.MinecraftInstallationPath,
                                                                                  file.InstallationLocation,
                                                                                  progressAmount)));
+                }
             }
             else
                 _totalInstallProgress += .5f;
@@ -108,8 +114,14 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         async Task DownloadFileAsync(string url, string filename, string mainDirectory, string downloadPath, float progressAmount)
         {
             InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, $"Downloading {filename}..."));
-            var installationPath = Path.Combine(mainDirectory, downloadPath);
-            var installationFile = Path.Combine(filename);
+            GD.Print($"Installing {mainDirectory} {downloadPath} {filename}");
+            var installationPath = string.IsNullOrWhiteSpace(downloadPath) ?
+                                    mainDirectory : 
+                                    Path.Combine(mainDirectory, downloadPath);
+            GD.Print("Installation path: " + installationPath);                       
+            var installationFile = Path.Combine(installationPath, filename);
+
+            GD.Print("Installation file: " + installationFile);                   
             if (Directory.Exists(installationPath))
                 Directory.CreateDirectory(installationPath);
             if (File.Exists(installationFile))
@@ -127,7 +139,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             response.EnsureSuccessStatusCode();
 
             using var contentStream = await response.Content.ReadAsStreamAsync();
-            using var fileStream = File.Create(downloadPath);
+            using var fileStream = File.Create(installationFile);
             await contentStream.CopyToAsync(fileStream);
             _totalInstallProgress += progressAmount;
 
