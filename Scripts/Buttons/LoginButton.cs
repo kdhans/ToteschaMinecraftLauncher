@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class LoginButton : Button
 {
@@ -12,6 +13,7 @@ public partial class LoginButton : Button
 		loginWindow = GetNode<LoginWindow>("/root/LauncherWindow/LoginWindow");
 		this.ButtonDown += OnLoginClickedAsync;
 	}
+	public async void ClickButtonAsync() => OnLoginClickedAsync();
 
 	private async void OnLoginClickedAsync()
 	{
@@ -23,6 +25,7 @@ public partial class LoginButton : Button
 		{
 			await loginWindow.SetUsernameAndPassword(username, password);
 		}
+		loginWindow.UserFinishedUp = false;
 		loginWindow.ResizeWindow();
 		loginWindow.Show();
 		Disabled = true;

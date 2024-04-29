@@ -7,6 +7,7 @@ public partial class LoginWindow : Window
 {
 	public string Username { get; private set; }
 	public string Password { get; private set; }
+	public bool UserFinishedUp { get; set; }
 
 	private const float PercentOfDisplaySafeArea = 0.25f;
 	private const int MinimumWidth = 450;
@@ -70,6 +71,7 @@ public partial class LoginWindow : Window
 		}
 
 		loginButton.Disabled = false;
+		UserFinishedUp = true;
 		this.Hide();
 	}
 	public async Task SetUsernameAndPassword(string username, string password)

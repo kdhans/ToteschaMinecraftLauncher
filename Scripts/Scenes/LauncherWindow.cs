@@ -7,6 +7,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using ToteschaMinecraftLauncher;
 using ToteschaMinecraftLauncher.Scripts.Helpers;
+using ToteschaMinecraftLauncher.Scripts.Logic;
 using ToteschaMinecraftLauncher.Scripts.UIHelpers;
 using static ToteschaMinecraftLauncher.Scripts.UIHelpers.LoginHelper;
 
@@ -138,22 +139,21 @@ public partial class LauncherWindow : Control
 			window.Position = new Vector2I((int)(display.Size.X - length) / 2, (int)(display.Size.Y - width) / 2);
 		}
 	}
-
-
-	private void SetLoadingStateForUI(bool enabled, string statusText = "", bool modpackRequiredButtons = true)
+	private void SetLoadingStateForUI(bool enabled, string statusText = "", bool modpackRequiredButtons = true, bool triggeredFromLaunchButton = false)
 	{
 		var loadingBar = GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar");
-		if (!enabled)
+		if (!enabled && !triggeredFromLaunchButton)
 		{
 			SelectedModpack = null;
 			_ = loadingBar.StartInfiniteLoading();
 		}
-		else
+		else if (!triggeredFromLaunchButton)
 			loadingBar.StopInfiniteLoading();
 		GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/SettingsButton").Disabled = !enabled;
 		GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/DetailsButton").Disabled = !(enabled && modpackRequiredButtons);
 		GetNode<TextureButton>("/root/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchButton").Disabled = !(enabled && modpackRequiredButtons);
-		GetNode<Label>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressLabel").Text = statusText;
+		if (!triggeredFromLaunchButton)
+			GetNode<Label>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressLabel").Text = statusText;
 		GetNode<Button>("FooterContainer/LoginMargin/LoginButton").Disabled = !enabled;
 	}
 	private async Task GetLatestNews()
@@ -227,27 +227,71 @@ public partial class LauncherWindow : Control
 			ToteschaSettings.MemoryToAllocate = i;
 
 	}
-
 	public async Task<Tuple<bool, string>> TryLoginToMinecraft(string encyUsername, string encyPassword, bool isEncrypted = true)
 	{
 		var loginButton = GetNode<Button>("FooterContainer/LoginMargin/LoginButton");
+		var launchButton = GetNode<TextureButton>("FooterContainer/LaunchButtonContainer/LaunchButton");
 		Tuple<bool, string> success;
 		var encryptor = new ToteschaEncryptor();
 		try
 		{
 			loginButton.Disabled = true;
+			launchButton.Disabled = true;
 			var username = isEncrypted ? await encryptor.DecryptStringAsync(encyUsername) : encyUsername;
 			var password = isEncrypted ? await encryptor.DecryptStringAsync(encyPassword) : encyPassword;
 			Session = await GetMinecraftSession(username,password);
 			success = new Tuple<bool, string>(true, string.Empty);
 			loginButton.Disabled = false;
+			launchButton.Disabled = false;
 			loginButton.Text = $"      Welcome, {System.Environment.NewLine}      {Session.username}!";
 		}
 		catch (Exception ex)
 		{
 			loginButton.Disabled = false;
+			launchButton.Disabled = false;
 			success = new Tuple<bool, string>(false, ex.Message);
 		}
 		return success;
+	}
+	public async Task TryLaunchMinecraft()
+	{
+		bool loaded = false;
+		var thisWindow = GetTree();
+		SetLoadingStateForUI(false, triggeredFromLaunchButton: true);
+
+		if (string.IsNullOrWhiteSpace(Session?.accessToken))
+			GetNode<LoginButton>("FooterContainer/LoginMargin/LoginButton").ClickButtonAsync();
+		var userFinishedUp = GetNode<LoginWindow>("LoginWindow").UserFinishedUp;
+		while (string.IsNullOrWhiteSpace(Session?.accessToken) && !userFinishedUp)
+		{
+			await Task.Delay(100);
+			userFinishedUp = GetNode<LoginWindow>("LoginWindow").UserFinishedUp;
+		}
+		using (var instance = new MinecraftInstanceLogic() {
+			Session = Session,
+			Modpack = SelectedModpack,
+			Settings = ToteschaSettings
+		})
+		{
+			instance.InstallationProgress += OnInstallationProgressChanged;
+			loaded = await instance.TryLaunchMinecraft();
+		}
+
+		SetLoadingStateForUI(true, triggeredFromLaunchButton: true);
+		//if (loaded)
+		//	thisWindow.Quit();		
+	}
+
+	private void OnInstallationProgressChanged(object? sender, ToteschaMinecraftLauncher.Scripts.Contracts.InstallationEventArgs e)
+	{
+		var loadingBar = GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar");
+		if (e.InstallationPercentage >= 0)
+		{
+			loadingBar.StopInfiniteLoading();
+			loadingBar.Value = e.InstallationPercentage * 100;
+		}
+		else
+			loadingBar.StartInfiniteLoading();
+		GetNode<Label>("FooterContainer/MarginContainer/ProgressBarContainer/ProgressLabel").Text = e.InstallationStatus.ToString();
 	}
 }
