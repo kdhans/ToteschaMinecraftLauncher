@@ -174,7 +174,6 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
                 process = await launcher.CreateProcessAsync(_versionMetadata.Name, new MLaunchOption()
                 {
                     MaximumRamMb = (int)Settings.MemoryToAllocate,
-                    JavaPath = (isMac || !isWindows) ? "java" : null,
                     Session = new CmlLib.Core.Auth.MSession()
                     {
                         AccessToken = Session.accessToken,
@@ -187,10 +186,15 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             else
                 process = await launcher.CreateProcessAsync(_versionMetadata.Name, new MLaunchOption()
                 {
-                    MaximumRamMb = (int)Settings.MemoryToAllocate,
-                    JavaPath = (isMac || !isWindows) ? "java" : null,
+                    MaximumRamMb = (int)Settings.MemoryToAllocate
                 });
             process.StartInfo.UseShellExecute = true;
+            if (isMac)
+            {
+                var javaRuntimePath = process.StartInfo.FileName.Replace("/bin/java","/jre.bundle/Contents/Home/bin/java");
+                process.StartInfo.FileName = javaRuntimePath;
+            }
+            GD.Print("Process: " + process.StartInfo.FileName);
             return process.Start();
         }
 

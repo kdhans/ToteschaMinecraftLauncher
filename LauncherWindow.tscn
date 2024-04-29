@@ -264,7 +264,7 @@ script = ExtResource("19_s1xmo")
 script = ExtResource("22_1ubk4")
 
 [node name="FileDialogElement" type="FileDialog" parent="."]
-title = "Directory to Store Modpacks"
+title = "Open a Directory"
 initial_position = 1
 size = Vector2i(444, 159)
 ok_button_text = "Select Current Folder"
