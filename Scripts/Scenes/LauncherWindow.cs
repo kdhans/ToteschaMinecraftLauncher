@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SevenZip.Compression.LZ;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using ToteschaMinecraftLauncher;
@@ -40,7 +41,7 @@ public partial class LauncherWindow : Control
 		await LoadServerDetailsAsync();
 
 		var helperClient = new SystemHelper();
-		await TryLoginToMinecraft(ToteschaSettings?.Username, ToteschaSettings?.Password);
+		await TryLoginToMinecraft(ToteschaSettings!.Username, ToteschaSettings!.Password);
 	}
 
 	private void OnCloseRequested()
@@ -159,14 +160,13 @@ public partial class LauncherWindow : Control
 	private async Task GetLatestNews()
 	{
 		var helper = GetNode<WebHelper>("WebHelper");
-		var image = await helper.GetImageDataAsync(ServerDetails.NewsImageUrl);
+		var image = await helper.GetImageDataAsync(ServerDetails?.NewsImageUrl ?? string.Empty);
 
 		LatestNewsPicture = image.Data;
-		LatestNews = ServerDetails.News ?? string.Empty;
+		LatestNews = ServerDetails?.News ?? string.Empty;
 	}
 	private void LoadSettings()
 	{
-		//TODO: Load settings file
 		LoadSettingsFromFile();
 		if (ToteschaSettings == null)
 		{
@@ -221,7 +221,7 @@ public partial class LauncherWindow : Control
 		
 		while (j + 512 <= backgroundSafeMemory)
 			j += 512;
-		ToteschaSettings.MaxMemory = j;
+		ToteschaSettings!.MaxMemory = j;
 
 		if (ToteschaSettings.MemoryToAllocate != 0 && ToteschaSettings.MemoryToAllocate > j)
 			ToteschaSettings.MemoryToAllocate = i;
@@ -259,6 +259,8 @@ public partial class LauncherWindow : Control
 		var thisWindow = GetTree();
 		SetLoadingStateForUI(false, triggeredFromLaunchButton: true);
 
+		ForceReupdateOfModpack();
+
 		if (string.IsNullOrWhiteSpace(Session?.accessToken))
 			GetNode<LoginButton>("FooterContainer/LoginMargin/LoginButton").ClickButtonAsync();
 		var userFinishedUp = GetNode<LoginWindow>("LoginWindow").UserFinishedUp;
@@ -277,6 +279,9 @@ public partial class LauncherWindow : Control
 			loaded = await instance.TryLaunchMinecraft();
 		}
 
+
+		MarkModpackAsInstalled();
+		DeleteOldModpacks();
 		SetLoadingStateForUI(true, triggeredFromLaunchButton: true);
 		OnInstallationProgressChanged(this, new ToteschaMinecraftLauncher.Scripts.Contracts.InstallationEventArgs(0, "Complete!"));
 		if (loaded)
@@ -294,5 +299,62 @@ public partial class LauncherWindow : Control
 		else
 			loadingBar.StartInfiniteLoading();
 		GetNode<Label>("FooterContainer/MarginContainer/ProgressBarContainer/ProgressLabel").Text = e.InstallationStatus.ToString();
+	}
+
+	private void MarkModpackAsInstalled()
+	{
+		if (SelectedModpack == null)
+			return;
+
+		if (ToteschaSettings!.InstalledModpacks == null)
+			ToteschaSettings.InstalledModpacks = new System.Collections.Generic.List<Modpack>();
+		ToteschaSettings.InstalledModpacks.RemoveAll(x => x.ID == SelectedModpack.ID);
+		ToteschaSettings.InstalledModpacks.Add(SelectedModpack);
+		SaveSettings();
+	}
+	private void DeleteOldModpacks()
+	{
+		if (!(ToteschaSettings?.CleanUpOldPacks ?? true) || 
+			ServerDetails?.Modpacks == null || 
+			string.IsNullOrWhiteSpace(ToteschaSettings?.MinecraftInstallationPath))
+			return;
+
+		var names = ServerDetails?.Modpacks?.Select(x=> x.Name).ToList();
+		var modpacks = Directory.GetDirectories(ToteschaSettings!.MinecraftInstallationPath);
+
+		if (!modpacks.Any() || names == null || !names.Any())
+			return;
+
+		foreach (var modpack in modpacks)
+		{
+			var folder = modpack.Split(Path.DirectorySeparatorChar).Last();
+			if (string.IsNullOrWhiteSpace(folder))
+				continue;
+
+			if (!names.Contains(folder))
+				Directory.Delete(modpack, true);
+		}
+	}
+	private void ForceReupdateOfModpack()
+	{
+		if (!(ToteschaSettings?.ForceDownload ?? false))
+			return;
+
+		var name = SelectedModpack?.Name;
+		var modpacks = Directory.GetDirectories(ToteschaSettings!.MinecraftInstallationPath);
+
+		if (!modpacks.Any() || name == null )
+			return;
+
+		foreach (var modpack in modpacks)
+		{
+			var folder = modpack.Split(Path.DirectorySeparatorChar).Last();
+			GD.Print(string.Join(',', name));
+			if (string.IsNullOrWhiteSpace(folder))
+				continue;
+
+			if (folder == name)
+				Directory.Delete(modpack, true);
+		}
 	}
 }
