@@ -4,6 +4,7 @@ using CmlLib.Core.VersionMetadata;
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -197,19 +198,22 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             }
 
             process.Start();
-            return await CheckForMinecraftWindow(launched, process);
+            GD.Print("Process ID: " + process.Id);
+            return await CheckForMinecraftWindow(launched, isMac, process);
         }
 
-        private async Task<bool> CheckForMinecraftWindow(bool launched, System.Diagnostics.Process minecraft)
+        private async Task<bool> CheckForMinecraftWindow(bool launched, bool isMac, System.Diagnostics.Process minecraft)
         {
             int wait = 0, waitInterval = 100; //100 ms = .1 sec
             int totalWaitCount = 60 * 10 * waitInterval * 10; //5 minutes wait max
 
 
             InstallationProgress?.Invoke(this, new InstallationEventArgs(-1, $"Starting minecraft..."));
-            while (!launched && wait < totalWaitCount)
+            while (!launched && wait < totalWaitCount && !minecraft.HasExited)
             {
-                launched = !string.IsNullOrEmpty(minecraft.MainWindowTitle);
+                
+                launched = (isMac) ? (!minecraft.HasExited && wait > (waitInterval * 10 * 20)) : 
+                            (minecraft.MainWindowHandle != IntPtr.Zero);
                 await Task.Delay(waitInterval);
                 minecraft.Refresh();
                 wait += waitInterval;
