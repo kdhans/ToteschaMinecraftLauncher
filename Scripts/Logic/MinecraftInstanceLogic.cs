@@ -102,18 +102,14 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
                 if (filesToDownload?.Any() ?? false)
                 {
 
-            GD.Print("Mods are found to download");
+                    GD.Print("Mods are found to download");
                     await Task.WhenAll(filesToDownload.Select(file => DownloadFileAsync(file.DownloadURL,
                                                                                  file.Filename,
                                                                                  Settings.MinecraftInstallationPath,
                                                                                  file.InstallationLocation,
-<<<<<<< Updated upstream
-                                                                                 progressAmount)));
-                }
-=======
                                                                                  progressAmount,
                                                                                  file.RequiresZipExtraction)));
->>>>>>> Stashed changes
+                }
             }
             else
                 _totalInstallProgress += .5f;
