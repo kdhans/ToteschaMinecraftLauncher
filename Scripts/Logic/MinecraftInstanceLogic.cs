@@ -167,6 +167,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
 
 
             System.Diagnostics.Process process;
+            bool launched = false;
             var launcher = new CMLauncher(_minecraftPath);
             launcher.ProgressChanged += OnLauncherProgressChanged;
             launcher.FileChanged += OnLauncherFileChanged;
@@ -195,7 +196,26 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
                 process.StartInfo.FileName = javaRuntimePath;
             }
             GD.Print("Process: " + process.StartInfo.FileName);
-            return process.Start();
+            process.Start();
+            return await CheckForMinecraftWindow(launched, process);
+        }
+
+        private async Task<bool> CheckForMinecraftWindow(bool launched, System.Diagnostics.Process minecraft)
+        {
+            int wait = 0, waitInterval = 100; //100 ms = .1 sec
+            int totalWaitCount = 60 * 10 * waitInterval * 10; //5 minutes wait max
+
+
+            InstallationProgress?.Invoke(this, new InstallationEventArgs(-1, $"Starting minecraft..."));
+            while (!launched && wait < totalWaitCount)
+            {
+                launched = !string.IsNullOrEmpty(minecraft.MainWindowTitle);
+                await Task.Delay(waitInterval);
+                minecraft.Refresh();
+                wait += waitInterval;
+            }
+
+            return launched;
         }
 
         private void OnLauncherFileChanged(CmlLib.Core.Downloader.DownloadFileChangedEventArgs e)
