@@ -36,7 +36,7 @@ public partial class FileDetail : Control
 		modUrl.Text = link;
 		modUrl.Uri = link;
 
-		if (string.IsNullOrEmpty(imageData.Error))
+		if (imageData.Data != null)
 			image.Texture = imageData.Data;
 	}
 }

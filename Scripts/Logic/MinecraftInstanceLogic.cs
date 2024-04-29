@@ -53,13 +53,14 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
 
         private async Task InstallModpack()
         {
+            var minecraftPath = Path.Combine(Settings.MinecraftInstallationPath, Modpack.Name);
 
             GD.Print("Checking Installation Path");
-            if (!Directory.Exists(Settings.MinecraftInstallationPath))
-                Directory.CreateDirectory(Settings.MinecraftInstallationPath);
+            if (!Directory.Exists(minecraftPath))
+                Directory.CreateDirectory(minecraftPath);
 
 
-            _minecraftPath = new MinecraftPath(Settings.MinecraftInstallationPath);
+            _minecraftPath = new MinecraftPath(minecraftPath);
 
             GD.Print("Handling Mod Loader");
             await HandleModloaderAsync();
@@ -76,6 +77,13 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
                 await InstallFabric();
             else if (Modpack.ModLoader.ToLower().Trim() != "vanilla")
                 throw new NotImplementedException($"Modloader {Modpack.ModLoader} not supported");
+            else
+                await InstallVanilla();
+        }
+        private async Task InstallVanilla()
+        {
+            var mineceaftVersions = await new CMLauncher(_minecraftPath).GetAllVersionsAsync();
+            _versionMetadata = mineceaftVersions.First(version => version.Name == Modpack.MineceaftVersion);
         }
         private async Task InstallFabric()
         {
@@ -95,6 +103,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         {
             if (Modpack.Files?.Any() ?? false)
             {
+                var modpackPath = Path.Combine(Settings.MinecraftInstallationPath, Modpack.Name);
 
                 GD.Print("Mods are downloading - " + Modpack.Files.Count);
                 var progressAmount = .5f / (float)Modpack.Files.Count;
@@ -105,7 +114,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
                     GD.Print("Mods are found to download");
                     await Task.WhenAll(filesToDownload.Select(file => DownloadFileAsync(file.DownloadURL,
                                                                                  file.Filename,
-                                                                                 Settings.MinecraftInstallationPath,
+                                                                                 modpackPath,
                                                                                  file.InstallationLocation,
                                                                                  progressAmount,
                                                                                  file.RequiresZipExtraction)));
@@ -156,10 +165,6 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
             bool isMac = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
-            var javaPath = (isWindows) ? "javaw"
-                : (isMac) ? "java"
-                : throw new NotSupportedException("Linux not supported at this time");
-
 
             System.Diagnostics.Process process;
             var launcher = new CMLauncher(_minecraftPath);
@@ -169,7 +174,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
                 process = await launcher.CreateProcessAsync(_versionMetadata.Name, new MLaunchOption()
                 {
                     MaximumRamMb = (int)Settings.MemoryToAllocate,
-                    JavaPath = javaPath,
+                    JavaPath = (isMac || !isWindows) ? "java" : null,
                     Session = new CmlLib.Core.Auth.MSession()
                     {
                         AccessToken = Session.accessToken,
@@ -182,8 +187,10 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             else
                 process = await launcher.CreateProcessAsync(_versionMetadata.Name, new MLaunchOption()
                 {
-                    MaximumRamMb = (int)Settings.MemoryToAllocate
+                    MaximumRamMb = (int)Settings.MemoryToAllocate,
+                    JavaPath = (isMac || !isWindows) ? "java" : null,
                 });
+            process.StartInfo.UseShellExecute = true;
             return process.Start();
         }
 

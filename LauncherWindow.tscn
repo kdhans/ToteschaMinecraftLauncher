@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://yhroynos75g3"]
+[gd_scene load_steps=31 format=3 uid="uid://yhroynos75g3"]
 
 [ext_resource type="Script" path="res://Scripts/Scenes/LauncherWindow.cs" id="1_cl8de"]
 [ext_resource type="Texture2D" uid="uid://cxu4vtvsuuens" path="res://Backgrounds/background.jpg" id="2_3hofw"]
@@ -22,6 +22,7 @@
 [ext_resource type="Script" path="res://Scripts/UIHelpers/WebHelper.cs" id="19_s1xmo"]
 [ext_resource type="Script" path="res://Scripts/UIHelpers/FileHelper.cs" id="22_1ubk4"]
 [ext_resource type="PackedScene" uid="uid://0d8h8ffxuxrh" path="res://login.tscn" id="22_pjguh"]
+[ext_resource type="Script" path="res://Scripts/UIElements/FileDialogElement.cs" id="23_1ynyd"]
 
 [sub_resource type="Gradient" id="Gradient_iquy2"]
 offsets = PackedFloat32Array(1)
@@ -261,3 +262,13 @@ script = ExtResource("19_s1xmo")
 
 [node name="FileHelper" type="Node" parent="."]
 script = ExtResource("22_1ubk4")
+
+[node name="FileDialogElement" type="FileDialog" parent="."]
+title = "Directory to Store Modpacks"
+initial_position = 1
+size = Vector2i(444, 159)
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+use_native_dialog = true
+script = ExtResource("23_1ynyd")

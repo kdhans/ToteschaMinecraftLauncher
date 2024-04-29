@@ -55,7 +55,7 @@ public partial class WebHelper : Node
 		if (string.IsNullOrEmpty(url))
 			return new ToteschaHttpResponse<ImageTexture>() { Error = "No URL for data." };
 
-		var response = new ToteschaHttpResponse<ImageTexture>();		
+		var response = new ToteschaHttpResponse<ImageTexture>();
 		var taskCompSource = new TaskCompletionSource<byte[]>();
 		HttpRequest request = new HttpRequest();
 		AddChild(request);
@@ -63,22 +63,31 @@ public partial class WebHelper : Node
 
 		Error result = request.Request(url);
 		var data = await taskCompSource.Task;
-		if (result == Error.Ok)
+		try
 		{
-
-			var image = new Image();
-			Error error = image.LoadPngFromBuffer(data);
-
-			if (error == Error.Ok)
+			if (result == Error.Ok)
 			{
-				var texture = ImageTexture.CreateFromImage(image);
-				response.Data = texture;
+				var urlString =url.ToString();
+				var isPng = urlString.EndsWith(".png");
+				var isJpeg = urlString.EndsWith(".jpeg") || urlString.EndsWith(".jpg");
+
+
+				var image = new Image();
+				Error error =  (isPng) ? image.LoadPngFromBuffer(data) : (isJpeg) ? image.LoadJpgFromBuffer(data) : Error.Unavailable;
+
+				if (error == Error.Ok)
+				{
+					var texture = ImageTexture.CreateFromImage(image);
+					response.Data = texture;
+				}
+			}
+			else
+			{
+				response.Error = $"Unable to connect to {url}. Please check your internet connection or try again later.";
 			}
 		}
-		else
-		{
-			response.Error = $"Unable to connect to {url}. Please check your internet connection or try again later.";
-		}
+		catch (Exception ex)
+		{ response.Error = ex.Message; }
 		//request.RequestCompleted -= (long result, long responseCode, string[] headers, byte[] body) => taskCompSource.TrySetResult(body);
 		RemoveChild(request);
 		return response;

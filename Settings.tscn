@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://b52g57x8bkqei"]
+[gd_scene load_steps=13 format=3 uid="uid://b52g57x8bkqei"]
 
 [ext_resource type="Script" path="res://Scripts/Scenes/Settings.cs" id="1_4aw0e"]
 [ext_resource type="FontFile" uid="uid://dcxc7ljpw0mfm" path="res://Fonts/Moderustic-Bold.ttf" id="2_swtf0"]
 [ext_resource type="FontFile" uid="uid://bqgi1gwwi5wqm" path="res://Fonts/Moderustic-Medium.ttf" id="3_8ro32"]
 [ext_resource type="Texture2D" uid="uid://dm4ebesb5i4xi" path="res://ButtonTextures/sliderButton_normal.png" id="4_nm8vy"]
+[ext_resource type="Texture2D" uid="uid://carb6w3rknmch" path="res://Icons/folder.png" id="4_oerdn"]
+[ext_resource type="Script" path="res://Scripts/Buttons/FolderButton.cs" id="5_bswm3"]
 [ext_resource type="Script" path="res://Scripts/UIElements/RamSlider.cs" id="5_icn2x"]
 [ext_resource type="Texture2D" uid="uid://cum75dpgpydf6" path="res://ButtonTextures/checkSlide_Normal.png" id="6_cytlu"]
 [ext_resource type="Texture2D" uid="uid://dto44fh0btcsa" path="res://ButtonTextures/checkSlide_selected.png" id="7_lcvfd"]
@@ -70,8 +72,12 @@ theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_awf5i")
 text = "C:\\someDirectory\\minecraft"
 
-[node name="FolderButton" type="TextureButton" parent="VBoxContainer/DirectoryBoxes/FileLocationBox/DirectoryContainer"]
+[node name="FolderButton" type="Button" parent="VBoxContainer/DirectoryBoxes/FileLocationBox/DirectoryContainer"]
+custom_minimum_size = Vector2(33, 33)
 layout_mode = 2
+icon = ExtResource("4_oerdn")
+expand_icon = true
+script = ExtResource("5_bswm3")
 
 [node name="ServerBox" type="VBoxContainer" parent="VBoxContainer/DirectoryBoxes"]
 layout_mode = 2
