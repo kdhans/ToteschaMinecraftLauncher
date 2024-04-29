@@ -5,8 +5,10 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using ToteschaMinecraftLauncher.Scripts.Contracts;
@@ -105,13 +107,18 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
                                                                                  file.Filename,
                                                                                  Settings.MinecraftInstallationPath,
                                                                                  file.InstallationLocation,
+<<<<<<< Updated upstream
                                                                                  progressAmount)));
                 }
+=======
+                                                                                 progressAmount,
+                                                                                 file.RequiresZipExtraction)));
+>>>>>>> Stashed changes
             }
             else
                 _totalInstallProgress += .5f;
         }
-        async Task DownloadFileAsync(string url, string filename, string mainDirectory, string downloadPath, float progressAmount)
+        async Task DownloadFileAsync(string url, string filename, string mainDirectory, string downloadPath, float progressAmount, bool requiresExtraction)
         {
             InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, $"Downloading {filename}..."));
             GD.Print($"Installing {mainDirectory} {downloadPath} {filename}");
@@ -141,31 +148,41 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             using var contentStream = await response.Content.ReadAsStreamAsync();
             using var fileStream = File.Create(installationFile);
             await contentStream.CopyToAsync(fileStream);
+            if (requiresExtraction)
+                ExtractZipFile(installationFile, installationPath);
             _totalInstallProgress += progressAmount;
 
         }
         private async Task<bool> LaunchMinecraft()
         {
-            var launchOption = new MLaunchOption()
-            {
-                MaximumRamMb = (int)Settings.MemoryToAllocate,
-                DockName = $"Totescha Minecraft {Modpack.MineceaftVersion}",
-                Session = new CmlLib.Core.Auth.MSession()
-                {
-                    AccessToken = Session.accessToken,
-                    Username = Session.username,
-                    UserType = Session.userType,
-                    UUID = Session.uuid,
-                    Xuid = Session.xboxUserId
-                }
-            };
+            bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            bool isMac = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
+            var javaPath = (isWindows) ? "javaw"
+                : (isMac) ? "java"
+                : throw new NotSupportedException("Linux not supported at this time");
+
+
             GD.Print($"Max {(int)Settings.MemoryToAllocate}");
             System.Diagnostics.Process process;
             var launcher = new CMLauncher(_minecraftPath);
             launcher.ProgressChanged += OnLauncherProgressChanged;
             launcher.FileChanged += OnLauncherFileChanged;
             if (!string.IsNullOrEmpty(Session?.accessToken))
-                process = await launcher.CreateProcessAsync(_versionMetadata.Name, launchOption);
+                process = await launcher.CreateProcessAsync(_versionMetadata.Name, new MLaunchOption()
+                {
+                    MaximumRamMb = (int)Settings.MemoryToAllocate,
+                    DockName = $"Totescha Minecraft {Modpack.MineceaftVersion}",
+                    JavaPath = javaPath,
+                    Session = new CmlLib.Core.Auth.MSession()
+                    {
+                        AccessToken = Session.accessToken,
+                        Username = Session.username,
+                        UserType = Session.userType,
+                        UUID = Session.uuid,
+                        Xuid = Session.xboxUserId
+                    }
+                });
             else
                 process = await launcher.CreateProcessAsync(_versionMetadata.Name, new MLaunchOption()
                 {
@@ -187,6 +204,13 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             float amount = e.ProgressPercentage;
             _totalInstallProgress = .75f + (amount/400);
             InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, _currentLauncherStatus));
+        }
+        private void ExtractZipFile(string zipPath, string extractPath)
+        {
+            if (zipPath.EndsWith("zip"))
+                ZipFile.ExtractToDirectory(zipPath, extractPath);
+            else if (zipPath.EndsWith("tar.gz"))
+                TarGzReader.ExtractTarGz(zipPath, extractPath);
         }
 
         public void Dispose()

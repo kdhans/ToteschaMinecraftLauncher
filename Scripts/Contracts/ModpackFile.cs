@@ -21,6 +21,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Contracts
         public string ProjectID { get; set; }
         public bool ClientSide { get; set; }
         public bool ServerSide { get; set; }
+        public bool RequiresZipExtraction { get; set; }
         public List<string> RequiredFiles { get; set; }
     }
 }
