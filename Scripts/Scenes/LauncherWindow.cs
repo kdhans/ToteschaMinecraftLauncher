@@ -243,7 +243,7 @@ public partial class LauncherWindow : Control
 			success = new Tuple<bool, string>(true, string.Empty);
 			loginButton.Disabled = false;
 			launchButton.Disabled = false;
-			loginButton.Text = $"      Welcome, {System.Environment.NewLine}      {Session.username}!";
+			loginButton.Text = $"      Welcome, \n      {Session.username}!";
 		}
 		catch (Exception ex)
 		{
