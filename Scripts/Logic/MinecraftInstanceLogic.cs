@@ -195,7 +195,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
                 var javaRuntimePath = process.StartInfo.FileName.Replace("/bin/java","/jre.bundle/Contents/Home/bin/java");
                 process.StartInfo.FileName = javaRuntimePath;
             }
-            GD.Print("Process: " + process.StartInfo.FileName);
+
             process.Start();
             return await CheckForMinecraftWindow(launched, process);
         }
