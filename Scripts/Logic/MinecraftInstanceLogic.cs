@@ -96,9 +96,9 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             if (Modpack.Files?.Any() ?? false)
             {
 
-                GD.Print("Mods are downloading");
+                GD.Print("Mods are downloading - " + Modpack.Files.Count);
                 var progressAmount = .5f / (float)Modpack.Files.Count;
-                var filesToDownload = (Settings.DownloadServerFiles) ? Modpack.Files : Modpack.Files.Where(x => !x.ServerSide);
+                var filesToDownload = (Settings.DownloadServerFiles) ? Modpack.Files : Modpack.Files.Where(x => x.ClientSide);
                 if (filesToDownload?.Any() ?? false)
                 {
 
@@ -117,16 +117,16 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         async Task DownloadFileAsync(string url, string filename, string mainDirectory, string downloadPath, float progressAmount, bool requiresExtraction)
         {
             InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, $"Downloading {filename}..."));
-            GD.Print($"Installing {mainDirectory} {downloadPath} {filename}");
             var installationPath = string.IsNullOrWhiteSpace(downloadPath) ?
                                     mainDirectory : 
-                                    Path.Combine(mainDirectory, downloadPath);
-            GD.Print("Installation path: " + installationPath);                       
+                                    Path.Combine(mainDirectory, downloadPath); 
+            
             var installationFile = Path.Combine(installationPath, filename);
-
             GD.Print("Installation file: " + installationFile);                   
-            if (Directory.Exists(installationPath))
+           
+            if (!Directory.Exists(installationPath))
                 Directory.CreateDirectory(installationPath);
+            
             if (File.Exists(installationFile))
             {
                 if (Settings.ForceDownload)
@@ -144,6 +144,8 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             using var contentStream = await response.Content.ReadAsStreamAsync();
             using var fileStream = File.Create(installationFile);
             await contentStream.CopyToAsync(fileStream);
+
+            GD.Print("Installed " + installationFile);
             if (requiresExtraction)
                 ExtractZipFile(installationFile, installationPath);
             _totalInstallProgress += progressAmount;
@@ -159,7 +161,6 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
                 : throw new NotSupportedException("Linux not supported at this time");
 
 
-            GD.Print($"Max {(int)Settings.MemoryToAllocate}");
             System.Diagnostics.Process process;
             var launcher = new CMLauncher(_minecraftPath);
             launcher.ProgressChanged += OnLauncherProgressChanged;
@@ -168,7 +169,6 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
                 process = await launcher.CreateProcessAsync(_versionMetadata.Name, new MLaunchOption()
                 {
                     MaximumRamMb = (int)Settings.MemoryToAllocate,
-                    DockName = $"Totescha Minecraft {Modpack.MineceaftVersion}",
                     JavaPath = javaPath,
                     Session = new CmlLib.Core.Auth.MSession()
                     {
@@ -182,10 +182,8 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             else
                 process = await launcher.CreateProcessAsync(_versionMetadata.Name, new MLaunchOption()
                 {
-                    MaximumRamMb = (int)Settings.MemoryToAllocate,
-                    DockName = $"Totescha Minecraft {Modpack.MineceaftVersion}"
+                    MaximumRamMb = (int)Settings.MemoryToAllocate
                 });
-            GD.Print($"Process: {process.StartInfo.FileName} Parameters: {process.StartInfo.Arguments}");
             return process.Start();
         }
 

@@ -278,8 +278,9 @@ public partial class LauncherWindow : Control
 		}
 
 		SetLoadingStateForUI(true, triggeredFromLaunchButton: true);
-		//if (loaded)
-		//	thisWindow.Quit();		
+		OnInstallationProgressChanged(this, new ToteschaMinecraftLauncher.Scripts.Contracts.InstallationEventArgs(0, "Complete!"));
+		if (loaded)
+			thisWindow.Quit();		
 	}
 
 	private void OnInstallationProgressChanged(object? sender, ToteschaMinecraftLauncher.Scripts.Contracts.InstallationEventArgs e)
