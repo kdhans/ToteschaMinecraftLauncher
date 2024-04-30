@@ -201,7 +201,6 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             GD.Print("Process ID: " + process.Id);
             return await CheckForMinecraftWindow(launched, isMac, process);
         }
-
         private async Task<bool> CheckForMinecraftWindow(bool launched, bool isMac, System.Diagnostics.Process minecraft)
         {
             int wait = 0, waitInterval = 100; //100 ms = .1 sec
@@ -221,13 +220,11 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
 
             return launched;
         }
-
         private void OnLauncherFileChanged(CmlLib.Core.Downloader.DownloadFileChangedEventArgs e)
         {
             _currentLauncherStatus = $"Configuring: {e.FileName} ({e.ProgressedFileCount}/{e.TotalFileCount})";
             InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, _currentLauncherStatus));
         }
-
         private void OnLauncherProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
             float amount = e.ProgressPercentage;
@@ -241,7 +238,13 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             else if (zipPath.EndsWith("tar.gz"))
                 TarGzReader.ExtractTarGz(zipPath, extractPath);
         }
+        private void InstallConfigurationFiles()
+        {
+            if (!Settings.DownloadSettingsFile)
+                return;
 
+
+        }
         public void Dispose()
         {
             ((IDisposable)_httpClient).Dispose();
