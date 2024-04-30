@@ -13,6 +13,7 @@ config_version=5
 config/name="Totescha Sync Launcher"
 run/main_scene="res://LauncherWindow.tscn"
 config/features=PackedStringArray("4.2", "C#", "GL Compatibility")
+run/low_processor_mode=true
 boot_splash/show_image=false
 config/icon="res://Icons/icon.png"
 config/macos_native_icon="res://Icons/icon_resized.icns"
@@ -35,3 +36,8 @@ project/assembly_name="Totescha Minecraft Launcher"
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+
+[xr]
+
+openxr/startup_alert=false
+openxr/extensions/hand_tracking=false

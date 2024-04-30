@@ -259,7 +259,6 @@ public partial class LauncherWindow : Control
 		var thisWindow = GetTree();
 		SetLoadingStateForUI(false, triggeredFromLaunchButton: true);
 
-		ForceReupdateOfModpack();
 
 		if (string.IsNullOrWhiteSpace(Session?.accessToken))
 			GetNode<LoginButton>("FooterContainer/LoginMargin/LoginButton").ClickButtonAsync();
@@ -272,7 +271,8 @@ public partial class LauncherWindow : Control
 		using (var instance = new MinecraftInstanceLogic() {
 			Session = Session,
 			Modpack = SelectedModpack,
-			Settings = ToteschaSettings
+			Settings = ToteschaSettings,
+			InstalledModpacks = ToteschaSettings!.InstalledModpacks
 		})
 		{
 			instance.InstallationProgress += OnInstallationProgressChanged;
@@ -332,28 +332,6 @@ public partial class LauncherWindow : Control
 				continue;
 
 			if (!names.Contains(folder))
-				Directory.Delete(modpack, true);
-		}
-	}
-	private void ForceReupdateOfModpack()
-	{
-		if (!(ToteschaSettings?.ForceDownload ?? false))
-			return;
-
-		var name = SelectedModpack?.Name;
-		var modpacks = Directory.GetDirectories(ToteschaSettings!.MinecraftInstallationPath);
-
-		if (!modpacks.Any() || name == null )
-			return;
-
-		foreach (var modpack in modpacks)
-		{
-			var folder = modpack.Split(Path.DirectorySeparatorChar).Last();
-			GD.Print(string.Join(',', name));
-			if (string.IsNullOrWhiteSpace(folder))
-				continue;
-
-			if (folder == name)
 				Directory.Delete(modpack, true);
 		}
 	}

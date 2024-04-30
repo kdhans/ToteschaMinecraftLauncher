@@ -29,6 +29,8 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         public Modpack Modpack { get; set; }
         public ToteschaSettings Settings { get; set; }
         public MinecraftSession Session { get; set; }
+        public List<Modpack> InstalledModpacks { get; set; }
+
         public MinecraftInstanceLogic()
         {
             _httpClient = new System.Net.Http.HttpClient();
@@ -39,7 +41,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             var modpackSuccessfullyInstalled = false;
             try
             {
-                GD.Print("Starting install");
+                ForceReupdateOfModpack();
                 InstallationProgress?.Invoke(this, new InstallationEventArgs(-1, "Starting install.."));
                 await InstallModpack();
                 InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, "Getting Minecraft Setup.."));
@@ -55,20 +57,13 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         private async Task InstallModpack()
         {
             var minecraftPath = Path.Combine(Settings.MinecraftInstallationPath, Modpack.Name);
-
-            GD.Print("Checking Installation Path");
             if (!Directory.Exists(minecraftPath))
                 Directory.CreateDirectory(minecraftPath);
-
-
             _minecraftPath = new MinecraftPath(minecraftPath);
-
-            GD.Print("Handling Mod Loader");
             await HandleModloaderAsync();
+            RemoveFilesNotAssociatedWithModpack();
             _totalInstallProgress = .25f;
             InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, $"Downloading and installing modpack files..."));
-
-            GD.Print("Downloading Files");
             await DownloadModpackFiles();
 
         }
@@ -88,7 +83,6 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         }
         private async Task InstallFabric()
         {
-            GD.Print("Installing fabric");
             var fabricVersionLoader = new FabricVersionLoader();
             var fabricVersions = await fabricVersionLoader.GetVersionMetadatasAsync();
             var selectFabricVersion = fabricVersions.Where(version => version.Name.EndsWith(Modpack.MineceaftVersion)).FirstOrDefault();
@@ -105,21 +99,16 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             if (Modpack.Files?.Any() ?? false)
             {
                 var modpackPath = Path.Combine(Settings.MinecraftInstallationPath, Modpack.Name);
-
-                GD.Print("Mods are downloading - " + Modpack.Files.Count);
                 var progressAmount = .5f / (float)Modpack.Files.Count;
                 var filesToDownload = (Settings.DownloadServerFiles) ? Modpack.Files : Modpack.Files.Where(x => x.ClientSide);
                 if (filesToDownload?.Any() ?? false)
-                {
-
-                    GD.Print("Mods are found to download");
                     await Task.WhenAll(filesToDownload.Select(file => DownloadFileAsync(file.DownloadURL,
                                                                                  file.Filename,
                                                                                  modpackPath,
                                                                                  file.InstallationLocation,
                                                                                  progressAmount,
                                                                                  file.RequiresZipExtraction)));
-                }
+
             }
             else
                 _totalInstallProgress += .5f;
@@ -128,15 +117,14 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         {
             InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, $"Downloading {filename}..."));
             var installationPath = string.IsNullOrWhiteSpace(downloadPath) ?
-                                    mainDirectory : 
-                                    Path.Combine(mainDirectory, downloadPath); 
-            
+                                    mainDirectory :
+                                    Path.Combine(mainDirectory, downloadPath);
+
             var installationFile = Path.Combine(installationPath, filename);
-            GD.Print("Installation file: " + installationFile);                   
-           
+
             if (!Directory.Exists(installationPath))
                 Directory.CreateDirectory(installationPath);
-            
+
             if (File.Exists(installationFile))
             {
                 if (Settings.ForceDownload)
@@ -165,8 +153,6 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         {
             bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
             bool isMac = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
-
-
             System.Diagnostics.Process process;
             bool launched = false;
             var launcher = new CMLauncher(_minecraftPath);
@@ -193,25 +179,23 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             process.StartInfo.UseShellExecute = true;
             if (isMac)
             {
-                var javaRuntimePath = process.StartInfo.FileName.Replace("/bin/java","/jre.bundle/Contents/Home/bin/java");
+                var javaRuntimePath = process.StartInfo.FileName.Replace("/bin/java", "/jre.bundle/Contents/Home/bin/java");
                 process.StartInfo.FileName = javaRuntimePath;
             }
 
             process.Start();
-            GD.Print("Process ID: " + process.Id);
             return await CheckForMinecraftWindow(launched, isMac, process);
         }
         private async Task<bool> CheckForMinecraftWindow(bool launched, bool isMac, System.Diagnostics.Process minecraft)
         {
             int wait = 0, waitInterval = 100; //100 ms = .1 sec
-            int totalWaitCount = 60 * 10 * waitInterval * 10; //5 minutes wait max
-
+            int totalWaitCount = 60 * 10 * waitInterval * 10; //10 minutes wait max
 
             InstallationProgress?.Invoke(this, new InstallationEventArgs(-1, $"Starting minecraft..."));
             while (!launched && wait < totalWaitCount && !minecraft.HasExited)
             {
-                
-                launched = (isMac) ? (!minecraft.HasExited && wait > (waitInterval * 10 * 20)) : 
+
+                launched = (isMac) ? (!minecraft.HasExited && wait > (waitInterval * 10 * 20)) :
                             (minecraft.MainWindowHandle != IntPtr.Zero);
                 await Task.Delay(waitInterval);
                 minecraft.Refresh();
@@ -228,7 +212,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         private void OnLauncherProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
             float amount = e.ProgressPercentage;
-            _totalInstallProgress = .75f + (amount/400);
+            _totalInstallProgress = .75f + (amount / 400);
             InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, _currentLauncherStatus));
         }
         private void ExtractZipFile(string zipPath, string extractPath)
@@ -238,6 +222,54 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             else if (zipPath.EndsWith("tar.gz"))
                 TarGzReader.ExtractTarGz(zipPath, extractPath);
         }
+
+        private void RemoveFilesNotAssociatedWithModpack()
+        {
+            if (InstalledModpacks == null || InstalledModpacks?.Count == 0)
+                return;
+
+            var installedModpack = InstalledModpacks.SingleOrDefault(x=> x.ID == Modpack.ID);
+            if (installedModpack == null)
+                return;
+
+            var filesInstalled = installedModpack.Files.Select(x=> new Tuple<string,string>(x.Filename, x.InstallationLocation));
+            var filesToInstall = Modpack.Files.Select(x=> new Tuple<string,string>(x.Filename, x.InstallationLocation));
+
+            foreach (var file in filesInstalled)
+            {
+                var filePath = string.IsNullOrWhiteSpace(file.Item2) ?
+                                    Path.Combine(Settings.MinecraftInstallationPath,file.Item1) :
+                                    Path.Combine(Settings.MinecraftInstallationPath, file.Item2, file.Item1);
+
+                if (!filesToInstall.Contains(file) && File.Exists(filePath))
+                    File.Delete(filePath);
+            }
+
+        }
+
+        private void ForceReupdateOfModpack()
+        {
+            if (!(Settings?.ForceDownload ?? false))
+                return;
+
+            var name = Modpack?.Name;
+            var modpacks = Directory.GetDirectories(Settings!.MinecraftInstallationPath);
+
+            if (!modpacks.Any() || name == null)
+                return;
+
+            foreach (var modpack in modpacks)
+            {
+                var folder = modpack.Split(Path.DirectorySeparatorChar).Last();
+                GD.Print(string.Join(',', name));
+                if (string.IsNullOrWhiteSpace(folder))
+                    continue;
+
+                if (folder == name)
+                    Directory.Delete(modpack, true);
+            }
+        }
+
         private void InstallConfigurationFiles()
         {
             if (!Settings.DownloadSettingsFile)
