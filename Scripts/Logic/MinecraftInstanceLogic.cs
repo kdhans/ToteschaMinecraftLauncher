@@ -100,7 +100,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             {
                 var modpackPath = Path.Combine(Settings.MinecraftInstallationPath, Modpack.Name);
                 var progressAmount = .5f / (float)Modpack.Files.Count;
-                var filesToDownload = (Settings.DownloadServerFiles) ? Modpack.Files : Modpack.Files.Where(x => x.ClientSide);
+                var filesToDownload = (Settings.DownloadServerFiles) ? Modpack.Files.Where(x=> x.ServerSide) : Modpack.Files.Where(x => x.ClientSide);
                 if (filesToDownload?.Any() ?? false)
                     await Task.WhenAll(filesToDownload.Select(file => DownloadFileAsync(file.DownloadURL,
                                                                                  file.Filename,
