@@ -22,11 +22,10 @@ public partial class LauncherWindow : Control
 	public string? LatestNews { get; set; }
 	public ImageTexture? LatestNewsPicture { get; set; }
 	public bool IsLoadingServerData { get; set; } = true;
+
 	public static Node? SelectedNode { get; set; }
 	public static string DisplayBoxNodePath = "/root/LauncherWindow/DisplayAreaContainer/MainMargin";
-
 	private static string? sceneName = null;
-	private const float PercentOfDisplaySafeArea = 0.55f;
 	private const int MinimumWidth = 1400;
 	private const int MinimumHeight = 750;
 	private string? settingsDirectory;
@@ -44,10 +43,8 @@ public partial class LauncherWindow : Control
 		await TryLoginToMinecraft(ToteschaSettings!.Username, ToteschaSettings!.Password);
 	}
 
-	private void OnCloseRequested()
-	{
-		SaveSettings();
-	}
+	private void OnCloseRequested() => SaveSettings();
+	
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
@@ -71,7 +68,7 @@ public partial class LauncherWindow : Control
 		SetLoadingStateForUI(false);
 		var webHelper = GetNode<WebHelper>("WebHelper");
 		var result = await webHelper.CallJsonGetRequestAsync<ServerDetails>(ToteschaSettings!.ServerURL);
-		string statusText = null;
+		string statusText;
 		bool enableModpackRequiredButtons = true;
 
 		if (result.Error != null)
@@ -105,29 +102,27 @@ public partial class LauncherWindow : Control
 		{
 			var contents = JsonConvert.SerializeObject(ToteschaSettings);
 			if (!fileHelper.TryWriteAppTextFile(filename, contents))
-				throw new ApplicationException("File did not write") ;
+				throw new ApplicationException("File did not write");
 		}
-		catch (Exception ex) 
-		{
-			GD.Print($"Could not save {filename} - {ex.Message}");
-		}
+		catch
+		{/*Do nothing*/}
 	}
 	public void ResizeAppWindow()
 	{
 		var window = GetWindow();
 		window.ContentScaleSize = new Vector2I(MinimumWidth, MinimumHeight);
-		
-		
+
+
 		var displayDPI = DisplayServer.ScreenGetDpi();
 		var display = DisplayServer.GetDisplaySafeArea();
-		var developerDPI = 120;		
-		var displaySizeOnStandardScreen = ((float)MinimumWidth/(float)developerDPI);
+		var developerDPI = 120;
+		var displaySizeOnStandardScreen = ((float)MinimumWidth / (float)developerDPI);
 
 
 		if (displayDPI > developerDPI)
 		{
-			var displaySizeOnPlayerScreen = ((float)MinimumWidth/(float)displayDPI);
-			var ratio = (1f - displaySizeOnPlayerScreen/displaySizeOnStandardScreen) + 1f;
+			var displaySizeOnPlayerScreen = ((float)MinimumWidth / (float)displayDPI);
+			var ratio = (1f - displaySizeOnPlayerScreen / displaySizeOnStandardScreen) + 1f;
 
 			var length = MinimumWidth * ratio;
 			var width = MinimumHeight * ratio;
@@ -140,6 +135,64 @@ public partial class LauncherWindow : Control
 			window.Position = new Vector2I((int)(display.Size.X - length) / 2, (int)(display.Size.Y - width) / 2);
 		}
 	}
+
+
+	public async Task<Tuple<bool, string>> TryLoginToMinecraft(string encyUsername, string encyPassword, bool isEncrypted = true)
+	{
+		var loginButton = GetNode<Button>("FooterContainer/LoginMargin/LoginButton");
+		Tuple<bool, string> success;
+		var encryptor = new ToteschaEncryptor();
+		try
+		{
+			loginButton.Disabled = true;
+			var username = isEncrypted ? await encryptor.DecryptStringAsync(encyUsername) : encyUsername;
+			var password = isEncrypted ? await encryptor.DecryptStringAsync(encyPassword) : encyPassword;
+			Session = await GetMinecraftSession(username, password);
+			success = new Tuple<bool, string>(true, string.Empty);
+			loginButton.Disabled = false;
+			loginButton.Text = $"      Welcome, \n      {Session.username}!";
+		}
+		catch (Exception ex)
+		{
+			loginButton.Disabled = false;
+			success = new Tuple<bool, string>(false, ex.Message);
+		}
+		return success;
+	}
+	public async Task TryLaunchMinecraft()
+	{
+		bool loaded = false;
+		var thisWindow = GetTree();
+		SetLoadingStateForUI(false, triggeredFromLaunchButton: true);
+
+		if (string.IsNullOrWhiteSpace(Session?.accessToken))
+			GetNode<LoginButton>("FooterContainer/LoginMargin/LoginButton").ClickButtonAsync();
+		var userFinishedUp = GetNode<LoginWindow>("LoginWindow").UserFinishedUp;
+		while (string.IsNullOrWhiteSpace(Session?.accessToken) && !userFinishedUp)
+		{
+			await Task.Delay(100);
+			userFinishedUp = GetNode<LoginWindow>("LoginWindow").UserFinishedUp;
+		}
+		using (var instance = new MinecraftInstanceLogic()
+		{
+			Session = Session,
+			Modpack = SelectedModpack,
+			Settings = ToteschaSettings,
+			InstalledModpacks = ToteschaSettings!.InstalledModpacks
+		})
+		{
+			instance.InstallationProgress += OnInstallationProgressChanged;
+			loaded = await instance.TryLaunchMinecraft();
+		}
+
+		MarkModpackAsInstalled();
+		DeleteOldModpacks();
+		SetLoadingStateForUI(true, triggeredFromLaunchButton: true);
+		OnInstallationProgressChanged(this, new ToteschaMinecraftLauncher.Scripts.Contracts.InstallationEventArgs(0, "Complete!"));
+		if (loaded && ToteschaSettings.CloseLaucherAfterDownload)
+			thisWindow.Quit();
+	}
+
 	private void SetLoadingStateForUI(bool enabled, string statusText = "", bool modpackRequiredButtons = true, bool triggeredFromLaunchButton = false)
 	{
 		var loadingBar = GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar");
@@ -152,7 +205,7 @@ public partial class LauncherWindow : Control
 			loadingBar.StopInfiniteLoading();
 		GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/SettingsButton").Disabled = !enabled;
 		GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/DetailsButton").Disabled = !(enabled && modpackRequiredButtons);
-		GetNode<TextureButton>("/root/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchButton").Disabled = !(enabled && modpackRequiredButtons);
+		GetNode<TextureButton>("/root/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchButton").Disabled = !(enabled && modpackRequiredButtons) || SelectedModpack == null;
 		if (!triggeredFromLaunchButton)
 			GetNode<Label>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressLabel").Text = statusText;
 		GetNode<Button>("FooterContainer/LoginMargin/LoginButton").Disabled = !enabled;
@@ -167,33 +220,11 @@ public partial class LauncherWindow : Control
 	}
 	private void LoadSettings()
 	{
-		LoadSettingsFromFile();
-		if (ToteschaSettings == null)
-		{
-			ToteschaSettings = new ToteschaSettings()
-			{
-				ForceDownload = false,
-				DownloadSettingsFile = true,
-				InstalledModpacks = new System.Collections.Generic.List<Modpack>(),
-				DownloadServerFiles = false,
-				CleanUpOldPacks = true,
-				MinecraftInstallationPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "ToteschaMinecraft"),
-				ServerURL = "https://minecraft.totescha.com",
-				MemoryToAllocate = 0,
-				MaxMemory = 0,
-			};
-		}
-
-		GetSystemMemoryDetails();
-	}
-	private void LoadSettingsFromFile()
-	{
 		if (string.IsNullOrWhiteSpace(settingsDirectory))
 			return;
 
 		var fileHelper = new FileHelper();
 		var filename = Path.Combine(settingsDirectory, "settings.json");
-
 
 		if (!Directory.Exists(settingsDirectory))
 			Directory.CreateDirectory(settingsDirectory);
@@ -202,11 +233,24 @@ public partial class LauncherWindow : Control
 			try
 			{
 				ToteschaSettings = JsonConvert.DeserializeObject<ToteschaSettings>(contents);
-			} catch 
-			{
-				GD.Print($"Could not read {filename}");
 			}
+			catch
+			{ /*Do nothing = Null handle will take place on next line*/}
 		}
+
+		ToteschaSettings ??= new ToteschaSettings()
+		{
+			ForceDownload = false,
+			CloseLaucherAfterDownload = true,
+			InstalledModpacks = new System.Collections.Generic.List<Modpack>(),
+			DownloadServerFiles = false,
+			CleanUpOldPacks = true,
+			MinecraftInstallationPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "ToteschaMinecraft"),
+			ServerURL = "https://minecraft.totescha.com",
+			MemoryToAllocate = 0,
+			MaxMemory = 0,
+		};
+		GetSystemMemoryDetails();    
 	}
 	private void GetSystemMemoryDetails()
 	{
@@ -218,7 +262,7 @@ public partial class LauncherWindow : Control
 		double i = 0, j = 0;
 		while (i < reccomended && i < 10240)
 			i += 512;
-		
+
 		while (j + 512 <= backgroundSafeMemory)
 			j += 512;
 		ToteschaSettings!.MaxMemory = j;
@@ -227,67 +271,6 @@ public partial class LauncherWindow : Control
 			ToteschaSettings.MemoryToAllocate = i;
 
 	}
-	public async Task<Tuple<bool, string>> TryLoginToMinecraft(string encyUsername, string encyPassword, bool isEncrypted = true)
-	{
-		var loginButton = GetNode<Button>("FooterContainer/LoginMargin/LoginButton");
-		var launchButton = GetNode<TextureButton>("FooterContainer/LaunchButtonContainer/LaunchButton");
-		Tuple<bool, string> success;
-		var encryptor = new ToteschaEncryptor();
-		try
-		{
-			loginButton.Disabled = true;
-			launchButton.Disabled = true;
-			var username = isEncrypted ? await encryptor.DecryptStringAsync(encyUsername) : encyUsername;
-			var password = isEncrypted ? await encryptor.DecryptStringAsync(encyPassword) : encyPassword;
-			Session = await GetMinecraftSession(username,password);
-			success = new Tuple<bool, string>(true, string.Empty);
-			loginButton.Disabled = false;
-			launchButton.Disabled = false;
-			loginButton.Text = $"      Welcome, \n      {Session.username}!";
-		}
-		catch (Exception ex)
-		{
-			loginButton.Disabled = false;
-			launchButton.Disabled = false;
-			success = new Tuple<bool, string>(false, ex.Message);
-		}
-		return success;
-	}
-	public async Task TryLaunchMinecraft()
-	{
-		bool loaded = false;
-		var thisWindow = GetTree();
-		SetLoadingStateForUI(false, triggeredFromLaunchButton: true);
-
-
-		if (string.IsNullOrWhiteSpace(Session?.accessToken))
-			GetNode<LoginButton>("FooterContainer/LoginMargin/LoginButton").ClickButtonAsync();
-		var userFinishedUp = GetNode<LoginWindow>("LoginWindow").UserFinishedUp;
-		while (string.IsNullOrWhiteSpace(Session?.accessToken) && !userFinishedUp)
-		{
-			await Task.Delay(100);
-			userFinishedUp = GetNode<LoginWindow>("LoginWindow").UserFinishedUp;
-		}
-		using (var instance = new MinecraftInstanceLogic() {
-			Session = Session,
-			Modpack = SelectedModpack,
-			Settings = ToteschaSettings,
-			InstalledModpacks = ToteschaSettings!.InstalledModpacks
-		})
-		{
-			instance.InstallationProgress += OnInstallationProgressChanged;
-			loaded = await instance.TryLaunchMinecraft();
-		}
-
-
-		MarkModpackAsInstalled();
-		DeleteOldModpacks();
-		SetLoadingStateForUI(true, triggeredFromLaunchButton: true);
-		OnInstallationProgressChanged(this, new ToteschaMinecraftLauncher.Scripts.Contracts.InstallationEventArgs(0, "Complete!"));
-		if (loaded)
-			thisWindow.Quit();		
-	}
-
 	private void OnInstallationProgressChanged(object? sender, ToteschaMinecraftLauncher.Scripts.Contracts.InstallationEventArgs e)
 	{
 		var loadingBar = GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar");
@@ -300,7 +283,6 @@ public partial class LauncherWindow : Control
 			loadingBar.StartInfiniteLoading();
 		GetNode<Label>("FooterContainer/MarginContainer/ProgressBarContainer/ProgressLabel").Text = e.InstallationStatus.ToString();
 	}
-
 	private void MarkModpackAsInstalled()
 	{
 		if (SelectedModpack == null)
@@ -314,12 +296,12 @@ public partial class LauncherWindow : Control
 	}
 	private void DeleteOldModpacks()
 	{
-		if (!(ToteschaSettings?.CleanUpOldPacks ?? true) || 
-			ServerDetails?.Modpacks == null || 
+		if (!(ToteschaSettings?.CleanUpOldPacks ?? true) ||
+			ServerDetails?.Modpacks == null ||
 			string.IsNullOrWhiteSpace(ToteschaSettings?.MinecraftInstallationPath))
 			return;
 
-		var names = ServerDetails?.Modpacks?.Select(x=> x.Name).ToList();
+		var names = ServerDetails?.Modpacks?.Select(x => x.Name).ToList();
 		var modpacks = Directory.GetDirectories(ToteschaSettings!.MinecraftInstallationPath);
 
 		if (!modpacks.Any() || names == null || !names.Any())

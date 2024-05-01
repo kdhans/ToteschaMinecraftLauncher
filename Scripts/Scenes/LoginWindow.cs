@@ -7,7 +7,7 @@ public partial class LoginWindow : Window
 {
 	public string Username { get; private set; }
 	public string Password { get; private set; }
-	public bool UserFinishedUp { get; set; }
+	public bool UserFinishedUp { get; set; } = false;
 
 	private const float PercentOfDisplaySafeArea = 0.25f;
 	private const int MinimumWidth = 450;

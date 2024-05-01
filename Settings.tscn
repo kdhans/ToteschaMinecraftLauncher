@@ -146,7 +146,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 
-[node name="DownloadPreferencesSettingsButton" type="TextureButton" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer"]
+[node name="CloseLauncherSettingsButton" type="TextureButton" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
@@ -154,7 +154,7 @@ toggle_mode = true
 texture_normal = ExtResource("6_cytlu")
 texture_pressed = ExtResource("7_lcvfd")
 
-[node name="SettingsLabel" type="Label" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer/DownloadPreferencesSettingsButton"]
+[node name="SettingsLabel" type="Label" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer/CloseLauncherSettingsButton"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -167,11 +167,11 @@ offset_right = 130.5
 offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
-tooltip_text = "Includes the settings and prefrences file with the modpack. Will overwrite any personal changes made to keybindings"
+tooltip_text = "Will close the launcher after a successful download of the modpack."
 mouse_filter = 1
 theme_override_fonts/font = ExtResource("3_8ro32")
 theme_override_font_sizes/font_size = 18
-text = "Download Suggested Settings File          "
+text = "Close Launcher After Install          "
 
 [node name="DeleteExpiredModsSettingButton" type="TextureButton" parent="VBoxContainer/AdditionalSettingsBox/HFlowContainer"]
 layout_mode = 2

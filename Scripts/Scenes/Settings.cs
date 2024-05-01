@@ -9,12 +9,12 @@ public partial class Settings : Control
 	private HSlider ramSlider;
 	private LineEdit directoryField;
 	private LineEdit serverField;
-	private BaseButton downloadServerOnlyFiles, deleteExpiredModpacks, forceRedownload, downloadSuggestedSettings;
+	private BaseButton downloadServerOnlyFiles, deleteExpiredModpacks, forceRedownload, closeLauncherAfterDownload;
 	private LauncherWindow launcherWindow;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		downloadSuggestedSettings = GetNode<BaseButton>("VBoxContainer/AdditionalSettingsBox/HFlowContainer/DownloadPreferencesSettingsButton");
+		closeLauncherAfterDownload = GetNode<BaseButton>("VBoxContainer/AdditionalSettingsBox/HFlowContainer/CloseLauncherSettingsButton");
 		deleteExpiredModpacks = GetNode<BaseButton>("VBoxContainer/AdditionalSettingsBox/HFlowContainer/DeleteExpiredModsSettingButton");
 		forceRedownload = GetNode<BaseButton>("VBoxContainer/AdditionalSettingsBox/HFlowContainer/ForceRedownloadButton");
 		downloadServerOnlyFiles = GetNode<BaseButton>("VBoxContainer/AdditionalSettingsBox/HFlowContainer/DownloadServerOnlySettingButton");
@@ -35,17 +35,11 @@ public partial class Settings : Control
 		downloadServerOnlyFiles.Toggled += SetButtonSettings;
 		deleteExpiredModpacks.Toggled += SetButtonSettings;
 		forceRedownload.Toggled += SetButtonSettings;
-		downloadSuggestedSettings.Toggled += SetButtonSettings;
+		closeLauncherAfterDownload.Toggled += SetButtonSettings;
 
 	}
 
-	private void SetButtonSettings(bool toggledOn)
-	{
-		toteschaSettings.DownloadSettingsFile = downloadSuggestedSettings.ButtonPressed;
-		toteschaSettings.ForceDownload = forceRedownload.ButtonPressed;
-		toteschaSettings.DownloadServerFiles = downloadServerOnlyFiles.ButtonPressed;
-		toteschaSettings.CleanUpOldPacks = deleteExpiredModpacks.ButtonPressed;
-	}
+	private void SetButtonSettings(bool toggledOn)=>SetSettingsValues();    
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
@@ -65,7 +59,7 @@ public partial class Settings : Control
 		directoryField.Text = toteschaSettings.MinecraftInstallationPath;
 		serverField.Text = toteschaSettings.ServerURL;
 
-		downloadSuggestedSettings.ButtonPressed = toteschaSettings.DownloadSettingsFile;
+		closeLauncherAfterDownload.ButtonPressed = toteschaSettings.CloseLaucherAfterDownload;
 		forceRedownload.ButtonPressed = toteschaSettings.ForceDownload;
 		downloadServerOnlyFiles.ButtonPressed = toteschaSettings.DownloadServerFiles;
 		deleteExpiredModpacks.ButtonPressed = toteschaSettings.CleanUpOldPacks;
@@ -76,12 +70,10 @@ public partial class Settings : Control
 		toteschaSettings.MinecraftInstallationPath = directoryField.Text;
 		toteschaSettings.ServerURL = serverField.Text;
 
-		toteschaSettings.DownloadSettingsFile = downloadSuggestedSettings.ButtonPressed;
+		toteschaSettings.CloseLaucherAfterDownload = closeLauncherAfterDownload.ButtonPressed;
 		toteschaSettings.ForceDownload = forceRedownload.ButtonPressed;
 		toteschaSettings.DownloadServerFiles = downloadServerOnlyFiles.ButtonPressed;
 		toteschaSettings.CleanUpOldPacks = deleteExpiredModpacks.ButtonPressed;
-
-
 
 		launcherWindow.ToteschaSettings = toteschaSettings;
 	}

@@ -232,19 +232,18 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             if (installedModpack == null)
                 return;
 
-            var filesInstalled = installedModpack.Files.Select(x=> new Tuple<string,string>(x.Filename, x.InstallationLocation));
-            var filesToInstall = Modpack.Files.Select(x=> new Tuple<string,string>(x.Filename, x.InstallationLocation));
+            var installedFiles = new Dictionary<string,string>(installedModpack.Files.Select(x=> new KeyValuePair<string, string>(x.Filename, x.InstallationLocation)));
+            var toBeInstalledFiles = new Dictionary<string, string>(Modpack.Files.Select(x => new KeyValuePair<string, string>(x.Filename, x.InstallationLocation)));
 
-            foreach (var file in filesInstalled)
+            foreach (var file in installedFiles)
             {
-                var filePath = string.IsNullOrWhiteSpace(file.Item2) ?
-                                    Path.Combine(Settings.MinecraftInstallationPath,file.Item1) :
-                                    Path.Combine(Settings.MinecraftInstallationPath, file.Item2, file.Item1);
+                var path = string.IsNullOrWhiteSpace(file.Value) ?
+                           Path.Combine(Settings.MinecraftInstallationPath, Modpack.Name, file.Key) :
+                           Path.Combine(Settings.MinecraftInstallationPath, Modpack.Name, file.Value, file.Key);
 
-                if (!filesToInstall.Contains(file) && File.Exists(filePath))
-                    File.Delete(filePath);
+                if (!toBeInstalledFiles.ContainsKey(file.Key) && File.Exists(path))
+                    File.Delete(path);
             }
-
         }
 
         private void ForceReupdateOfModpack()
@@ -268,14 +267,6 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
                 if (folder == name)
                     Directory.Delete(modpack, true);
             }
-        }
-
-        private void InstallConfigurationFiles()
-        {
-            if (!Settings.DownloadSettingsFile)
-                return;
-
-
         }
         public void Dispose()
         {
