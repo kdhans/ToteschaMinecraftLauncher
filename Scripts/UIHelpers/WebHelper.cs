@@ -1,14 +1,17 @@
 using System;
 using System.Threading.Tasks;
-using System.Text.Json;
 using System.Text;
 using Godot;
+using Newtonsoft.Json;
+using System.IO;
+using System.Data.Common;
 
 #nullable enable
 namespace ToteschaMinecraftLauncher;
 
 public partial class WebHelper : Node
 {
+	private static System.Net.Http.HttpClient _httpClient = new System.Net.Http.HttpClient();
 	public override void _Ready()
 	{
 		base._Ready();
@@ -21,32 +24,27 @@ public partial class WebHelper : Node
 	public async Task<ToteschaHttpResponse<T>> CallJsonGetRequestAsync<T>(string url)
 	{
 		var response = new ToteschaHttpResponse<T>();
-		var taskCompSource = new TaskCompletionSource<byte[]>();
-		HttpRequest request = new HttpRequest();
-		AddChild(request);
-		request.RequestCompleted += (long result, long responseCode, string[] headers, byte[] body) => taskCompSource.TrySetResult(body);
+		T data;
+		try
+		{
+			if (Uri.TryCreate(url, UriKind.Absolute, out var uriResult) && 
+			   (uriResult.Scheme == Uri.UriSchemeHttp ||uriResult.Scheme == Uri.UriSchemeHttps))
+			{
+				var httpRequest = await _httpClient.GetAsync(url);
+				data = JsonConvert.DeserializeObject<T>(await httpRequest.Content.ReadAsStringAsync())!;
+			}
+			else if (File.Exists(url))
+				data = JsonConvert.DeserializeObject<T>(await File.ReadAllTextAsync(url))!;
 
-		Error result = request.Request(url);
-		var data = await taskCompSource.Task;
-		if (result == Error.Ok)
-		{
-			try
-			{
-				var opt = new JsonSerializerOptions();
-				opt.PropertyNameCaseInsensitive = true;
-				var res = JsonSerializer.Deserialize<T>(Encoding.UTF8.GetString(data), opt);
-				response.Data = res;
-			}
-			catch (Exception ex)
-			{
-				response.Error = $"Unable to read data at {url}. Please ensure the URL points to a JSON that can read {typeof(T)} and try again.";
-			}
+			else
+				throw new ApplicationException();
+
+			response.Data = data;
 		}
-		else
+		catch
 		{
-			response.Error = $"Unable to connect to {url}. Please check your internet connection or try again later.";
+			response.Error = $"Unable to read data at {url}. Please ensure the URL points to a JSON that can read {typeof(T)} and try again.";
 		}
-		RemoveChild(request);
 		return response;
 	}
 
@@ -56,41 +54,35 @@ public partial class WebHelper : Node
 			return new ToteschaHttpResponse<ImageTexture>() { Error = "No URL for data." };
 
 		var response = new ToteschaHttpResponse<ImageTexture>();
-		var taskCompSource = new TaskCompletionSource<byte[]>();
-		HttpRequest request = new HttpRequest();
-		AddChild(request);
-		request.RequestCompleted += (long result, long responseCode, string[] headers, byte[] body) => taskCompSource.TrySetResult(body);
-
-		Error result = request.Request(url);
-		var data = await taskCompSource.Task;
 		try
 		{
-			if (result == Error.Ok)
-			{
-				var urlString =url.ToString();
-				var isPng = urlString.EndsWith(".png");
-				var isJpeg = urlString.EndsWith(".jpeg") || urlString.EndsWith(".jpg");
+			var httpRequest = await _httpClient.GetAsync(url);
+			var byteResult = await httpRequest.Content.ReadAsByteArrayAsync();			
 
+			var isPng = url.ToLower().EndsWith("png");
+			var isJpeg = url.ToLower().EndsWith("jpeg");
+			var isWebp = url.ToLower().EndsWith("webp"); 
+			
+			var image = new Image();
+			
+			Error error;
 
-				var image = new Image();
-				Error error =  (isPng) ? image.LoadPngFromBuffer(data) : (isJpeg) ? image.LoadJpgFromBuffer(data) : Error.Unavailable;
+			error = (isPng) ? image.LoadPngFromBuffer(byteResult) : 
+					(isJpeg) ? image.LoadJpgFromBuffer(byteResult) : 
+					(isWebp) ? image.LoadWebpFromBuffer(byteResult) :
+					Error.Unavailable;
 
-				if (error == Error.Ok)
-				{
-					var texture = ImageTexture.CreateFromImage(image);
-					response.Data = texture;
-				}
-			}
-			else
-			{
-				response.Error = $"Unable to connect to {url}. Please check your internet connection or try again later.";
-			}
+			if (image == null || error != Error.Ok)
+				throw new NullReferenceException();
+			
+			
+			response.Data = ImageTexture.CreateFromImage(image);
 		}
-		catch (Exception ex)
-		{ response.Error = ex.Message; }
-		//request.RequestCompleted -= (long result, long responseCode, string[] headers, byte[] body) => taskCompSource.TrySetResult(body);
-		RemoveChild(request);
+		catch
+		{
+			response.Error = $"Unable to connect to {url}. Please check your internet connection or try again later.";
+		}
+
 		return response;
 	}
-
 }
