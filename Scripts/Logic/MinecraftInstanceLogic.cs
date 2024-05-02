@@ -98,6 +98,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         {
             if (Modpack.Files?.Any() ?? false)
             {
+                InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, $"Downloading Mods..."));
                 var modpackPath = Path.Combine(Settings.MinecraftInstallationPath, Modpack.Name);
                 var progressAmount = .5f / (float)Modpack.Files.Count;
                 var filesToDownload = (Settings.DownloadServerFiles) ? Modpack.Files.Where(x=> x.ServerSide) : Modpack.Files.Where(x => x.ClientSide);
@@ -114,8 +115,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
                 _totalInstallProgress += .5f;
         }
         async Task DownloadFileAsync(string url, string filename, string mainDirectory, string downloadPath, float progressAmount, bool requiresExtraction)
-        {
-            InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, $"Downloading {filename}..."));
+        {            
             var installationPath = string.IsNullOrWhiteSpace(downloadPath) ?
                                     mainDirectory :
                                     Path.Combine(mainDirectory, downloadPath);
@@ -142,8 +142,6 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             using var contentStream = await response.Content.ReadAsStreamAsync();
             using var fileStream = File.Create(installationFile);
             await contentStream.CopyToAsync(fileStream);
-
-            GD.Print("Installed " + installationFile);
             if (requiresExtraction)
                 ExtractZipFile(installationFile, installationPath);
             _totalInstallProgress += progressAmount;
@@ -260,7 +258,6 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             foreach (var modpack in modpacks)
             {
                 var folder = modpack.Split(Path.DirectorySeparatorChar).Last();
-                GD.Print(string.Join(',', name));
                 if (string.IsNullOrWhiteSpace(folder))
                     continue;
 

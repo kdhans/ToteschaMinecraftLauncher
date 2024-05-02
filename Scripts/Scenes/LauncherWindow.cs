@@ -22,6 +22,7 @@ public partial class LauncherWindow : Control
 	public string? LatestNews { get; set; }
 	public ImageTexture? LatestNewsPicture { get; set; }
 	public bool IsLoadingServerData { get; set; } = true;
+	public bool IsLoggingIn { get; set; } = true;
 
 	public static Node? SelectedNode { get; set; }
 	public static string DisplayBoxNodePath = "/root/LauncherWindow/DisplayAreaContainer/MainMargin";
@@ -69,20 +70,17 @@ public partial class LauncherWindow : Control
 		var webHelper = GetNode<WebHelper>("WebHelper");
 		var result = await webHelper.CallJsonGetRequestAsync<ServerDetails>(ToteschaSettings!.ServerURL);
 		string statusText;
-		bool enableModpackRequiredButtons = true;
 
 		if (result.Error != null)
-		{
 			statusText = result.Error;
-			enableModpackRequiredButtons = false;
-		}
+		
 		else
 		{
 			ServerDetails = result.Data;
 			statusText = "Select a modpack and press Launch to begin!";
 			await GetLatestNews();
 		}
-		SetLoadingStateForUI(true, statusText, enableModpackRequiredButtons);
+		SetLoadingStateForUI(true, statusText);
 		IsLoadingServerData = false;
 	}
 	public void SaveSettings()
@@ -139,22 +137,25 @@ public partial class LauncherWindow : Control
 
 	public async Task<Tuple<bool, string>> TryLoginToMinecraft(string encyUsername, string encyPassword, bool isEncrypted = true)
 	{
+		IsLoggingIn = true;
 		var loginButton = GetNode<Button>("FooterContainer/LoginMargin/LoginButton");
 		Tuple<bool, string> success;
 		var encryptor = new ToteschaEncryptor();
 		try
 		{
-			loginButton.Disabled = true;
+			DisableButtons();
 			var username = isEncrypted ? await encryptor.DecryptStringAsync(encyUsername) : encyUsername;
 			var password = isEncrypted ? await encryptor.DecryptStringAsync(encyPassword) : encyPassword;
 			Session = await GetMinecraftSession(username, password);
 			success = new Tuple<bool, string>(true, string.Empty);
-			loginButton.Disabled = false;
+			IsLoggingIn = false;
+			EnableButtons();
 			loginButton.Text = $"      Welcome, \n      {Session.username}!";
 		}
 		catch (Exception ex)
 		{
-			loginButton.Disabled = false;
+			IsLoggingIn = false;
+			EnableButtons();            
 			success = new Tuple<bool, string>(false, ex.Message);
 		}
 		return success;
@@ -163,7 +164,7 @@ public partial class LauncherWindow : Control
 	{
 		bool loaded = false;
 		var thisWindow = GetTree();
-		SetLoadingStateForUI(false, triggeredFromLaunchButton: true);
+		SetLoadingStateForUI(false, updateStatusBar: false);
 
 		if (string.IsNullOrWhiteSpace(Session?.accessToken))
 			GetNode<LoginButton>("FooterContainer/LoginMargin/LoginButton").ClickButtonAsync();
@@ -187,32 +188,34 @@ public partial class LauncherWindow : Control
 
 		MarkModpackAsInstalled();
 		DeleteOldModpacks();
-		SetLoadingStateForUI(true, triggeredFromLaunchButton: true);
+		SetLoadingStateForUI(true, updateStatusBar: false);
 		OnInstallationProgressChanged(this, new ToteschaMinecraftLauncher.Scripts.Contracts.InstallationEventArgs(0, "Complete!"));
 		if (loaded && ToteschaSettings.CloseLaucherAfterDownload)
 			thisWindow.Quit();
 	}
 
+	public void DisableButtons() => SetLoadingStateForUI(false, updateStatusBar: false);
 	public void EnableButtons() => SetLoadingStateForUI(true);
 
-	private void SetLoadingStateForUI(bool enabled, string statusText = "", bool modpackRequiredButtons = true, bool triggeredFromLaunchButton = false)
+	private void SetLoadingStateForUI(bool enabled, string statusText = "", bool updateStatusBar = true)
 	{
 		var loadingBar = GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar");
-		if (!enabled && !triggeredFromLaunchButton)
+		if (!enabled && updateStatusBar)
 		{
 			SelectedModpack = null;
 			_ = loadingBar.StartInfiniteLoading();
 		}
-		else if (!triggeredFromLaunchButton)
+		else if (updateStatusBar)
 			loadingBar.StopInfiniteLoading();
 
-		//GD.Print($"{!(enabled && modpackRequiredButtons) || SelectedModpack == null}");
-		GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/SettingsButton").Disabled = !enabled;
-		GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/DetailsButton").Disabled = !(enabled && modpackRequiredButtons);
-		GetNode<TextureButton>("/root/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchButton").Disabled = !(enabled && modpackRequiredButtons) || SelectedModpack == null;
-		if (!triggeredFromLaunchButton)
+		var disabled = !enabled;
+
+		GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/SettingsButton").Disabled = disabled;
+		GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/DetailsButton").Disabled = disabled || SelectedModpack == null;
+		GetNode<TextureButton>("/root/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchButton").Disabled = disabled || SelectedModpack == null || IsLoggingIn;
+		if (updateStatusBar)
 			GetNode<Label>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressLabel").Text = statusText;
-		GetNode<Button>("FooterContainer/LoginMargin/LoginButton").Disabled = !enabled;
+		GetNode<Button>("FooterContainer/LoginMargin/LoginButton").Disabled = disabled || IsLoggingIn;
 	}
 	private async Task GetLatestNews()
 	{

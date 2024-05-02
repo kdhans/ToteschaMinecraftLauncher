@@ -5,6 +5,7 @@ using Godot;
 using Newtonsoft.Json;
 using System.IO;
 using System.Data.Common;
+using System.Net;
 
 #nullable enable
 namespace ToteschaMinecraftLauncher;
@@ -30,15 +31,19 @@ public partial class WebHelper : Node
 			if (Uri.TryCreate(url, UriKind.Absolute, out var uriResult) && 
 			   (uriResult.Scheme == Uri.UriSchemeHttp ||uriResult.Scheme == Uri.UriSchemeHttps))
 			{
+				_httpClient.DefaultRequestHeaders.Add("User-Agent", "ToteschaLauncher/1.0.0");
+				_httpClient.DefaultRequestHeaders.Add("Connection", "keep-alive");
+				//_httpClient.DefaultRequestVersion = HttpVersion.Version20;
+				_httpClient.Timeout = TimeSpan.FromSeconds(30);
 				var httpRequest = await _httpClient.GetAsync(url);
-				data = JsonConvert.DeserializeObject<T>(await httpRequest.Content.ReadAsStringAsync())!;
+				var stringData = await httpRequest.Content.ReadAsStringAsync();
+				data = JsonConvert.DeserializeObject<T>(stringData)!;
 			}
 			else if (File.Exists(url))
 				data = JsonConvert.DeserializeObject<T>(await File.ReadAllTextAsync(url))!;
 
 			else
 				throw new ApplicationException();
-
 			response.Data = data;
 		}
 		catch
