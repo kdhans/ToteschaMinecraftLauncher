@@ -59,7 +59,7 @@ layout_mode = 2
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_swtf0")
 theme_override_font_sizes/font_size = 20
-text = "Minecraft File Location"
+text = "Directory to Save Modpacks"
 
 [node name="DirectoryContainer" type="HBoxContainer" parent="VBoxContainer/DirectoryBoxes/FileLocationBox"]
 layout_mode = 2
