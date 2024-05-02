@@ -98,6 +98,9 @@ public partial class Details : Control
 
 	private async Task AddNewModDetailAsync(string name, string version, string description, string imageUrl, string link)
 	{
+		if (!IsInstanceValid(this))
+			return;
+			
 		var fileListNode = GetNode<VBoxContainer>("VBoxContainer/ModListScroll/ModListContainer");
 		var webHelper = GetNode<WebHelper>("/root/LauncherWindow/WebHelper");
 		var fileDetail = (FileDetail)scene.Instantiate();
@@ -105,8 +108,11 @@ public partial class Details : Control
 		fileDetail.SetTextAndImage(name, version, description, link, imageData);
 		fileDetail.SizeFlagsHorizontal = SizeFlags.ShrinkCenter;
 		fileDetail.SizeFlagsVertical = SizeFlags.ShrinkCenter;
-		files.Add(fileDetail);
-		fileListNode.AddChild(fileDetail);
+		if (IsInstanceValid(fileListNode))
+		{
+			files.Add(fileDetail);
+			fileListNode.AddChild(fileDetail);
+		}
 	}
 
 	private void ClearModDetails()
