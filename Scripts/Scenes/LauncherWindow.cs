@@ -193,6 +193,8 @@ public partial class LauncherWindow : Control
 			thisWindow.Quit();
 	}
 
+	public void EnableButtons() => SetLoadingStateForUI(true);
+
 	private void SetLoadingStateForUI(bool enabled, string statusText = "", bool modpackRequiredButtons = true, bool triggeredFromLaunchButton = false)
 	{
 		var loadingBar = GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar");
@@ -203,6 +205,8 @@ public partial class LauncherWindow : Control
 		}
 		else if (!triggeredFromLaunchButton)
 			loadingBar.StopInfiniteLoading();
+
+		//GD.Print($"{!(enabled && modpackRequiredButtons) || SelectedModpack == null}");
 		GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/SettingsButton").Disabled = !enabled;
 		GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/DetailsButton").Disabled = !(enabled && modpackRequiredButtons);
 		GetNode<TextureButton>("/root/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchButton").Disabled = !(enabled && modpackRequiredButtons) || SelectedModpack == null;

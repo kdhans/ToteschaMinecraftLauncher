@@ -117,6 +117,7 @@ public partial class Home : Control
 	private void SelectModpack(string modpackName)
 	{
 		launcherWindow.SelectedModpack = launcherWindow.ServerDetails.Modpacks.Where(x=> x.Name == modpackName).First();
+		launcherWindow.EnableButtons();
 	}
 
 	private void UpdateNews(ImageTexture? image, string? newsText)
