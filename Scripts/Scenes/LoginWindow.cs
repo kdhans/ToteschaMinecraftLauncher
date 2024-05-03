@@ -5,8 +5,6 @@ using ToteschaMinecraftLauncher.Scripts.UIHelpers;
 
 public partial class LoginWindow : Window
 {
-	public string Username { get; private set; }
-	public string Password { get; private set; }
 	public bool UserFinishedUp { get; set; } = false;
 
 	private const float PercentOfDisplaySafeArea = 0.25f;
@@ -64,8 +62,8 @@ public partial class LoginWindow : Window
 			var encryptor = new ToteschaEncryptor();
 			var username = GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/UsernameGroup/LWUsernameTextBox").Text;
 			var password = GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/PasswordGroup/LWPasswordTextBox").Text;
-			Username = await encryptor.EncryptStringAsync(username);
-			Password = await encryptor.EncryptStringAsync(password);
+			GetNode<LauncherWindow>("/root/LauncherWindow").ToteschaSettings.Username = await encryptor.EncryptStringAsync(username);
+			GetNode<LauncherWindow>("/root/LauncherWindow").ToteschaSettings.Password = await encryptor.EncryptStringAsync(password);
 			GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/UsernameGroup/LWUsernameTextBox").Text = string.Empty;
 			GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/PasswordGroup/LWPasswordTextBox").Text = string.Empty;
 		}
