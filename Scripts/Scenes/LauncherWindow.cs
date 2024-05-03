@@ -254,7 +254,7 @@ public partial class LauncherWindow : Control
 			DownloadOnlyServerFiles = false,
 			CleanUpOldPacks = true,
 			MinecraftInstallationPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "ToteschaMinecraft"),
-			ServerURL = "https://minecraft.totescha.com",
+			ServerURL = "https://modpack.totescha.com",
 			MemoryToAllocate = 0,
 			MaxMemory = 0,
 		};

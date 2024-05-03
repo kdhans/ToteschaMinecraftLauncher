@@ -35,9 +35,12 @@ public partial class WebHelper : Node
 				_httpClient.DefaultRequestHeaders.Add("Connection", "keep-alive");
 				//_httpClient.DefaultRequestVersion = HttpVersion.Version20;
 				_httpClient.Timeout = TimeSpan.FromSeconds(30);
-				var httpRequest = await _httpClient.GetAsync(url);
-				var stringData = await httpRequest.Content.ReadAsStringAsync();
-				data = JsonConvert.DeserializeObject<T>(stringData)!;
+
+				using (var httpRequest = await _httpClient.GetAsync(url))
+				{
+					var stringData = await httpRequest.Content.ReadAsStringAsync();
+					data = JsonConvert.DeserializeObject<T>(stringData)!;
+				}
 			}
 			else if (File.Exists(url))
 				data = JsonConvert.DeserializeObject<T>(await File.ReadAllTextAsync(url))!;
