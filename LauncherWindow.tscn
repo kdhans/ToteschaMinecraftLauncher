@@ -1,8 +1,9 @@
-[gd_scene load_steps=31 format=3 uid="uid://yhroynos75g3"]
+[gd_scene load_steps=32 format=3 uid="uid://yhroynos75g3"]
 
 [ext_resource type="Script" path="res://Scripts/Scenes/LauncherWindow.cs" id="1_cl8de"]
 [ext_resource type="Texture2D" uid="uid://cxu4vtvsuuens" path="res://Backgrounds/background.jpg" id="2_3hofw"]
 [ext_resource type="FontFile" uid="uid://yrqiukp85q2w" path="res://Fonts/Minecrafter.Reg.ttf" id="3_2b26k"]
+[ext_resource type="FontFile" uid="uid://dcxc7ljpw0mfm" path="res://Fonts/Moderustic-Bold.ttf" id="4_wsdet"]
 [ext_resource type="FontFile" uid="uid://bqgi1gwwi5wqm" path="res://Fonts/Moderustic-Medium.ttf" id="4_y14iu"]
 [ext_resource type="Texture2D" uid="uid://dp3k7aim7ogxy" path="res://Icons/home.png" id="5_qmna6"]
 [ext_resource type="Script" path="res://Scripts/Buttons/HomeButton.cs" id="6_u8lij"]
@@ -117,6 +118,14 @@ offset_right = 415.0
 offset_bottom = 120.0
 text = "Created by MRCATCHPHRASE"
 label_settings = SubResource("LabelSettings_ddhe7")
+
+[node name="DebugText" type="Label" parent="Header/TextureRect"]
+custom_minimum_size = Vector2(1200, 40)
+offset_left = 28.235
+offset_top = 120.0
+offset_right = 416.235
+offset_bottom = 144.0
+theme_override_fonts/font = ExtResource("4_wsdet")
 
 [node name="DisplayAreaContainer" type="HBoxContainer" parent="."]
 layout_mode = 1

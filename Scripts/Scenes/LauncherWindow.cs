@@ -42,6 +42,7 @@ public partial class LauncherWindow : Control
 		await LoadServerDetailsAsync();
 
 		var helperClient = new SystemHelper();
+		GetNode<Label>("Header/TextureRect/DebugText").Text = $"{Convert.ToBase64String(helperClient.GetEnvironmentHashKey())}  {Convert.ToBase64String(helperClient.GetEnvironmentIV())} \n {helperClient.GetHashIVString()}";
 		await TryLoginToMinecraft(ToteschaSettings!.Username, ToteschaSettings!.Password);
 	}
 

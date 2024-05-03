@@ -2,6 +2,7 @@
 using System;
 using System.Buffers.Text;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace ToteschaMinecraftLauncher.Scripts.Helpers;
@@ -84,4 +85,6 @@ public class SystemHelper
 
         return byteArray.ToArray();
     }
+
+    public string GetHashIVString() => $"Hash: {Environment.UserName}{HardwareInfo.OperatingSystem.VersionString}{HardwareInfo.OperatingSystem.Name}    IV: {HardwareInfo.OperatingSystem.VersionString}{HardwareInfo.OperatingSystem.Name}";
 }
