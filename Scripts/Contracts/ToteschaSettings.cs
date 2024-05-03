@@ -10,7 +10,7 @@ public class ToteschaSettings
     public double MemoryToAllocate { get; set; }
     public double MaxMemory { get; set; }
     public bool ForceDownload { get; set; }
-    public bool DownloadServerFiles { get; set; }
+    public bool DownloadOnlyServerFiles { get; set; }
     public bool CleanUpOldPacks { get; set; }
     public bool CloseLaucherAfterDownload { get; set; }
     public string LastSelectedModpack { get; set; }

@@ -61,7 +61,7 @@ public partial class Settings : Control
 
 		closeLauncherAfterDownload.ButtonPressed = toteschaSettings.CloseLaucherAfterDownload;
 		forceRedownload.ButtonPressed = toteschaSettings.ForceDownload;
-		downloadServerOnlyFiles.ButtonPressed = toteschaSettings.DownloadServerFiles;
+		downloadServerOnlyFiles.ButtonPressed = toteschaSettings.DownloadOnlyServerFiles;
 		deleteExpiredModpacks.ButtonPressed = toteschaSettings.CleanUpOldPacks;
 	}
 
@@ -72,10 +72,11 @@ public partial class Settings : Control
 
 		toteschaSettings.CloseLaucherAfterDownload = closeLauncherAfterDownload.ButtonPressed;
 		toteschaSettings.ForceDownload = forceRedownload.ButtonPressed;
-		toteschaSettings.DownloadServerFiles = downloadServerOnlyFiles.ButtonPressed;
+		toteschaSettings.DownloadOnlyServerFiles = downloadServerOnlyFiles.ButtonPressed;
 		toteschaSettings.CleanUpOldPacks = deleteExpiredModpacks.ButtonPressed;
 
 		launcherWindow.ToteschaSettings = toteschaSettings;
+		GetNode<Label>("/root/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchLabel").Text = (downloadServerOnlyFiles.ButtonPressed) ? "Download" : "Launch";
 	}
 
 	private void OnFilePathChanged(string newText)

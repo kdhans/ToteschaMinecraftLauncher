@@ -39,32 +39,53 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         public async Task<bool> TryLaunchMinecraft()
         {
             var modpackSuccessfullyInstalled = false;
+            var installationPath = (Settings.DownloadOnlyServerFiles) ? Path.Combine(Settings.MinecraftInstallationPath, "Server") : Settings.MinecraftInstallationPath;            
+
             try
             {
-                ForceReupdateOfModpack();
+                ForceReupdateOfModpack(installationPath);
                 InstallationProgress?.Invoke(this, new InstallationEventArgs(-1, "Starting install.."));
-                await InstallModpack();
-                InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, "Getting Minecraft Setup.."));
-                modpackSuccessfullyInstalled = await LaunchMinecraft();
+                await InstallModpack(installationPath);
+
+                if (!Settings.DownloadOnlyServerFiles)
+                {
+                    InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, "Getting Minecraft Setup.."));
+                    modpackSuccessfullyInstalled = await LaunchMinecraft();
+                }
+                else
+                    modpackSuccessfullyInstalled = true;
             }
             catch (Exception ex)
             {
                 InstallationProgress?.Invoke(this, new InstallationEventArgs(0, $"Could not launch Minecraft: {ex.Message}"));
-            }
+            }          
+
+            
             return modpackSuccessfullyInstalled;
         }
 
-        private async Task InstallModpack()
+        private async Task InstallModpack(string minecraftInstallationPath)
         {
-            var minecraftPath = Path.Combine(Settings.MinecraftInstallationPath, Modpack.Name);
+            var minecraftPath = Path.Combine(minecraftInstallationPath, Modpack.Name);
+            GD.Print(minecraftPath);
+
+            
             if (!Directory.Exists(minecraftPath))
-                Directory.CreateDirectory(minecraftPath);
-            _minecraftPath = new MinecraftPath(minecraftPath);
-            await HandleModloaderAsync();
-            RemoveFilesNotAssociatedWithModpack();
+            {
+                var result = Directory.CreateDirectory(minecraftPath);
+                GD.Print(result.FullName);
+            }
+
+            if (!Settings.DownloadOnlyServerFiles)
+            {
+                _minecraftPath = new MinecraftPath(minecraftPath);
+                await HandleModloaderAsync();
+            }
+
+            RemoveFilesNotAssociatedWithModpack(minecraftInstallationPath);
             _totalInstallProgress = .25f;
             InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, $"Downloading and installing modpack files..."));
-            await DownloadModpackFiles();
+            await DownloadModpackFiles(minecraftInstallationPath);
 
         }
         private async Task HandleModloaderAsync()
@@ -94,14 +115,14 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             await fabric.SaveAsync(_minecraftPath);
             _versionMetadata = selectFabricVersion;
         }
-        private async Task DownloadModpackFiles()
+        private async Task DownloadModpackFiles(string minecraftInstallationPath)
         {
             if (Modpack.Files?.Any() ?? false)
             {
                 InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, $"Downloading Mods..."));
-                var modpackPath = Path.Combine(Settings.MinecraftInstallationPath, Modpack.Name);
+                var modpackPath = Path.Combine(minecraftInstallationPath, Modpack.Name);
                 var progressAmount = .5f / (float)Modpack.Files.Count;
-                var filesToDownload = (Settings.DownloadServerFiles) ? Modpack.Files.Where(x=> x.ServerSide) : Modpack.Files.Where(x => x.ClientSide);
+                var filesToDownload = (Settings.DownloadOnlyServerFiles) ? Modpack.Files.Where(x=> x.ServerSide) : Modpack.Files.Where(x => x.ClientSide);
                 if (filesToDownload?.Any() ?? false)
                     await Task.WhenAll(filesToDownload.Select(file => DownloadFileAsync(file.DownloadURL,
                                                                                  file.Filename,
@@ -221,7 +242,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
                 TarGzReader.ExtractTarGz(zipPath, extractPath);
         }
 
-        private void RemoveFilesNotAssociatedWithModpack()
+        private void RemoveFilesNotAssociatedWithModpack(string minecraftInstallationPath)
         {
             if (InstalledModpacks == null || InstalledModpacks?.Count == 0)
                 return;
@@ -236,21 +257,25 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             foreach (var file in installedFiles)
             {
                 var path = string.IsNullOrWhiteSpace(file.Value) ?
-                           Path.Combine(Settings.MinecraftInstallationPath, Modpack.Name, file.Key) :
-                           Path.Combine(Settings.MinecraftInstallationPath, Modpack.Name, file.Value, file.Key);
+                           Path.Combine(minecraftInstallationPath, Modpack.Name, file.Key) :
+                           Path.Combine(minecraftInstallationPath, Modpack.Name, file.Value, file.Key);
 
                 if (!toBeInstalledFiles.ContainsKey(file.Key) && File.Exists(path))
                     File.Delete(path);
+                
             }
         }
 
-        private void ForceReupdateOfModpack()
+        private void ForceReupdateOfModpack(string installationPath)
         {
             if (!(Settings?.ForceDownload ?? false))
                 return;
 
+            if (!Directory.Exists(installationPath))
+                return;
+
             var name = Modpack?.Name;
-            var modpacks = Directory.GetDirectories(Settings!.MinecraftInstallationPath);
+            var modpacks = Directory.GetDirectories(installationPath);
 
             if (!modpacks.Any() || name == null)
                 return;

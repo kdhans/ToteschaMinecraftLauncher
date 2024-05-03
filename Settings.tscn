@@ -249,9 +249,9 @@ offset_right = 130.5
 offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
-tooltip_text = "Forces download of \"server-side\" mods that have zero effect on the client. Check this if you want to host your own server with the modpack.
-NOTE: THIS WILL DELETE CLIENT-ONLY MODS INSTALLED IN THE SAME FOLDER. Use a different directory if you enable this option."
+tooltip_text = "This will just download the server files, to:
+\"(Modpack Directory)/Server/(Modpack Name)\""
 mouse_filter = 1
 theme_override_fonts/font = ExtResource("3_8ro32")
 theme_override_font_sizes/font_size = 18
-text = "Download Server-Only Mods          "
+text = "Download Only Server Files          "

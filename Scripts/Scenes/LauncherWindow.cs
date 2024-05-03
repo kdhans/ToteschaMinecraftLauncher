@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Reflection.PortableExecutable;
 using System.Threading.Tasks;
 using ToteschaMinecraftLauncher;
 using ToteschaMinecraftLauncher.Scripts.Helpers;
@@ -250,13 +251,14 @@ public partial class LauncherWindow : Control
 			ForceDownload = false,
 			CloseLaucherAfterDownload = true,
 			InstalledModpacks = new System.Collections.Generic.List<Modpack>(),
-			DownloadServerFiles = false,
+			DownloadOnlyServerFiles = false,
 			CleanUpOldPacks = true,
 			MinecraftInstallationPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "ToteschaMinecraft"),
 			ServerURL = "https://minecraft.totescha.com",
 			MemoryToAllocate = 0,
 			MaxMemory = 0,
 		};
+		GetNode<Label>("/root/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchLabel").Text = (ToteschaSettings!.DownloadOnlyServerFiles) ? "Download" : "Launch";
 		GetSystemMemoryDetails();    
 	}
 	private void GetSystemMemoryDetails()
@@ -309,7 +311,10 @@ public partial class LauncherWindow : Control
 			return;
 
 		var names = ServerDetails?.Modpacks?.Select(x => x.Name).ToList();
-		var modpacks = Directory.GetDirectories(ToteschaSettings!.MinecraftInstallationPath);
+		var modpacks = Directory.GetDirectories(ToteschaSettings!.MinecraftInstallationPath).Where(path => !path.Contains(Path.Combine(ToteschaSettings!.MinecraftInstallationPath, "Server"))).ToList();
+		var serverModpacks = Directory.GetDirectories(Path.Combine(ToteschaSettings!.MinecraftInstallationPath, "Server")).ToList();
+
+		modpacks.AddRange(serverModpacks);
 
 		if (!modpacks.Any() || names == null || !names.Any())
 			return;
