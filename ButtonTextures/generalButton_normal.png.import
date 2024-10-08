@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dro1lxktm05us"
-path="res://.godot/imported/keyboard.svg-790d2ce5f5ef6cff34c99fca8c42cd9e.ctex"
+uid="uid://dn24tcnt2ljxh"
+path="res://.godot/imported/generalButton_normal.png-320476048d86ca43ea4f7ffc18c3785e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Backgrounds/keyboard.svg"
-dest_files=["res://.godot/imported/keyboard.svg-790d2ce5f5ef6cff34c99fca8c42cd9e.ctex"]
+source_file="res://ButtonTextures/generalButton_normal.png"
+dest_files=["res://.godot/imported/generalButton_normal.png-320476048d86ca43ea4f7ffc18c3785e.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

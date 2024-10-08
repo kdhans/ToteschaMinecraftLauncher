@@ -36,8 +36,23 @@
 //        }
 
 //        //Lock window elements during web refreshes
-//        //Lock window elements during login
-//        //Lock window elements during modpack download
+//        private void LockWindowElements(bool lockElements)
+//        {
+//            GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/SettingsButton").Disabled = lockElements;
+//            GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/DetailsButton").Disabled = lockElements;
+//            GetNode<Button>("/root/LauncherWindow/FooterContainer/LoginMargin/LoginButton").Disabled = lockElements;
+//        }
+//        //Update status bar
+//        private void UpdateStatusBar(string statusText, double loadingBarValue = 0.0)
+//        {
+//            GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar").StopInfiniteLoading();
+//            GetNode<Label>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressLabel").Text = statusText;
+
+//            if (loadingBarValue > 1)
+//                GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar").Value = loadingBarValue;
+//            else
+//                GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar").StartInfiniteLoading();
+//        }
 
 //        //Handle Home Button Click
 //        //Handle Pack Details Click

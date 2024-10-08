@@ -1,15 +1,13 @@
-[gd_scene load_steps=26 format=3 uid="uid://yhroynos75g3"]
+[gd_scene load_steps=24 format=3 uid="uid://yhroynos75g3"]
 
 [ext_resource type="Texture2D" uid="uid://cxu4vtvsuuens" path="res://Backgrounds/background.jpg" id="2_3hofw"]
 [ext_resource type="FontFile" uid="uid://yrqiukp85q2w" path="res://Fonts/Minecrafter.Reg.ttf" id="3_2b26k"]
 [ext_resource type="FontFile" uid="uid://bqgi1gwwi5wqm" path="res://Fonts/Moderustic-Medium.ttf" id="4_y14iu"]
+[ext_resource type="Texture2D" uid="uid://dw1wgcyjdscv0" path="res://Icons/keyboard.png" id="5_n3lm7"]
 [ext_resource type="Texture2D" uid="uid://dp3k7aim7ogxy" path="res://Icons/home.png" id="5_qmna6"]
-[ext_resource type="Script" path="res://Scripts/Buttons/HomeButton.cs" id="6_u8lij"]
 [ext_resource type="Texture2D" uid="uid://dj6u5k18qkwrp" path="res://Icons/details.png" id="7_lceq2"]
-[ext_resource type="Script" path="res://Scripts/Buttons/DetailsButton.cs" id="8_txr1u"]
+[ext_resource type="PackedScene" uid="uid://hlu6ujy0oov6" path="res://Keybinds.tscn" id="8_7glnt"]
 [ext_resource type="Texture2D" uid="uid://dqthkps11uv5v" path="res://Icons/settings.png" id="9_87i3p"]
-[ext_resource type="Script" path="res://Scripts/Buttons/SettingsButton.cs" id="10_rq5yy"]
-[ext_resource type="Texture2D" uid="uid://bcwj2dm82mcx6" path="res://Icons/profile.png" id="11_bxr1p"]
 [ext_resource type="FontFile" uid="uid://bjktst4no8gel" path="res://Fonts/Moderustic-Regular.ttf" id="12_cu1y2"]
 [ext_resource type="Script" path="res://Scripts/UIElements/ProgressBar.cs" id="13_w2v4s"]
 [ext_resource type="Texture2D" uid="uid://dv8mta0b8djeb" path="res://ButtonTextures/launchButton_normal.png" id="14_rd3gb"]
@@ -48,11 +46,11 @@ bg_color = Color(0.109804, 0.776471, 0, 1)
 
 [node name="LauncherWindow" type="Control"]
 clip_contents = true
-custom_minimum_size = Vector2(1800, 750)
+custom_minimum_size = Vector2(1800, 900)
 layout_mode = 3
 anchor_right = 1.144
 anchor_bottom = 1.0
-offset_right = -30.4001
+offset_right = -259.2
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -75,7 +73,7 @@ layer = -1
 
 [node name="TextureRect" type="TextureRect" parent="Menu Background"]
 offset_right = 270.0
-offset_bottom = 750.0
+offset_bottom = 900.0
 texture = SubResource("GradientTexture2D_uluf2")
 metadata/_edit_use_anchors_ = true
 
@@ -121,11 +119,11 @@ label_settings = SubResource("LabelSettings_ddhe7")
 [node name="DisplayAreaContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 0.887
+anchor_right = 0.999
 anchor_bottom = 1.0
-offset_top = 138.0
-offset_right = 0.454346
-offset_bottom = -112.0
+offset_top = 150.0
+offset_right = 1.79993
+offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -148,17 +146,16 @@ text = "      Home"
 icon = ExtResource("5_qmna6")
 flat = true
 alignment = 0
-script = ExtResource("6_u8lij")
 
-[node name="LoginButton" type="Button" parent="DisplayAreaContainer/MenuMargin/MenuContainer"]
+[node name="KeybindButton" type="Button" parent="DisplayAreaContainer/MenuMargin/MenuContainer"]
 custom_minimum_size = Vector2(230, 65)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("4_y14iu")
 theme_override_font_sizes/font_size = 20
-text = "      My Profile
+text = "     Keybinds
 "
-icon = ExtResource("11_bxr1p")
+icon = ExtResource("5_n3lm7")
 flat = true
 alignment = 0
 
@@ -171,7 +168,6 @@ text = "      Pack Details"
 icon = ExtResource("7_lceq2")
 flat = true
 alignment = 0
-script = ExtResource("8_txr1u")
 
 [node name="SettingsButton" type="Button" parent="DisplayAreaContainer/MenuMargin/MenuContainer"]
 custom_minimum_size = Vector2(230, 65)
@@ -182,7 +178,6 @@ text = "      Settings"
 icon = ExtResource("9_87i3p")
 flat = true
 alignment = 0
-script = ExtResource("10_rq5yy")
 
 [node name="MainMargin" type="MarginContainer" parent="DisplayAreaContainer"]
 layout_mode = 2
@@ -190,14 +185,17 @@ theme_override_constants/margin_left = 35
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 10
 
+[node name="Profile" parent="DisplayAreaContainer/MainMargin" instance=ExtResource("8_7glnt")]
+layout_mode = 2
+
 [node name="FooterContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 2
+anchors_preset = -1
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -85.0
-offset_right = 1365.0
-offset_bottom = -8.0
+offset_right = 1788.0
+offset_bottom = -7.0
 grow_vertical = 0
 metadata/_edit_use_anchors_ = true
 
