@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ToteschaMinecraftLauncher;
 
-public class ToteschaSettings
+public class ToteschaSettingsArchived
 {
     public string ServerURL { get; set; }
     public string MinecraftInstallationPath { get; set; }

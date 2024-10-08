@@ -16,7 +16,7 @@ using static ToteschaMinecraftLauncher.Scripts.UIHelpers.LoginHelper;
 #nullable enable
 public partial class LauncherWindow : Control
 {
-	public ToteschaSettings? ToteschaSettings { get; set; }
+	public ToteschaSettingsArchived? ToteschaSettings { get; set; }
 	public ServerDetails? ServerDetails { get; set; }
 	public Modpack? SelectedModpack { get; set; }
 	public MinecraftSession? Session { get; set; }
@@ -240,13 +240,13 @@ public partial class LauncherWindow : Control
 		{
 			try
 			{
-				ToteschaSettings = JsonConvert.DeserializeObject<ToteschaSettings>(contents);
+				ToteschaSettings = JsonConvert.DeserializeObject<ToteschaSettingsArchived>(contents);
 			}
 			catch
 			{ /*Do nothing = Null handle will take place on next line*/}
 		}
 
-		ToteschaSettings ??= new ToteschaSettings()
+		ToteschaSettings ??= new ToteschaSettingsArchived()
 		{
 			ForceDownload = false,
 			CloseLaucherAfterDownload = true,

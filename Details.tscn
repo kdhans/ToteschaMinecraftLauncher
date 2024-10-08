@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://bwbjim208a8if"]
+[gd_scene load_steps=6 format=3 uid="uid://bwbjim208a8if"]
 
 [ext_resource type="Texture2D" uid="uid://nvouidos3nt7" path="res://Backgrounds/detailsBackground.png" id="1_33joy"]
-[ext_resource type="Script" path="res://Scripts/Scenes/Details.cs" id="1_g3xkl"]
 [ext_resource type="FontFile" uid="uid://yrqiukp85q2w" path="res://Fonts/Minecrafter.Reg.ttf" id="2_k30ga"]
 [ext_resource type="FontFile" uid="uid://dcxc7ljpw0mfm" path="res://Fonts/Moderustic-Bold.ttf" id="3_imtkh"]
 [ext_resource type="FontFile" uid="uid://stsqy4jht3hn" path="res://Fonts/Moderustic-Light.ttf" id="4_ul15b"]
@@ -9,12 +8,12 @@
 
 [node name="Details" type="Control"]
 layout_mode = 3
-anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.667
+offset_right = -350.0
+offset_bottom = -0.250031
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_g3xkl")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 0

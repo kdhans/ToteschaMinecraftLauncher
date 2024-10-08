@@ -27,7 +27,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         private string _currentLauncherStatus = string.Empty;
 
         public Modpack Modpack { get; set; }
-        public ToteschaSettings Settings { get; set; }
+        public ToteschaSettingsArchived Settings { get; set; }
         public MinecraftSession Session { get; set; }
         public List<Modpack> InstalledModpacks { get; set; }
 

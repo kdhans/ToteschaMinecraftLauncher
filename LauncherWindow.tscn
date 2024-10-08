@@ -1,6 +1,5 @@
-[gd_scene load_steps=31 format=3 uid="uid://yhroynos75g3"]
+[gd_scene load_steps=26 format=3 uid="uid://yhroynos75g3"]
 
-[ext_resource type="Script" path="res://Scripts/Scenes/LauncherWindow.cs" id="1_cl8de"]
 [ext_resource type="Texture2D" uid="uid://cxu4vtvsuuens" path="res://Backgrounds/background.jpg" id="2_3hofw"]
 [ext_resource type="FontFile" uid="uid://yrqiukp85q2w" path="res://Fonts/Minecrafter.Reg.ttf" id="3_2b26k"]
 [ext_resource type="FontFile" uid="uid://bqgi1gwwi5wqm" path="res://Fonts/Moderustic-Medium.ttf" id="4_y14iu"]
@@ -11,7 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://dqthkps11uv5v" path="res://Icons/settings.png" id="9_87i3p"]
 [ext_resource type="Script" path="res://Scripts/Buttons/SettingsButton.cs" id="10_rq5yy"]
 [ext_resource type="Texture2D" uid="uid://bcwj2dm82mcx6" path="res://Icons/profile.png" id="11_bxr1p"]
-[ext_resource type="Script" path="res://Scripts/Buttons/LoginButton.cs" id="12_3q366"]
 [ext_resource type="FontFile" uid="uid://bjktst4no8gel" path="res://Fonts/Moderustic-Regular.ttf" id="12_cu1y2"]
 [ext_resource type="Script" path="res://Scripts/UIElements/ProgressBar.cs" id="13_w2v4s"]
 [ext_resource type="Texture2D" uid="uid://dv8mta0b8djeb" path="res://ButtonTextures/launchButton_normal.png" id="14_rd3gb"]
@@ -19,10 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://ck3hwp7jpi6n2" path="res://ButtonTextures/launchButton_hover.png" id="16_e80ia"]
 [ext_resource type="Texture2D" uid="uid://bhmqo2ofaihqq" path="res://ButtonTextures/launchButton_disabled.png" id="17_qyn4v"]
 [ext_resource type="Script" path="res://Scripts/Buttons/LaunchButton.cs" id="18_gv7l1"]
-[ext_resource type="Script" path="res://Scripts/UIHelpers/WebHelper.cs" id="19_s1xmo"]
-[ext_resource type="Script" path="res://Scripts/UIHelpers/FileHelper.cs" id="22_1ubk4"]
 [ext_resource type="PackedScene" uid="uid://0d8h8ffxuxrh" path="res://login.tscn" id="22_pjguh"]
-[ext_resource type="Script" path="res://Scripts/UIElements/FileDialogElement.cs" id="23_1ynyd"]
 
 [sub_resource type="Gradient" id="Gradient_iquy2"]
 offsets = PackedFloat32Array(1)
@@ -42,27 +37,26 @@ gradient = SubResource("Gradient_haq6t")
 
 [sub_resource type="LabelSettings" id="LabelSettings_igjpu"]
 font = ExtResource("3_2b26k")
-font_size = 60
+font_size = 70
 
 [sub_resource type="LabelSettings" id="LabelSettings_ddhe7"]
 font = ExtResource("3_2b26k")
-font_size = 18
+font_size = 22
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sshrp"]
 bg_color = Color(0.109804, 0.776471, 0, 1)
 
 [node name="LauncherWindow" type="Control"]
 clip_contents = true
-custom_minimum_size = Vector2(1400, 750)
+custom_minimum_size = Vector2(1800, 750)
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
+anchor_right = 1.144
 anchor_bottom = 1.0
+offset_right = -30.4001
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("1_cl8de")
 metadata/_edit_use_anchors_ = true
 
 [node name="Background" type="CanvasLayer" parent="."]
@@ -89,8 +83,11 @@ metadata/_edit_use_anchors_ = true
 
 [node name="TextureRect" type="TextureRect" parent="Header"]
 self_modulate = Color(0.517647, 0.658824, 0.831373, 1)
-offset_right = 1400.0
-offset_bottom = 157.0
+anchors_preset = -1
+anchor_right = 0.999375
+anchor_bottom = 0.164
+offset_right = 1.125
+offset_bottom = 2.0
 size_flags_horizontal = 3
 texture = ExtResource("2_3hofw")
 expand_mode = 3
@@ -102,29 +99,33 @@ anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 15.0
-offset_top = -37.5
+offset_top = -34.5
 offset_right = 1101.0
-offset_bottom = 22.5
+offset_bottom = 25.5
 grow_vertical = 2
 text = "Totescha SYNC LAUNCHER"
 label_settings = SubResource("LabelSettings_igjpu")
 
 [node name="Subtitle" type="Label" parent="Header/TextureRect"]
-layout_mode = 0
-offset_left = 27.0
-offset_top = 96.0
-offset_right = 415.0
-offset_bottom = 120.0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 28.0
+offset_top = 20.5
+offset_right = 416.0
+offset_bottom = 44.5
 text = "Created by MRCATCHPHRASE"
 label_settings = SubResource("LabelSettings_ddhe7")
 
 [node name="DisplayAreaContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 0.675
-offset_top = 162.0
-offset_bottom = 110.75
+anchor_right = 0.887
+anchor_bottom = 1.0
+offset_top = 138.0
+offset_right = 0.454346
+offset_bottom = -112.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -148,6 +149,18 @@ icon = ExtResource("5_qmna6")
 flat = true
 alignment = 0
 script = ExtResource("6_u8lij")
+
+[node name="LoginButton" type="Button" parent="DisplayAreaContainer/MenuMargin/MenuContainer"]
+custom_minimum_size = Vector2(230, 65)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("4_y14iu")
+theme_override_font_sizes/font_size = 20
+text = "      My Profile
+"
+icon = ExtResource("11_bxr1p")
+flat = true
+alignment = 0
 
 [node name="DetailsButton" type="Button" parent="DisplayAreaContainer/MenuMargin/MenuContainer"]
 custom_minimum_size = Vector2(230, 65)
@@ -188,27 +201,15 @@ offset_bottom = -8.0
 grow_vertical = 0
 metadata/_edit_use_anchors_ = true
 
-[node name="LoginMargin" type="MarginContainer" parent="FooterContainer"]
+[node name="FooterMenuMargin" type="MarginContainer" parent="FooterContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 20
+theme_override_constants/margin_left = 270
 theme_override_constants/margin_right = 20
-
-[node name="LoginButton" type="Button" parent="FooterContainer/LoginMargin"]
-custom_minimum_size = Vector2(230, 65)
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_fonts/font = ExtResource("4_y14iu")
-theme_override_font_sizes/font_size = 20
-text = "      Sign In"
-icon = ExtResource("11_bxr1p")
-flat = true
-alignment = 0
-script = ExtResource("12_3q366")
 
 [node name="MarginContainer" type="MarginContainer" parent="FooterContainer"]
 layout_mode = 2
 size_flags_vertical = 8
-theme_override_constants/margin_left = 35
+theme_override_constants/margin_left = 25
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
@@ -224,7 +225,7 @@ text = " Press \"Play\" to begin!"
 autowrap_mode = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="FooterContainer/MarginContainer/ProgressBarContainer"]
-custom_minimum_size = Vector2(800, 40)
+custom_minimum_size = Vector2(1185, 40)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/fill = SubResource("StyleBoxFlat_sshrp")
@@ -256,19 +257,17 @@ vertical_alignment = 2
 
 [node name="LoginWindow" parent="." instance=ExtResource("22_pjguh")]
 visible = false
+script = null
 
 [node name="WebHelper" type="Node" parent="."]
-script = ExtResource("19_s1xmo")
 
 [node name="FileHelper" type="Node" parent="."]
-script = ExtResource("22_1ubk4")
 
 [node name="FileDialogElement" type="FileDialog" parent="."]
 title = "Open a Directory"
 initial_position = 1
-size = Vector2i(444, 159)
+size = Vector2i(444, 175)
 ok_button_text = "Select Current Folder"
 file_mode = 2
 access = 2
 use_native_dialog = true
-script = ExtResource("23_1ynyd")

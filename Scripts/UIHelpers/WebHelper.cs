@@ -12,7 +12,7 @@ namespace ToteschaMinecraftLauncher;
 
 public partial class WebHelper : Node
 {
-	private static System.Net.Http.HttpClient _httpClient = new System.Net.Http.HttpClient();
+	private static System.Net.Http.HttpClient? _httpClient = null;
 	public override void _Ready()
 	{
 		base._Ready();
@@ -31,15 +31,18 @@ public partial class WebHelper : Node
 			if (Uri.TryCreate(url, UriKind.Absolute, out var uriResult) && 
 			   (uriResult.Scheme == Uri.UriSchemeHttp ||uriResult.Scheme == Uri.UriSchemeHttps))
 			{
-				_httpClient.DefaultRequestHeaders.Add("User-Agent", "ToteschaLauncher/1.0.0");
-				_httpClient.DefaultRequestHeaders.Add("Connection", "keep-alive");
-				//_httpClient.DefaultRequestVersion = HttpVersion.Version20;
-				_httpClient.Timeout = TimeSpan.FromSeconds(30);
-
-				using (var httpRequest = await _httpClient.GetAsync(url))
+				using (_httpClient = new System.Net.Http.HttpClient())
 				{
-					var stringData = await httpRequest.Content.ReadAsStringAsync();
-					data = JsonConvert.DeserializeObject<T>(stringData)!;
+					_httpClient.DefaultRequestHeaders.Add("User-Agent", "ToteschaLauncher/1.0.0");
+					_httpClient.DefaultRequestHeaders.Add("Connection", "keep-alive");
+					//_httpClient.DefaultRequestVersion = HttpVersion.Version20;
+					_httpClient.Timeout = TimeSpan.FromSeconds(30);
+
+					using (var httpRequest = await _httpClient.GetAsync(url))
+					{
+						var stringData = await httpRequest.Content.ReadAsStringAsync();
+						data = JsonConvert.DeserializeObject<T>(stringData)!;
+					}
 				}
 			}
 			else if (File.Exists(url))
@@ -64,27 +67,30 @@ public partial class WebHelper : Node
 		var response = new ToteschaHttpResponse<ImageTexture>();
 		try
 		{
-			var httpRequest = await _httpClient.GetAsync(url);
-			var byteResult = await httpRequest.Content.ReadAsByteArrayAsync();			
+			using (_httpClient = new System.Net.Http.HttpClient())
+			{
+				var httpRequest = await _httpClient.GetAsync(url);
+				var byteResult = await httpRequest.Content.ReadAsByteArrayAsync();
 
-			var isPng = url.ToLower().EndsWith("png");
-			var isJpeg = url.ToLower().EndsWith("jpeg");
-			var isWebp = url.ToLower().EndsWith("webp"); 
-			
-			var image = new Image();
-			
-			Error error;
+				var isPng = url.ToLower().EndsWith("png");
+				var isJpeg = url.ToLower().EndsWith("jpeg");
+				var isWebp = url.ToLower().EndsWith("webp");
 
-			error = (isPng) ? image.LoadPngFromBuffer(byteResult) : 
-					(isJpeg) ? image.LoadJpgFromBuffer(byteResult) : 
-					(isWebp) ? image.LoadWebpFromBuffer(byteResult) :
-					Error.Unavailable;
+				var image = new Image();
 
-			if (image == null || error != Error.Ok)
-				throw new NullReferenceException();
-			
-			
-			response.Data = ImageTexture.CreateFromImage(image);
+				Error error;
+
+				error = (isPng) ? image.LoadPngFromBuffer(byteResult) :
+						(isJpeg) ? image.LoadJpgFromBuffer(byteResult) :
+						(isWebp) ? image.LoadWebpFromBuffer(byteResult) :
+						Error.Unavailable;
+
+				if (image == null || error != Error.Ok)
+					throw new NullReferenceException();
+
+
+				response.Data = ImageTexture.CreateFromImage(image);
+			}
 		}
 		catch
 		{

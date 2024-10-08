@@ -1,0 +1,1280 @@
+[gd_scene load_steps=4 format=3 uid="uid://hlu6ujy0oov6"]
+
+[ext_resource type="Texture2D" uid="uid://cgsxghkuslbna" path="res://Backgrounds/newsBackground.png" id="1_pjsww"]
+[ext_resource type="FontFile" uid="uid://yrqiukp85q2w" path="res://Fonts/Minecrafter.Reg.ttf" id="2_4f8m7"]
+[ext_resource type="Texture2D" uid="uid://cxa8dwmrl2n3c" path="res://Backgrounds/mouse.png" id="3_df2lp"]
+
+[node name="Profile" type="Control"]
+layout_mode = 3
+anchor_right = 1.0
+anchor_bottom = 0.667
+offset_right = -350.0
+offset_bottom = -0.25
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 2
+offset_top = 145.0
+offset_right = 1450.0
+offset_bottom = 495.0
+texture = ExtResource("1_pjsww")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 1270.0
+offset_bottom = 457.0
+
+[node name="ProfileLabel" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_4f8m7")
+theme_override_font_sizes/font_size = 24
+text = "Minecraft Profile"
+vertical_alignment = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+vertical_scroll_mode = 0
+
+[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer"]
+custom_minimum_size = Vector2(1060, 55)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="KeybindingLabel" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_4f8m7")
+theme_override_font_sizes/font_size = 24
+text = "Keybindings"
+vertical_alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 275)
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="KeyboardNode" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 12.0
+offset_top = 156.0
+offset_right = 12.0
+offset_bottom = 156.0
+
+[node name="FunctionKeys" type="Control" parent="KeyboardNode"]
+anchors_preset = 0
+
+[node name="ButtonF1" type="Button" parent="KeyboardNode/FunctionKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 85.0
+offset_top = 13.5
+offset_right = 130.0
+offset_bottom = 58.5
+text = "F1"
+
+[node name="ButtonF2" type="Button" parent="KeyboardNode/FunctionKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 137.0
+offset_top = 13.5
+offset_right = 182.0
+offset_bottom = 58.5
+text = "F2
+"
+
+[node name="ButtonF3" type="Button" parent="KeyboardNode/FunctionKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 189.0
+offset_top = 13.5
+offset_right = 234.0
+offset_bottom = 58.5
+text = "F3"
+
+[node name="ButtonF4" type="Button" parent="KeyboardNode/FunctionKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 241.0
+offset_top = 13.5
+offset_right = 286.0
+offset_bottom = 58.5
+text = "F4"
+
+[node name="ButtonF5" type="Button" parent="KeyboardNode/FunctionKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 337.0
+offset_top = 13.5
+offset_right = 382.0
+offset_bottom = 58.5
+text = "F5"
+
+[node name="ButtonF6" type="Button" parent="KeyboardNode/FunctionKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 389.0
+offset_top = 13.5
+offset_right = 434.0
+offset_bottom = 58.5
+text = "F6
+"
+
+[node name="ButtonF7" type="Button" parent="KeyboardNode/FunctionKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 441.0
+offset_top = 13.5
+offset_right = 486.0
+offset_bottom = 58.5
+text = "F7"
+
+[node name="ButtonF8" type="Button" parent="KeyboardNode/FunctionKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 493.0
+offset_top = 13.5
+offset_right = 538.0
+offset_bottom = 58.5
+text = "F8"
+
+[node name="ButtonF9" type="Button" parent="KeyboardNode/FunctionKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 583.0
+offset_top = 13.5
+offset_right = 628.0
+offset_bottom = 58.5
+text = "F9"
+
+[node name="ButtonF10" type="Button" parent="KeyboardNode/FunctionKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 635.0
+offset_top = 13.5
+offset_right = 680.0
+offset_bottom = 58.5
+text = "F10
+"
+
+[node name="ButtonF11" type="Button" parent="KeyboardNode/FunctionKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 687.0
+offset_top = 13.5
+offset_right = 732.0
+offset_bottom = 58.5
+text = "F11"
+
+[node name="ButtonF12" type="Button" parent="KeyboardNode/FunctionKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 739.0
+offset_top = 13.5
+offset_right = 784.0
+offset_bottom = 58.5
+text = "F12"
+
+[node name="Numpad" type="Control" parent="KeyboardNode"]
+anchors_preset = 0
+offset_left = 29.0
+offset_right = 69.0
+offset_bottom = 40.0
+
+[node name="ButtonNumLock" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 985.0
+offset_top = 63.58
+offset_right = 1030.0
+offset_bottom = 108.58
+theme_override_font_sizes/font_size = 10
+text = "Num
+Lock"
+
+[node name="ButtonNumSlash" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1037.0
+offset_top = 63.58
+offset_right = 1082.0
+offset_bottom = 108.58
+text = "/"
+
+[node name="ButtonNum*" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1089.0
+offset_top = 63.58
+offset_right = 1134.0
+offset_bottom = 108.58
+text = "*"
+
+[node name="ButtonNum-" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1141.0
+offset_top = 63.58
+offset_right = 1186.0
+offset_bottom = 108.58
+text = "-"
+
+[node name="ButtonNum7" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 985.0
+offset_top = 113.58
+offset_right = 1030.0
+offset_bottom = 158.58
+text = "7"
+
+[node name="ButtonNum8" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1037.0
+offset_top = 113.58
+offset_right = 1082.0
+offset_bottom = 158.58
+text = "8"
+
+[node name="ButtonNum9" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1089.0
+offset_top = 113.58
+offset_right = 1134.0
+offset_bottom = 158.58
+text = "9"
+
+[node name="ButtonNum4" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 985.0
+offset_top = 163.58
+offset_right = 1030.0
+offset_bottom = 208.58
+text = "4"
+
+[node name="ButtonNum5" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1037.0
+offset_top = 163.58
+offset_right = 1082.0
+offset_bottom = 208.58
+text = "5"
+
+[node name="ButtonNum6" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1089.0
+offset_top = 163.58
+offset_right = 1134.0
+offset_bottom = 208.58
+text = "6"
+
+[node name="ButtonNum1" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 985.0
+offset_top = 213.58
+offset_right = 1030.0
+offset_bottom = 258.58
+text = "1"
+
+[node name="ButtonNum2" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1037.0
+offset_top = 213.58
+offset_right = 1082.0
+offset_bottom = 258.58
+text = "2"
+
+[node name="ButtonNum3" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1089.0
+offset_top = 213.58
+offset_right = 1134.0
+offset_bottom = 258.58
+text = "3"
+
+[node name="ButtonNum0" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 985.0
+offset_top = 264.08
+offset_right = 1082.0
+offset_bottom = 309.08
+text = "0"
+
+[node name="ButtonNumPeriod" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1089.0
+offset_top = 263.58
+offset_right = 1134.0
+offset_bottom = 308.58
+text = "."
+
+[node name="ButtonNum+" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1141.0
+offset_top = 115.08
+offset_right = 1186.0
+offset_bottom = 211.08
+text = "+"
+
+[node name="ButtonNumEnter" type="Button" parent="KeyboardNode/Numpad"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1141.0
+offset_top = 214.08
+offset_right = 1186.0
+offset_bottom = 310.08
+theme_override_font_sizes/font_size = 10
+text = "Enter"
+
+[node name="Mouse" type="Control" parent="KeyboardNode"]
+anchors_preset = 0
+offset_left = -6.0
+offset_top = -8.0
+offset_right = 34.0
+offset_bottom = 32.0
+
+[node name="ButtonMouseLeft" type="Button" parent="KeyboardNode/Mouse"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1271.0
+offset_top = 72.08
+offset_right = 1329.0
+offset_bottom = 272.08
+theme_override_font_sizes/font_size = 12
+text = "Left 
+Mouse
+Button"
+
+[node name="ButtonMouseRight" type="Button" parent="KeyboardNode/Mouse"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1346.0
+offset_top = 72.08
+offset_right = 1404.0
+offset_bottom = 272.08
+theme_override_font_sizes/font_size = 12
+text = "Right 
+Mouse
+Button"
+
+[node name="StandardKeyboard" type="Control" parent="KeyboardNode"]
+anchors_preset = 0
+
+[node name="ButtonTilde" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 24.0
+offset_top = 71.5
+offset_right = 69.0
+offset_bottom = 116.5
+text = "`~"
+
+[node name="ButtonEsc" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 24.0
+offset_top = 12.5
+offset_right = 69.0
+offset_bottom = 57.5
+text = "Esc"
+
+[node name="Button1" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 77.0
+offset_top = 71.5
+offset_right = 122.0
+offset_bottom = 116.5
+text = "1"
+
+[node name="Button2" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 129.0
+offset_top = 71.5
+offset_right = 174.0
+offset_bottom = 116.5
+text = "2
+"
+
+[node name="Button3" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 181.0
+offset_top = 71.5
+offset_right = 226.0
+offset_bottom = 116.5
+text = "3"
+
+[node name="Button4" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 233.0
+offset_top = 71.5
+offset_right = 278.0
+offset_bottom = 116.5
+text = "4"
+
+[node name="Button5" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 285.0
+offset_top = 71.5
+offset_right = 330.0
+offset_bottom = 116.5
+text = "5
+"
+
+[node name="Button6" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 337.0
+offset_top = 71.5
+offset_right = 382.0
+offset_bottom = 116.5
+text = "6"
+
+[node name="Button7" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 390.0
+offset_top = 71.5
+offset_right = 435.0
+offset_bottom = 116.5
+text = "7"
+
+[node name="Button8" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 442.0
+offset_top = 71.5
+offset_right = 487.0
+offset_bottom = 116.5
+text = "8
+"
+
+[node name="Button9" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 494.0
+offset_top = 71.5
+offset_right = 539.0
+offset_bottom = 116.5
+text = "9"
+
+[node name="Button0" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 546.0
+offset_top = 71.5
+offset_right = 591.0
+offset_bottom = 116.5
+text = "0"
+
+[node name="Button-" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 598.0
+offset_top = 71.5
+offset_right = 643.0
+offset_bottom = 116.5
+text = "- _
+"
+
+[node name="Button=" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 650.0
+offset_top = 71.5
+offset_right = 695.0
+offset_bottom = 116.5
+text = "= +"
+
+[node name="ButtonQ" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 103.0
+offset_top = 122.5
+offset_right = 148.0
+offset_bottom = 167.5
+text = "Q"
+
+[node name="ButtonW" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 155.0
+offset_top = 122.5
+offset_right = 200.0
+offset_bottom = 167.5
+text = "W
+"
+
+[node name="ButtonE" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 207.0
+offset_top = 122.5
+offset_right = 252.0
+offset_bottom = 167.5
+text = "E"
+
+[node name="ButtonR" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 259.0
+offset_top = 122.5
+offset_right = 304.0
+offset_bottom = 167.5
+text = "R
+"
+
+[node name="ButtonT" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 311.0
+offset_top = 122.5
+offset_right = 356.0
+offset_bottom = 167.5
+text = "T
+"
+
+[node name="ButtonY" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 363.0
+offset_top = 122.5
+offset_right = 408.0
+offset_bottom = 167.5
+text = "Y
+"
+
+[node name="ButtonU" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 416.0
+offset_top = 122.5
+offset_right = 461.0
+offset_bottom = 167.5
+text = "U"
+
+[node name="ButtonI" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 468.0
+offset_top = 122.5
+offset_right = 513.0
+offset_bottom = 167.5
+text = "I
+"
+
+[node name="ButtonO" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 520.0
+offset_top = 122.5
+offset_right = 565.0
+offset_bottom = 167.5
+text = "O"
+
+[node name="ButtonP" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 572.0
+offset_top = 122.5
+offset_right = 617.0
+offset_bottom = 167.5
+text = "P"
+
+[node name="Button[" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 624.0
+offset_top = 122.5
+offset_right = 669.0
+offset_bottom = 167.5
+text = "[ {
+"
+
+[node name="Button]" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 676.0
+offset_top = 122.5
+offset_right = 721.0
+offset_bottom = 167.5
+text = "] }"
+
+[node name="Button\\" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 729.0
+offset_top = 122.5
+offset_right = 784.0
+offset_bottom = 167.5
+text = "\\ |"
+
+[node name="ButtonA" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 116.0
+offset_top = 171.5
+offset_right = 161.0
+offset_bottom = 216.5
+text = "A"
+
+[node name="ButtonS" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 168.0
+offset_top = 171.5
+offset_right = 213.0
+offset_bottom = 216.5
+text = "S"
+
+[node name="ButtonD" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 220.0
+offset_top = 171.5
+offset_right = 265.0
+offset_bottom = 216.5
+text = "D"
+
+[node name="ButtonF" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 272.0
+offset_top = 171.5
+offset_right = 317.0
+offset_bottom = 216.5
+text = "F
+"
+
+[node name="ButtonG" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 324.0
+offset_top = 171.5
+offset_right = 369.0
+offset_bottom = 216.5
+text = "G"
+
+[node name="ButtonH" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 376.0
+offset_top = 171.5
+offset_right = 421.0
+offset_bottom = 216.5
+text = "H"
+
+[node name="ButtonJ" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 429.0
+offset_top = 171.5
+offset_right = 474.0
+offset_bottom = 216.5
+text = "J"
+
+[node name="ButtonK" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 481.0
+offset_top = 171.5
+offset_right = 526.0
+offset_bottom = 216.5
+text = "K"
+
+[node name="ButtonL" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 533.0
+offset_top = 171.5
+offset_right = 578.0
+offset_bottom = 216.5
+text = "L"
+
+[node name="Button;" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 585.0
+offset_top = 171.5
+offset_right = 630.0
+offset_bottom = 216.5
+text = "; :"
+
+[node name="Button\'" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 637.0
+offset_top = 171.5
+offset_right = 682.0
+offset_bottom = 216.5
+text = "' \""
+
+[node name="ButtonZ" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 139.0
+offset_top = 221.5
+offset_right = 184.0
+offset_bottom = 266.5
+text = "Z"
+
+[node name="ButtonX" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 191.0
+offset_top = 221.5
+offset_right = 236.0
+offset_bottom = 266.5
+text = "X"
+
+[node name="ButtonC" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 243.0
+offset_top = 221.5
+offset_right = 288.0
+offset_bottom = 266.5
+text = "C"
+
+[node name="ButtonV" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 295.0
+offset_top = 221.5
+offset_right = 340.0
+offset_bottom = 266.5
+text = "V
+"
+
+[node name="ButtonB" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 347.0
+offset_top = 221.5
+offset_right = 392.0
+offset_bottom = 266.5
+text = "B"
+
+[node name="ButtonN" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 399.0
+offset_top = 221.5
+offset_right = 444.0
+offset_bottom = 266.5
+text = "N"
+
+[node name="ButtonM" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 452.0
+offset_top = 221.5
+offset_right = 497.0
+offset_bottom = 266.5
+text = "M"
+
+[node name="Button<" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 504.0
+offset_top = 221.5
+offset_right = 549.0
+offset_bottom = 266.5
+text = ", <"
+
+[node name="Button>" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 556.0
+offset_top = 221.5
+offset_right = 601.0
+offset_bottom = 266.5
+text = ". >"
+
+[node name="Button?" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 608.0
+offset_top = 221.5
+offset_right = 653.0
+offset_bottom = 266.5
+text = "/ ?"
+
+[node name="ButtonRShift" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 660.0
+offset_top = 221.5
+offset_right = 786.0
+offset_bottom = 266.5
+text = "R Shift
+"
+
+[node name="ButtonEnter" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 689.0
+offset_top = 171.5
+offset_right = 786.0
+offset_bottom = 216.5
+text = "Enter"
+
+[node name="ButtonCaps" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 24.0
+offset_top = 171.5
+offset_right = 109.0
+offset_bottom = 216.5
+text = "Caps"
+
+[node name="ButtonLShift" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 24.0
+offset_top = 221.5
+offset_right = 131.0
+offset_bottom = 266.5
+text = "L Shift"
+
+[node name="ButtonLCtrl" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 24.0
+offset_top = 271.5
+offset_right = 92.0
+offset_bottom = 316.5
+text = "L Ctrl
+"
+
+[node name="ButtonLAlt" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 100.0
+offset_top = 271.5
+offset_right = 168.0
+offset_bottom = 316.5
+text = "L Alt
+"
+
+[node name="ButtonRAlt" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 564.0
+offset_top = 271.5
+offset_right = 632.0
+offset_bottom = 316.5
+text = "R Alt
+"
+
+[node name="ButtonRCtrl" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 716.0
+offset_top = 271.5
+offset_right = 784.0
+offset_bottom = 316.5
+text = "R Ctrl
+"
+
+[node name="ButtonMenu" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 640.0
+offset_top = 271.5
+offset_right = 708.0
+offset_bottom = 316.5
+text = "Menu
+"
+
+[node name="ButtonSpace" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 176.0
+offset_top = 272.0
+offset_right = 556.0
+offset_bottom = 317.0
+text = "Space"
+
+[node name="ButtonTab" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 24.0
+offset_top = 121.5
+offset_right = 96.0
+offset_bottom = 166.5
+text = "Tab"
+
+[node name="ButtonBack" type="Button" parent="KeyboardNode/StandardKeyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 704.0
+offset_top = 72.5
+offset_right = 784.0
+offset_bottom = 117.5
+theme_override_font_sizes/font_size = 14
+text = "Backspace"
+
+[node name="PageKeys" type="Control" parent="KeyboardNode"]
+anchors_preset = 0
+offset_left = 14.0
+offset_right = 14.0
+
+[node name="ButtonScrollLock" type="Button" parent="KeyboardNode/PageKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 862.0
+offset_top = 13.5
+offset_right = 907.0
+offset_bottom = 58.5
+theme_override_font_sizes/font_size = 10
+text = "Scroll
+Lock"
+
+[node name="ButtonPause" type="Button" parent="KeyboardNode/PageKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 914.0
+offset_top = 13.5
+offset_right = 959.0
+offset_bottom = 58.5
+theme_override_font_sizes/font_size = 10
+text = "Pause"
+
+[node name="ButtonInsert" type="Button" parent="KeyboardNode/PageKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 812.0
+offset_top = 72.5
+offset_right = 857.0
+offset_bottom = 117.5
+theme_override_font_sizes/font_size = 10
+text = "Insert
+"
+
+[node name="ButtonHome" type="Button" parent="KeyboardNode/PageKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 862.0
+offset_top = 72.5
+offset_right = 907.0
+offset_bottom = 117.5
+theme_override_font_sizes/font_size = 10
+text = "Home"
+
+[node name="ButtonPageUp" type="Button" parent="KeyboardNode/PageKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 913.0
+offset_top = 72.5
+offset_right = 958.0
+offset_bottom = 117.5
+theme_override_font_sizes/font_size = 10
+text = "Page
+Up"
+
+[node name="ButtonDelete" type="Button" parent="KeyboardNode/PageKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 812.0
+offset_top = 122.5
+offset_right = 857.0
+offset_bottom = 167.5
+theme_override_font_sizes/font_size = 10
+text = "Delete
+"
+
+[node name="ButtonEnd" type="Button" parent="KeyboardNode/PageKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 862.0
+offset_top = 122.5
+offset_right = 907.0
+offset_bottom = 167.5
+theme_override_font_sizes/font_size = 10
+text = "End"
+
+[node name="ButtonPageDown" type="Button" parent="KeyboardNode/PageKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 913.0
+offset_top = 122.5
+offset_right = 958.0
+offset_bottom = 167.5
+theme_override_font_sizes/font_size = 10
+text = "Page
+Down"
+
+[node name="ButtonUp" type="Button" parent="KeyboardNode/PageKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 862.0
+offset_top = 220.5
+offset_right = 907.0
+offset_bottom = 265.5
+theme_override_font_sizes/font_size = 10
+text = "Up"
+
+[node name="ButtonLeft" type="Button" parent="KeyboardNode/PageKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 812.0
+offset_top = 270.5
+offset_right = 857.0
+offset_bottom = 315.5
+theme_override_font_sizes/font_size = 10
+text = "Left
+"
+
+[node name="ButtonDown" type="Button" parent="KeyboardNode/PageKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 862.0
+offset_top = 270.5
+offset_right = 907.0
+offset_bottom = 315.5
+theme_override_font_sizes/font_size = 10
+text = "Down"
+
+[node name="ButtonRight" type="Button" parent="KeyboardNode/PageKeys"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 913.0
+offset_top = 270.5
+offset_right = 958.0
+offset_bottom = 315.5
+theme_override_font_sizes/font_size = 10
+text = "Right"
+
+[node name="TextureRect" type="TextureRect" parent="KeyboardNode"]
+visible = false
+layout_mode = 0
+offset_left = 1233.0
+offset_top = 50.0
+offset_right = 1273.0
+offset_bottom = 90.0
+scale = Vector2(0.44, 0.48)
+texture = ExtResource("3_df2lp")

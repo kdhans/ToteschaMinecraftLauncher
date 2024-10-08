@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dwsj703wd56jq"]
+[gd_scene load_steps=7 format=3 uid="uid://dwsj703wd56jq"]
 
 [ext_resource type="Texture2D" uid="uid://d2ahhwrqiphui" path="res://ButtonTextures/modpackButton_normal.png" id="1_7x6dj"]
 [ext_resource type="Texture2D" uid="uid://dmeineyqoyty1" path="res://ButtonTextures/modpackButton_selected.png" id="2_mbo3f"]
 [ext_resource type="Texture2D" uid="uid://d38gji3yhxv36" path="res://ButtonTextures/modpackButton_highlighted.png" id="3_8ktfm"]
-[ext_resource type="Script" path="res://Scripts/Buttons/ModpackButton.cs" id="4_oq2at"]
 [ext_resource type="FontFile" uid="uid://dcxc7ljpw0mfm" path="res://Fonts/Moderustic-Bold.ttf" id="5_mifc1"]
 [ext_resource type="FontFile" uid="uid://stsqy4jht3hn" path="res://Fonts/Moderustic-Light.ttf" id="6_pdeix"]
 
@@ -20,7 +19,6 @@ texture_normal = ExtResource("1_7x6dj")
 texture_pressed = ExtResource("2_mbo3f")
 texture_hover = ExtResource("3_8ktfm")
 stretch_mode = 3
-script = ExtResource("4_oq2at")
 
 [node name="ButtonHContainer" type="HBoxContainer" parent="."]
 layout_mode = 1

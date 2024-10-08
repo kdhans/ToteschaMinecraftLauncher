@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=3 uid="uid://cosddkg2m7ijy"]
+[gd_scene load_steps=7 format=3 uid="uid://cosddkg2m7ijy"]
 
-[ext_resource type="Script" path="res://Scripts/Scenes/Home.cs" id="1_8hesw"]
 [ext_resource type="Texture2D" uid="uid://cgsxghkuslbna" path="res://Backgrounds/newsBackground.png" id="2_5r0so"]
 [ext_resource type="FontFile" uid="uid://yrqiukp85q2w" path="res://Fonts/Minecrafter.Reg.ttf" id="3_nf2cq"]
 [ext_resource type="Texture2D" uid="uid://cbe1dpeg7wbwl" path="res://ButtonTextures/reloadButton_normal.png" id="4_o48n4"]
@@ -10,12 +9,12 @@
 
 [node name="Home" type="Control"]
 layout_mode = 3
-anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.667
+offset_right = -350.0
+offset_bottom = -0.250031
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_8hesw")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 2
@@ -26,8 +25,8 @@ texture = ExtResource("2_5r0so")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_right = 1070.0
-offset_bottom = 412.0
+offset_right = 1270.0
+offset_bottom = 457.0
 
 [node name="ModpackSelectLabel" type="Label" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 35)
@@ -82,5 +81,3 @@ size_flags_vertical = 4
 bbcode_enabled = true
 fit_content = true
 autowrap_mode = 2
-
-[node name="Node" type="Node" parent="."]

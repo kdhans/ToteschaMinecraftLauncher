@@ -5,7 +5,7 @@ using ToteschaMinecraftLauncher;
 
 public partial class Settings : Control
 {
-	private ToteschaSettings toteschaSettings;
+	private ToteschaSettingsArchived toteschaSettings;
 	private HSlider ramSlider;
 	private LineEdit directoryField;
 	private LineEdit serverField;

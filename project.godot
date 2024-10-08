@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Totescha Sync Launcher"
 run/main_scene="res://LauncherWindow.tscn"
-config/features=PackedStringArray("4.2", "C#", "GL Compatibility")
+config/features=PackedStringArray("4.3", "C#", "GL Compatibility")
 run/low_processor_mode=true
 boot_splash/show_image=false
 config/icon="res://Icons/icon.png"
@@ -21,7 +21,7 @@ config/windows_native_icon="res://Icons/minecraft-block.ico"
 
 [display]
 
-window/size/viewport_width=1400
+window/size/viewport_width=1800
 window/size/viewport_height=750
 window/size/resizable=false
 window/subwindows/embed_subwindows=false

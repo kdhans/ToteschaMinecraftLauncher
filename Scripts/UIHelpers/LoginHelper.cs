@@ -49,7 +49,6 @@ namespace ToteschaMinecraftLauncher.Scripts.UIHelpers
 			public bool ensureLegacyEnabled { get; set; }
 		}
 
-		private static HttpClient client = new HttpClient();
 		private static async Task<PPFTLoginRecord> GetPPFTLoginRecordAsync(HttpClient client)
 		{
 			string ppftValue = string.Empty, loginUrl = string.Empty;

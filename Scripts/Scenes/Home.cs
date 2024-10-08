@@ -65,10 +65,10 @@ public partial class Home : Control
 		GetNode<TextureRect>("Background").Visible = true;
 	}
 
-	private void ReloadModpacks(List<Modpack>? modpacks, ToteschaSettings toteschaSettings)
+	private void ReloadModpacks(List<Modpack>? modpacks, ToteschaSettingsArchived toteschaSettings)
 	{
 		if (toteschaSettings == null)
-			toteschaSettings = new ToteschaSettings();
+			toteschaSettings = new ToteschaSettingsArchived();
 
 		if (modpacks == null || modpacks.Count == 0)
 			return;
