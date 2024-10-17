@@ -44,23 +44,28 @@ font_size = 22
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sshrp"]
 bg_color = Color(0.109804, 0.776471, 0, 1)
 
-[node name="LauncherWindow" type="Control"]
+[node name="MainControl" type="Control"]
 clip_contents = true
 custom_minimum_size = Vector2(1800, 900)
 layout_mode = 3
-anchor_right = 1.144
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -259.2
+offset_right = 0.000244141
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 metadata/_edit_use_anchors_ = true
 
-[node name="Background" type="CanvasLayer" parent="."]
+[node name="LauncherWindow" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 1800.0
+offset_bottom = 898.0
+
+[node name="Background" type="CanvasLayer" parent="LauncherWindow"]
 layer = -5
 
-[node name="TextureRect" type="TextureRect" parent="Background"]
+[node name="TextureRect" type="TextureRect" parent="LauncherWindow/Background"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -68,18 +73,18 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_8rxm3")
 
-[node name="Menu Background" type="CanvasLayer" parent="."]
+[node name="Menu Background" type="CanvasLayer" parent="LauncherWindow"]
 layer = -1
 
-[node name="TextureRect" type="TextureRect" parent="Menu Background"]
+[node name="TextureRect" type="TextureRect" parent="LauncherWindow/Menu Background"]
 offset_right = 270.0
 offset_bottom = 900.0
 texture = SubResource("GradientTexture2D_uluf2")
 metadata/_edit_use_anchors_ = true
 
-[node name="Header" type="CanvasLayer" parent="."]
+[node name="Header" type="CanvasLayer" parent="LauncherWindow"]
 
-[node name="TextureRect" type="TextureRect" parent="Header"]
+[node name="TextureRect" type="TextureRect" parent="LauncherWindow/Header"]
 self_modulate = Color(0.517647, 0.658824, 0.831373, 1)
 anchors_preset = -1
 anchor_right = 0.999375
@@ -91,7 +96,7 @@ texture = ExtResource("2_3hofw")
 expand_mode = 3
 metadata/_edit_use_anchors_ = true
 
-[node name="Title" type="Label" parent="Header/TextureRect"]
+[node name="Title" type="Label" parent="LauncherWindow/Header/TextureRect"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -104,7 +109,7 @@ grow_vertical = 2
 text = "Totescha SYNC LAUNCHER"
 label_settings = SubResource("LabelSettings_igjpu")
 
-[node name="Subtitle" type="Label" parent="Header/TextureRect"]
+[node name="Subtitle" type="Label" parent="LauncherWindow/Header/TextureRect"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.5
@@ -116,28 +121,28 @@ offset_bottom = 44.5
 text = "Created by MRCATCHPHRASE"
 label_settings = SubResource("LabelSettings_ddhe7")
 
-[node name="DisplayAreaContainer" type="HBoxContainer" parent="."]
+[node name="DisplayAreaContainer" type="HBoxContainer" parent="LauncherWindow"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.999
 anchor_bottom = 1.0
 offset_top = 150.0
-offset_right = 1.79993
-offset_bottom = -100.0
+offset_right = 279.04
+offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="MenuMargin" type="MarginContainer" parent="DisplayAreaContainer"]
+[node name="MenuMargin" type="MarginContainer" parent="LauncherWindow/DisplayAreaContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 
-[node name="MenuContainer" type="VBoxContainer" parent="DisplayAreaContainer/MenuMargin"]
+[node name="MenuContainer" type="VBoxContainer" parent="LauncherWindow/DisplayAreaContainer/MenuMargin"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="HomeButton" type="Button" parent="DisplayAreaContainer/MenuMargin/MenuContainer"]
+[node name="HomeButton" type="Button" parent="LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer"]
 custom_minimum_size = Vector2(230, 65)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_y14iu")
@@ -147,7 +152,7 @@ icon = ExtResource("5_qmna6")
 flat = true
 alignment = 0
 
-[node name="KeybindButton" type="Button" parent="DisplayAreaContainer/MenuMargin/MenuContainer"]
+[node name="KeybindButton" type="Button" parent="LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer"]
 custom_minimum_size = Vector2(230, 65)
 layout_mode = 2
 size_flags_vertical = 4
@@ -159,7 +164,7 @@ icon = ExtResource("5_n3lm7")
 flat = true
 alignment = 0
 
-[node name="DetailsButton" type="Button" parent="DisplayAreaContainer/MenuMargin/MenuContainer"]
+[node name="DetailsButton" type="Button" parent="LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer"]
 custom_minimum_size = Vector2(230, 65)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_y14iu")
@@ -169,7 +174,7 @@ icon = ExtResource("7_lceq2")
 flat = true
 alignment = 0
 
-[node name="SettingsButton" type="Button" parent="DisplayAreaContainer/MenuMargin/MenuContainer"]
+[node name="SettingsButton" type="Button" parent="LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer"]
 custom_minimum_size = Vector2(230, 65)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_y14iu")
@@ -179,50 +184,50 @@ icon = ExtResource("9_87i3p")
 flat = true
 alignment = 0
 
-[node name="MainMargin" type="MarginContainer" parent="DisplayAreaContainer"]
+[node name="MainMargin" type="MarginContainer" parent="LauncherWindow/DisplayAreaContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 35
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 10
 
-[node name="Profile" parent="DisplayAreaContainer/MainMargin" instance=ExtResource("8_7glnt")]
+[node name="Profile" parent="LauncherWindow/DisplayAreaContainer/MainMargin" instance=ExtResource("8_7glnt")]
 layout_mode = 2
 
-[node name="FooterContainer" type="HBoxContainer" parent="."]
+[node name="FooterContainer" type="HBoxContainer" parent="LauncherWindow"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -85.0
+offset_top = 775.0
 offset_right = 1788.0
-offset_bottom = -7.0
+offset_bottom = 853.0
 grow_vertical = 0
 metadata/_edit_use_anchors_ = true
 
-[node name="FooterMenuMargin" type="MarginContainer" parent="FooterContainer"]
+[node name="FooterMenuMargin" type="MarginContainer" parent="LauncherWindow/FooterContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 270
 theme_override_constants/margin_right = 20
 
-[node name="MarginContainer" type="MarginContainer" parent="FooterContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="LauncherWindow/FooterContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="ProgressBarContainer" type="VBoxContainer" parent="FooterContainer/MarginContainer"]
+[node name="ProgressBarContainer" type="VBoxContainer" parent="LauncherWindow/FooterContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="ProgressLabel" type="Label" parent="FooterContainer/MarginContainer/ProgressBarContainer"]
+[node name="ProgressLabel" type="Label" parent="LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer"]
 custom_minimum_size = Vector2(800, 20)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("12_cu1y2")
 text = " Press \"Play\" to begin!"
 autowrap_mode = 2
 
-[node name="ProgressBar" type="ProgressBar" parent="FooterContainer/MarginContainer/ProgressBarContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer"]
 custom_minimum_size = Vector2(1185, 40)
 layout_mode = 2
 size_flags_vertical = 4
@@ -231,11 +236,11 @@ fill_mode = 1
 show_percentage = false
 script = ExtResource("13_w2v4s")
 
-[node name="LaunchButtonContainer" type="CenterContainer" parent="FooterContainer"]
+[node name="LaunchButtonContainer" type="CenterContainer" parent="LauncherWindow/FooterContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="LaunchButton" type="TextureButton" parent="FooterContainer/LaunchButtonContainer"]
+[node name="LaunchButton" type="TextureButton" parent="LauncherWindow/FooterContainer/LaunchButtonContainer"]
 custom_minimum_size = Vector2(2.08165e-12, 60)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -246,7 +251,7 @@ texture_hover = ExtResource("16_e80ia")
 texture_disabled = ExtResource("17_qyn4v")
 script = ExtResource("18_gv7l1")
 
-[node name="LaunchLabel" type="Label" parent="FooterContainer/LaunchButtonContainer"]
+[node name="LaunchLabel" type="Label" parent="LauncherWindow/FooterContainer/LaunchButtonContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_2b26k")
 theme_override_font_sizes/font_size = 32

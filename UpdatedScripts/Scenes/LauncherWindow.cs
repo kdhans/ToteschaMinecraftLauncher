@@ -1,21 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Godot;
-using ToteschaMinecraftLauncher.UpdatedScripts.Controllers;
-using ToteschaMinecraftLauncher.UpdatedScripts.Contracts;
-using System.IO;
 
 namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
 {
 	public partial class LauncherWindow : Control
 	{
-		private readonly SettingsController _settingsController = new SettingsController();
+		public static MainControl _mainControl;
 		private const int MinimumWidth = 1800;
 		private const int MinimumHeight = 900;
-		private string? _settingsDirectory;
 
 		private static string? _sceneName;
 		private static Node? _selectedNode;
@@ -23,62 +15,27 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
 		//On Load
 		public override async void _Ready()
 		{
-			_settingsDirectory = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData), "ToteschaMinecraft_Ender");
-			//_settingsController.LoadSettings(_settingsDirectory, out ToteschaSettings settings);
-			ResizeWindow();
-			//await _webController.LoadServerDetailsAsync(settings.ServerURL);
+			_mainControl = GetNode<MainControl>("/root/MainControl");
 
+			//Start by disabling all nodes
+			DisableNodes(disableAllNodes:true);
+
+			ResizeWindow();
 			var thisWindow = GetWindow();
 			thisWindow.CloseRequested += OnShutdown;
 
+			//Start on the Home scene
+			var homeScene = GD.Load<PackedScene>("res://Home.tscn");
+			SetSceneInDisplayArea(homeScene);
+
+			//Once the home scene is loaded, enable all nodes.
+			//This will be triggered from the home scene when the server details are loaded.
+
 		}
 		//On Shutdown
-		private void OnShutdown()
-		{
-			//_settingsController.SaveSettings(_settingsDirectory);
-		}
+		private void OnShutdown() => _mainControl.OnShutdown();
 
-
-		public void LockNodes(bool? lockAllNodes = null, bool? lockModpackNodes = null, bool? lockLoginNodes = null)
-		{
-			if (lockAllNodes!= null)
-
-        }
-
-		private void LockAllNodes(bool lockElements)
-		{
-			GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/SettingsButton").Disabled = lockElements;
-			GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/DetailsButton").Disabled = lockElements;
-            GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/KeybindButton").Disabled = lockElements;
-            GetNode<Button>("/root/LauncherWindow/FooterContainer/LoginMargin/LoginButton").Disabled = lockElements;
-            GetNode<Button>("/root/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchButton").Disabled = lockElements;
-        }
-        private void LockModpackNodes(bool lockElements)
-        {
-            GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/DetailsButton").Disabled = lockElements;
-            GetNode<Button>("/root/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/KeybindButton").Disabled = lockElements;
-            GetNode<Button>("/root/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchButton").Disabled = lockElements;
-        }
-        private void LockLoginNodes(bool lockElements)
-		{
-            GetNode<Button>("/root/LauncherWindow/FooterContainer/LoginMargin/LoginButton").Disabled = lockElements;
-            GetNode<Button>("/root/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchButton").Disabled = lockElements;
-        }
-		public void UpdateStatusBar(double loadingBarValue = 0.0)
-		{
-			GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar").StopInfiniteLoading();
-
-			if (loadingBarValue >= 0)
-				GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar").Value = loadingBarValue;
-			else
-				GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar").StartInfiniteLoading();
-		}
-        public void UpdateStatusText(string statusText) => GetNode<Label>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressLabel").Text = statusText;
-
-
-
-        //Handle updating scene when a menu button is clicked
-        public void SetSceneInDisplayArea(PackedScene scene)
+		public void SetSceneInDisplayArea(PackedScene scene)
 		{
 			if (scene.ResourcePath != _sceneName)
 				_sceneName = scene.ResourcePath;
@@ -89,11 +46,55 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
 				_selectedNode.QueueFree();
 			_selectedNode = scene.Instantiate();
 
-			var displayArea = GetNode<MarginContainer>("/root/LauncherWindow/DisplayAreaContainer/MainMargin");
+			var displayArea = GetNode<MarginContainer>("/root/MainControl/LauncherWindow/DisplayAreaContainer/MainMargin");
 			displayArea.AddChild(_selectedNode);
 		}
+		public void DisableNodes(bool? disableAllNodes = null, bool? disableLoginNodes = null, bool? disableModpackNodes = null)
+		{
+			if (disableAllNodes!= null)
+				DisableAllNodes((bool)disableAllNodes);
+			if (disableLoginNodes != null)
+				DisableLoginNodes((bool)disableLoginNodes);
+			if (disableModpackNodes != null)
+				DisableModpackNodes((bool)disableModpackNodes);
+		}
+		private void DisableAllNodes(bool disabled)
+		{
+			GetNode<Button>("/root/MainControl/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/SettingsButton").Disabled = disabled;
+			GetNode<Button>("/root/MainControl/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/DetailsButton").Disabled = disabled;
+			GetNode<Button>("/root/MainControl/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/KeybindButton").Disabled = disabled;
+			GetNode<Button>("/root/MainControl/LauncherWindow/FooterContainer/LoginMargin/LoginButton").Disabled = disabled;
+			GetNode<Button>("/root/MainControl/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchButton").Disabled = disabled;
+		}
+		private void DisableModpackNodes(bool disabled)
+		{
+			GetNode<Button>("/root/MainControl/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/DetailsButton").Disabled = disabled;
+			GetNode<Button>("/root/MainControl/LauncherWindow/DisplayAreaContainer/MenuMargin/MenuContainer/KeybindButton").Disabled = disabled;
+			GetNode<Button>("/root/MainControl/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchButton").Disabled = disabled;
+		}
+		private void DisableLoginNodes(bool disabled)
+		{
+			GetNode<Button>("/root/MainControl/LauncherWindow/FooterContainer/LoginMargin/LoginButton").Disabled = disabled;
+			GetNode<Button>("/root/MainControl/LauncherWindow/FooterContainer/LaunchButtonContainer/LaunchButton").Disabled = disabled;
+		}
 
-		//Handle Window Resize
+		public void UpdateStatusBar(double loadingBarValue = 0.0)
+		{
+			GetNode<ProgressBar>("/root/MainControl/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar").StopInfiniteLoading();
+
+			if (loadingBarValue >= 0)
+				GetNode<ProgressBar>("/root/MainControl/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar").Value = loadingBarValue;
+			else
+				GetNode<ProgressBar>("/root/MainControl/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar").StartInfiniteLoading();
+		}
+		public void UpdateStatusText(string statusText) => GetNode<Label>("/root/MainControl/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressLabel").Text = statusText;
+
+		public async Task LaunchMinecraftAsync()
+		{
+			DisableNodes(disableAllNodes: true);
+			var result = await _mainControl.TryStartMinecraftAsync(UpdateStatusBar, UpdateStatusText);
+			DisableNodes(disableAllNodes: false);
+		}
 		private void ResizeWindow()
 		{
 			var window = GetWindow();
