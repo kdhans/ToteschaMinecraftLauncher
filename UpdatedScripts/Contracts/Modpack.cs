@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using ToteschaMinecraftLauncher.Scripts.Contracts;
 
-namespace ToteschaMinecraftLauncher;
+namespace ToteschaMinecraftLauncher.UpdatedScripts.Contracts;
 
 public class Modpack
 {

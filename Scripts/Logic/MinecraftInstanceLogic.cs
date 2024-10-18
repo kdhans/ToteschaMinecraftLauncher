@@ -22,14 +22,14 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         private System.Net.Http.HttpClient _httpClient;
         private MinecraftPath _minecraftPath;
         private MVersionMetadata _versionMetadata;
-        public event EventHandler<InstallationEventArgs> InstallationProgress;
+        public event EventHandler<OldInstallationEventArgs> InstallationProgress;
         private float _totalInstallProgress = 0.0f;
         private string _currentLauncherStatus = string.Empty;
 
-        public Modpack Modpack { get; set; }
-        public ToteschaSettingsArchived Settings { get; set; }
+        public OldModpack Modpack { get; set; }
+        public OldToteschaSettings Settings { get; set; }
         public MinecraftSession Session { get; set; }
-        public List<Modpack> InstalledModpacks { get; set; }
+        public List<OldModpack> InstalledModpacks { get; set; }
 
         public MinecraftInstanceLogic()
         {
@@ -44,12 +44,12 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             try
             {
                 ForceReupdateOfModpack(installationPath);
-                InstallationProgress?.Invoke(this, new InstallationEventArgs(-1, "Starting install.."));
+                InstallationProgress?.Invoke(this, new OldInstallationEventArgs(-1, "Starting install.."));
                 await InstallModpack(installationPath);
 
                 if (!Settings.DownloadOnlyServerFiles)
                 {
-                    InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, "Getting Minecraft Setup.."));
+                    InstallationProgress?.Invoke(this, new OldInstallationEventArgs(_totalInstallProgress, "Getting Minecraft Setup.."));
                     modpackSuccessfullyInstalled = await LaunchMinecraft();
                 }
                 else
@@ -57,7 +57,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             }
             catch (Exception ex)
             {
-                InstallationProgress?.Invoke(this, new InstallationEventArgs(0, $"Could not launch Minecraft: {ex.Message}"));
+                InstallationProgress?.Invoke(this, new OldInstallationEventArgs(0, $"Could not launch Minecraft: {ex.Message}"));
             }          
 
             
@@ -84,7 +84,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
 
             RemoveFilesNotAssociatedWithModpack(minecraftInstallationPath);
             _totalInstallProgress = .25f;
-            InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, $"Downloading and installing modpack files..."));
+            InstallationProgress?.Invoke(this, new OldInstallationEventArgs(_totalInstallProgress, $"Downloading and installing modpack files..."));
             await DownloadModpackFiles(minecraftInstallationPath);
 
         }
@@ -110,7 +110,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             if (selectFabricVersion == null)
                 throw new KeyNotFoundException($"Fabric version not found: {Modpack.MineceaftVersion}");
 
-            InstallationProgress?.Invoke(this, new InstallationEventArgs(-1, $"Downloading and installing Fabric {selectFabricVersion.Name}..."));
+            InstallationProgress?.Invoke(this, new OldInstallationEventArgs(-1, $"Downloading and installing Fabric {selectFabricVersion.Name}..."));
             var fabric = fabricVersions.GetVersionMetadata(selectFabricVersion.Name);
             await fabric.SaveAsync(_minecraftPath);
             _versionMetadata = selectFabricVersion;
@@ -119,7 +119,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         {
             if (Modpack.Files?.Any() ?? false)
             {
-                InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, $"Downloading Mods..."));
+                InstallationProgress?.Invoke(this, new OldInstallationEventArgs(_totalInstallProgress, $"Downloading Mods..."));
                 var modpackPath = Path.Combine(minecraftInstallationPath, Modpack.Name);
                 var progressAmount = .5f / (float)Modpack.Files.Count;
                 var filesToDownload = (Settings.DownloadOnlyServerFiles) ? Modpack.Files.Where(x=> x.ServerSide) : Modpack.Files.Where(x => x.ClientSide);
@@ -210,7 +210,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             int wait = 0, waitInterval = 100; //100 ms = .1 sec
             int totalWaitCount = 60 * 10 * waitInterval * 10; //10 minutes wait max
 
-            InstallationProgress?.Invoke(this, new InstallationEventArgs(-1, $"Starting minecraft..."));
+            InstallationProgress?.Invoke(this, new OldInstallationEventArgs(-1, $"Starting minecraft..."));
             while (!launched && wait < totalWaitCount && !minecraft.HasExited)
             {
 
@@ -226,13 +226,13 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
         private void OnLauncherFileChanged(CmlLib.Core.Downloader.DownloadFileChangedEventArgs e)
         {
             _currentLauncherStatus = $"Configuring: {e.FileName} ({e.ProgressedFileCount}/{e.TotalFileCount})";
-            InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, _currentLauncherStatus));
+            InstallationProgress?.Invoke(this, new OldInstallationEventArgs(_totalInstallProgress, _currentLauncherStatus));
         }
         private void OnLauncherProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
             float amount = e.ProgressPercentage;
             _totalInstallProgress = .75f + (amount / 400);
-            InstallationProgress?.Invoke(this, new InstallationEventArgs(_totalInstallProgress, _currentLauncherStatus));
+            InstallationProgress?.Invoke(this, new OldInstallationEventArgs(_totalInstallProgress, _currentLauncherStatus));
         }
         private void ExtractZipFile(string zipPath, string extractPath)
         {

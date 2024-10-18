@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ToteschaMinecraftLauncher;
 
-public class ToteschaSettingsArchived
+public class OldToteschaSettings
 {
     public string ServerURL { get; set; }
     public string MinecraftInstallationPath { get; set; }
@@ -16,6 +16,6 @@ public class ToteschaSettingsArchived
     public string LastSelectedModpack { get; set; }
     public string Username { get; set; }
     public string Password { get; set; }
-    public List<Modpack> InstalledModpacks { get; set; }
+    public List<OldModpack> InstalledModpacks { get; set; }
 
 }

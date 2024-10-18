@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ToteschaMinecraftLauncher.Scripts.Contracts
 {
-    public class InstallationEventArgs : EventArgs
+    public class OldInstallationEventArgs : EventArgs
     {
         public float InstallationPercentage { get; set; }
         public string InstallationStatus { get; set; }
-        public InstallationEventArgs(float InstallationPercentage, string InstallationStatus)
+        public OldInstallationEventArgs(float InstallationPercentage, string InstallationStatus)
         { 
             this.InstallationPercentage = InstallationPercentage;
             this.InstallationStatus = InstallationStatus;

@@ -8,7 +8,8 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Controllers
 {
     public class ModpackController
     {
-        internal async Task<ServerDetails> GetServerDetailsAsync(string serverURL, bool forceReload)
+        public OldModpack? SelectedModpack { get; private set; }
+        internal async Task<Tuple<ToteschaServerDetails?, string>> GetServerDetailsAsync(string serverURL, bool forceReload)
         {
             throw new NotImplementedException();
         }

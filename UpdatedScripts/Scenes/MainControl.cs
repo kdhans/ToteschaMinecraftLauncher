@@ -38,5 +38,10 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
 
         public async Task<bool> TryStartMinecraftAsync(Action<double> updateStatusBar, Action<string> updateStatusText) => 
             await _minecraftController.TryStartMinecraftAsync(_settingsController, _modpackController, _loginController, updateStatusBar, updateStatusText);
+
+        public Modpack? GetSelectedModpack()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

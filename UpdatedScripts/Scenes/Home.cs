@@ -26,7 +26,7 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
         }
 
         private async void TriggerReload() => await GetServerDetailsAsync(true);
-        
+
 
         // Called every frame. 'delta' is the elapsed time since the previous frame.
         public override void _Process(double delta)
@@ -34,9 +34,12 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
         }
 
         private async Task GetServerDetailsAsync(bool forceReload = false)
-        { 
-           var results = await mainControl.GetServerDetailsAsync(forceReload);
-            if (results.Item1 == null || (results.Item1.Modpacks?.Count ?? 0) <= 0 )
+        {
+            bool showNewsContainer = forceReload; 
+            SetLoadingScreen(showNewsContainer);
+            
+            var results = await mainControl.GetServerDetailsAsync(forceReload);
+            if (results.Item1 == null || (results.Item1.Modpacks?.Count ?? 0) <= 0)
             {
                 launcherWindow.UpdateStatusText(results.Item2);
                 launcherWindow.DisableNodes(disableAllNodes: true, disableLoginNodes: false, disableModpackNodes: true);
@@ -98,9 +101,9 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
         private void SelectModpack(string modpackName)
         {
             mainControl.SetModpack(modpackName);
-            launcherWindow.DisableNodes(disableAllNodes:false);
+            launcherWindow.DisableNodes(disableAllNodes: false);
         }
-        private ModpackInstalledState CheckIfModpackIsUpToDate(Modpack modpack)
+        private ModpackInstalledState CheckIfModpackIsUpToDate(OldModpack modpack)
         {
             var settings = mainControl.GetSettings();
 
@@ -118,7 +121,7 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
 
             return ModpackInstalledState.UpToDate;
         }
-        private void ReloadModpacks(List<Modpack>? modpacks)
+        private void ReloadModpacks(List<OldModpack>? modpacks)
         {
             var toteschaSettings = mainControl.GetSettings();
             if (toteschaSettings == null)

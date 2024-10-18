@@ -65,10 +65,10 @@ public partial class Home : Control
 		GetNode<TextureRect>("Background").Visible = true;
 	}
 
-	private void ReloadModpacks(List<Modpack>? modpacks, ToteschaSettingsArchived toteschaSettings)
+	private void ReloadModpacks(List<OldModpack>? modpacks, OldToteschaSettings toteschaSettings)
 	{
 		if (toteschaSettings == null)
-			toteschaSettings = new ToteschaSettingsArchived();
+			toteschaSettings = new OldToteschaSettings();
 
 		if (modpacks == null || modpacks.Count == 0)
 			return;
@@ -130,7 +130,7 @@ public partial class Home : Control
 			richTextBox.Text = newsText;
 	}
 
-	private ModpackInstalledState CheckIfModpackIsUpToDate(Modpack modpack)
+	private ModpackInstalledState CheckIfModpackIsUpToDate(OldModpack modpack)
 	{
 		var installedModpacks = launcherWindow.ToteschaSettings.InstalledModpacks;		
 		if (installedModpacks == null || installedModpacks.Count == 0)

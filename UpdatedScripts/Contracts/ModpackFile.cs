@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ToteschaMinecraftLauncher.Scripts.Contracts
+namespace ToteschaMinecraftLauncher.UpdatedScripts.Contracts
 {
     public class ModpackFile
     {

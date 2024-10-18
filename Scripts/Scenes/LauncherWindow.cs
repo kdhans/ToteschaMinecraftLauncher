@@ -16,9 +16,9 @@ using static ToteschaMinecraftLauncher.Scripts.UIHelpers.LoginHelper;
 #nullable enable
 public partial class LauncherWindow : Control
 {
-	public ToteschaSettingsArchived? ToteschaSettings { get; set; }
+	public OldToteschaSettings? ToteschaSettings { get; set; }
 	public ServerDetails? ServerDetails { get; set; }
-	public Modpack? SelectedModpack { get; set; }
+	public OldModpack? SelectedModpack { get; set; }
 	public MinecraftSession? Session { get; set; }
 	public string? LatestNews { get; set; }
 	public ImageTexture? LatestNewsPicture { get; set; }
@@ -190,7 +190,7 @@ public partial class LauncherWindow : Control
 		MarkModpackAsInstalled();
 		DeleteOldModpacks();
 		SetLoadingStateForUI(true, updateStatusBar: false);
-		OnInstallationProgressChanged(this, new ToteschaMinecraftLauncher.Scripts.Contracts.InstallationEventArgs(0, "Complete!"));
+		OnInstallationProgressChanged(this, new ToteschaMinecraftLauncher.Scripts.Contracts.OldInstallationEventArgs(0, "Complete!"));
 		if (loaded && ToteschaSettings.CloseLaucherAfterDownload)
 			thisWindow.Quit();
 	}
@@ -240,17 +240,17 @@ public partial class LauncherWindow : Control
 		{
 			try
 			{
-				ToteschaSettings = JsonConvert.DeserializeObject<ToteschaSettingsArchived>(contents);
+				ToteschaSettings = JsonConvert.DeserializeObject<OldToteschaSettings>(contents);
 			}
 			catch
 			{ /*Do nothing = Null handle will take place on next line*/}
 		}
 
-		ToteschaSettings ??= new ToteschaSettingsArchived()
+		ToteschaSettings ??= new OldToteschaSettings()
 		{
 			ForceDownload = false,
 			CloseLaucherAfterDownload = true,
-			InstalledModpacks = new System.Collections.Generic.List<Modpack>(),
+			InstalledModpacks = new System.Collections.Generic.List<OldModpack>(),
 			DownloadOnlyServerFiles = false,
 			CleanUpOldPacks = true,
 			MinecraftInstallationPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "ToteschaMinecraft"),
@@ -280,7 +280,7 @@ public partial class LauncherWindow : Control
 			ToteschaSettings.MemoryToAllocate = i;
 
 	}
-	private void OnInstallationProgressChanged(object? sender, ToteschaMinecraftLauncher.Scripts.Contracts.InstallationEventArgs e)
+	private void OnInstallationProgressChanged(object? sender, ToteschaMinecraftLauncher.Scripts.Contracts.OldInstallationEventArgs e)
 	{
 		var loadingBar = GetNode<ProgressBar>("/root/LauncherWindow/FooterContainer/MarginContainer/ProgressBarContainer/ProgressBar");
 		if (e.InstallationPercentage >= 0)
@@ -298,7 +298,7 @@ public partial class LauncherWindow : Control
 			return;
 
 		if (ToteschaSettings!.InstalledModpacks == null)
-			ToteschaSettings.InstalledModpacks = new System.Collections.Generic.List<Modpack>();
+			ToteschaSettings.InstalledModpacks = new System.Collections.Generic.List<OldModpack>();
 		ToteschaSettings.InstalledModpacks.RemoveAll(x => x.ID == SelectedModpack.ID);
 		ToteschaSettings.InstalledModpacks.Add(SelectedModpack);
 		SaveSettings();
