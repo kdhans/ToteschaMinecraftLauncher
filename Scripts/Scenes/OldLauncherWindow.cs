@@ -14,7 +14,7 @@ using ToteschaMinecraftLauncher.Scripts.UIHelpers;
 using static ToteschaMinecraftLauncher.Scripts.UIHelpers.LoginHelper;
 
 #nullable enable
-public partial class LauncherWindow : Control
+public partial class OldLauncherWindow : Control
 {
 	public OldToteschaSettings? ToteschaSettings { get; set; }
 	public ServerDetails? ServerDetails { get; set; }

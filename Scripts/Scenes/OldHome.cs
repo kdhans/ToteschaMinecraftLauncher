@@ -6,15 +6,15 @@ using ToteschaMinecraftLauncher;
 using System.Linq;
 
 #nullable enable
-public partial class Home : Control
+public partial class OldHome : Control
 {
 	private List<ModpackButton> modpackButtons = new List<ModpackButton>();
-	private LauncherWindow launcherWindow = null;
+	private OldLauncherWindow launcherWindow = null;
 
 	// Called when the node enters the scene tree for the first time.
 	public override async void _Ready()
 	{
-		launcherWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
+		launcherWindow = GetNode<OldLauncherWindow>("/root/LauncherWindow");
 		var refreshButton = GetNode<ReloadButton>("VBoxContainer/ScrollContainer/ButtonContainer/reloadButton");
 		refreshButton.OnRefreshPressed += TriggerReload;
 		await WaitForData();

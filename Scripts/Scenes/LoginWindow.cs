@@ -62,8 +62,8 @@ public partial class LoginWindow : Window
 			var encryptor = new ToteschaEncryptor();
 			var username = GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/UsernameGroup/LWUsernameTextBox").Text;
 			var password = GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/PasswordGroup/LWPasswordTextBox").Text;
-			GetNode<LauncherWindow>("/root/LauncherWindow").ToteschaSettings.Username = await encryptor.EncryptStringAsync(username);
-			GetNode<LauncherWindow>("/root/LauncherWindow").ToteschaSettings.Password = await encryptor.EncryptStringAsync(password);
+			GetNode<OldLauncherWindow>("/root/LauncherWindow").ToteschaSettings.Username = await encryptor.EncryptStringAsync(username);
+			GetNode<OldLauncherWindow>("/root/LauncherWindow").ToteschaSettings.Password = await encryptor.EncryptStringAsync(password);
 			GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/UsernameGroup/LWUsernameTextBox").Text = string.Empty;
 			GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/PasswordGroup/LWPasswordTextBox").Text = string.Empty;
 		}
@@ -84,8 +84,8 @@ public partial class LoginWindow : Window
 		}
 		catch
 		{
-			GetNode<LauncherWindow>("/root/LauncherWindow").ToteschaSettings.Username = string.Empty;
-			GetNode<LauncherWindow>("/root/LauncherWindow").ToteschaSettings.Password = string.Empty;
+			GetNode<OldLauncherWindow>("/root/LauncherWindow").ToteschaSettings.Username = string.Empty;
+			GetNode<OldLauncherWindow>("/root/LauncherWindow").ToteschaSettings.Password = string.Empty;
 		}
 	}
 	public string SetErrorText(string errorText) => GetNode<Label>("VBoxContainer/ErrorText").Text = errorText;

@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 public partial class LoginButton : Button
 {
 	LoginWindow loginWindow;
-	LauncherWindow launcherWindow;
+	OldLauncherWindow launcherWindow;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		launcherWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
+		launcherWindow = GetNode<OldLauncherWindow>("/root/LauncherWindow");
 		loginWindow = GetNode<LoginWindow>("/root/LauncherWindow/LoginWindow");
 		this.ButtonDown += OnLoginClickedAsync;
 	}

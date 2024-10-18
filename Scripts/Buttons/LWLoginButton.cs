@@ -12,7 +12,7 @@ public partial class LWLoginButton : Button
 
 	private async void OnLoginButtonPressed()
 	{
-		var mainWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
+		var mainWindow = GetNode<OldLauncherWindow>("/root/LauncherWindow");
 		var loginWindow = GetNode<LoginWindow>("/root/LauncherWindow/LoginWindow");
 
 		loginWindow.SetErrorText(string.Empty);

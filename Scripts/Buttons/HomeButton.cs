@@ -21,8 +21,8 @@ public partial class HomeButton : Button
 	{
 		var relatedScene = GD.Load<PackedScene>("res://Home.tscn");
 		
-		var launcherWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
-		var parentNode = GetNode<MarginContainer>(LauncherWindow.DisplayBoxNodePath);
+		var launcherWindow = GetNode<OldLauncherWindow>("/root/LauncherWindow");
+		var parentNode = GetNode<MarginContainer>(OldLauncherWindow.DisplayBoxNodePath);
 		launcherWindow.SetupSceneForButton(relatedScene, parentNode);
 	}
 }

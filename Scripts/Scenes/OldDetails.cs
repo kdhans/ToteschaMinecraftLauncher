@@ -5,9 +5,9 @@ using System.Net;
 using System.Threading.Tasks;
 using ToteschaMinecraftLauncher;
 
-public partial class Details : Control
+public partial class OldDetails : Control
 {
-	private LauncherWindow launcherWindow = null;
+	private OldLauncherWindow launcherWindow = null;
 	private Label modpackName, modLoader, mcVersion, modpackVersion, numMods, lastUpdated;
 	private PackedScene scene;
 	private List<FileDetail> files = new List<FileDetail>();
@@ -17,7 +17,7 @@ public partial class Details : Control
 	public override async void _Ready()
 	{
 		scene = GD.Load<PackedScene>("res://file_detail.tscn");
-		launcherWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
+		launcherWindow = GetNode<OldLauncherWindow>("/root/LauncherWindow");
 		modpackName = GetNode<Label>("VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/ModName/Value");
 		modLoader = GetNode<Label>("VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/ModLoader/Value");
 		mcVersion = GetNode<Label>("VBoxContainer/DetailsMarginContainer/DetailsFlowContainer/MinecraftVersion/Value");

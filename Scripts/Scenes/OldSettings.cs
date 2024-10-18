@@ -3,14 +3,14 @@ using System;
 using System.IO;
 using ToteschaMinecraftLauncher;
 
-public partial class Settings : Control
+public partial class OldSettings : Control
 {
 	private OldToteschaSettings toteschaSettings;
 	private HSlider ramSlider;
 	private LineEdit directoryField;
 	private LineEdit serverField;
 	private BaseButton downloadServerOnlyFiles, deleteExpiredModpacks, forceRedownload, closeLauncherAfterDownload;
-	private LauncherWindow launcherWindow;
+	private OldLauncherWindow launcherWindow;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -22,7 +22,7 @@ public partial class Settings : Control
 
 		ramSlider = GetNode<HSlider>("VBoxContainer/RamBox/HBoxContainer/RamSlider");
 		
-		launcherWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
+		launcherWindow = GetNode<OldLauncherWindow>("/root/LauncherWindow");
 		
 		directoryField = GetNode<LineEdit>("VBoxContainer/DirectoryBoxes/FileLocationBox/DirectoryContainer/DirectoryTextField");
 		serverField = GetNode<LineEdit>("VBoxContainer/DirectoryBoxes/ServerBox/ServerTextField");

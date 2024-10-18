@@ -17,4 +17,18 @@
   <ItemGroup>
     <Folder Include="UpdatedScripts\Logic\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="app.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>app.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="app.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>app.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

@@ -19,8 +19,8 @@ public partial class SettingsButton : Button
 	{
 		var relatedScene = GD.Load<PackedScene>("res://Settings.tscn");
 		
-		var launcherWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
-		var parentNode = GetNode<MarginContainer>(LauncherWindow.DisplayBoxNodePath);
+		var launcherWindow = GetNode<OldLauncherWindow>("/root/LauncherWindow");
+		var parentNode = GetNode<MarginContainer>(OldLauncherWindow.DisplayBoxNodePath);
 		launcherWindow.SetupSceneForButton(relatedScene, parentNode);
 	}
 }

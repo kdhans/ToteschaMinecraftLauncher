@@ -3,11 +3,11 @@ using System;
 
 public partial class RamSlider : HSlider
 {
-	private LauncherWindow launcherWindow;
+	private OldLauncherWindow launcherWindow;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		launcherWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
+		launcherWindow = GetNode<OldLauncherWindow>("/root/LauncherWindow");
 		var toteschaSettings = launcherWindow.ToteschaSettings;
 		this.MaxValue = toteschaSettings.MaxMemory;
 		this.Value = toteschaSettings.MemoryToAllocate;
