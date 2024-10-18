@@ -141,7 +141,7 @@ public partial class OldLauncherWindow : Control
 		IsLoggingIn = true;
 		var loginButton = GetNode<Button>("FooterContainer/LoginMargin/LoginButton");
 		Tuple<bool, string> success;
-		var encryptor = new ToteschaEncryptor();
+		var encryptor = new OldToteschaEncryptor();
 		try
 		{
 			DisableButtons();

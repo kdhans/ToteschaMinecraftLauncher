@@ -6,10 +6,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using ToteschaMinecraftLauncher.Scripts.Helpers;
+using ToteschaMinecraftLauncher.UpdatedScripts.Controllers;
 
 namespace ToteschaMinecraftLauncher.Scripts.UIHelpers
 {
-    internal class ToteschaEncryptor
+    internal class OldToteschaEncryptor
     {
         public async Task<string> EncryptStringAsync(string str)
         {

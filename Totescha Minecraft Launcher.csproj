@@ -19,16 +19,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="app.settings">
+    <None Include="UpdatedScripts\Totescha.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>app.Designer.cs</LastGenOutput>
+      <LastGenOutput>Totescha.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="app.Designer.cs">
+    <Compile Update="UpdatedScripts\Totescha.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
-      <DependentUpon>app.settings</DependentUpon>
+      <DependentUpon>Totescha.settings</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

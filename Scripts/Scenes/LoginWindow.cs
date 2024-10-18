@@ -59,7 +59,7 @@ public partial class LoginWindow : Window
 		var loginButton = GetNode<Button>("/root/LauncherWindow/FooterContainer/LoginMargin/LoginButton");
 		if (isLoginSuccessful)
 		{
-			var encryptor = new ToteschaEncryptor();
+			var encryptor = new OldToteschaEncryptor();
 			var username = GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/UsernameGroup/LWUsernameTextBox").Text;
 			var password = GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/PasswordGroup/LWPasswordTextBox").Text;
 			GetNode<OldLauncherWindow>("/root/LauncherWindow").ToteschaSettings.Username = await encryptor.EncryptStringAsync(username);
@@ -74,7 +74,7 @@ public partial class LoginWindow : Window
 	}
 	public async Task SetUsernameAndPassword(string username, string password)
 	{
-		var encryptor = new ToteschaEncryptor();
+		var encryptor = new OldToteschaEncryptor();
 		try
 		{
 			GetNode<LineEdit>("/root/LauncherWindow/LoginWindow/VBoxContainer/UsernameGroup/LWUsernameTextBox").Text =
