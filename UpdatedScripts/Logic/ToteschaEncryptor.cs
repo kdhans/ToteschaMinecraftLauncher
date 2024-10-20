@@ -7,7 +7,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using ToteschaMinecraftLauncher.Scripts.Helpers;
 using ToteschaMinecraftLauncher.UpdatedScripts.Controllers;
 
 namespace ToteschaMinecraftLauncher.UpdatedScripts.Logic
@@ -16,17 +15,16 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Logic
     {
 
         private WebController _webController = new WebController();
-        public async Task<string> EncryptStringAsync(string str)
+        public async Task<string> EncryptStringAsync(string str, string key, string iv)
         {
             if (string.IsNullOrEmpty(str))
                 return string.Empty;
 
             string encryptedString = string.Empty;
-            var systemHelper = new SystemHelper();
             using (Aes aes = Aes.Create())
             {
-                aes.Key = GetHash();
-                aes.IV = GetIV();
+                aes.Key = GetKey(key);
+                aes.IV = GetIV(iv);
                 var data = Encoding.Unicode.GetBytes(str);
 
                 using (MemoryStream ms = new MemoryStream())
@@ -42,17 +40,21 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Logic
             return encryptedString;
         }
 
-        public async Task<string> DecryptStringAsync(string str)
+        //Typical use case:
+        //var toteschaAPIKeys = await _webController.GetToteschaAPIKeysAsync();
+        //var selectedKey = toeschaAPIKeys.Single(x=> x.ID == modpackID);
+        //var decryptedKey = await _toteschaDataEncryptor.DecryptStringAsync(selectedKey.Value, modpackName, modpackVersion);
+
+        public async Task<string> DecryptStringAsync(string str, string key, string iv)
         {
             if (string.IsNullOrEmpty(str))
                 return string.Empty;
 
             string decryptedString = string.Empty;
-            var systemHelper = new SystemHelper();
             using (Aes aes = Aes.Create())
             {
-                aes.Key = systemHelper.GetEnvironmentHashKey();
-                aes.IV = systemHelper.GetEnvironmentIV();
+                aes.Key = GetKey(key);
+                aes.IV = GetIV(iv);
                 var data = Convert.FromBase64String(str);
 
                 using (MemoryStream input = new MemoryStream(data))
@@ -70,10 +72,9 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Logic
             return decryptedString;
         }
 
-        private byte[] GetIV()
+        private byte[] GetIV(string iv)
         {
-            var settingsValue = $"{Totescha.Default.SecretC}{Totescha.Default.SecretB}";
-            var putTogetherString = $"TIV{settingsValue}";
+            var putTogetherString = $"TCV{iv}";
             var builder = new StringBuilder();
             for (int i = 0; i < putTogetherString.Length / 2; i++)
             {
@@ -95,11 +96,9 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Logic
             return byteArray.ToArray();
         }
 
-        public byte[] GetHash()
+        private byte[] GetKey(string key)
         {
-            var hashValue = _webController.GetJsonWebRequestAsync<string>(Totescha.Default.Hash).Result;
-            var settingsValue = $"{Totescha.Default.SecretA}";
-            var putTogetherString = $"{hashValue}TCHV{settingsValue}";
+            var putTogetherString = $"TCK{key}";
             var builder = new StringBuilder();
             for (int i = 0; i < putTogetherString.Length / 2; i++)
             {
