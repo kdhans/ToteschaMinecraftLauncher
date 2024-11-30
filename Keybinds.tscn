@@ -381,7 +381,7 @@ layout_mode = 2
 [node name="FunctionKeys" type="Control" parent="VBoxContainer/KeyboardNode"]
 anchors_preset = 0
 
-[node name="ButtonF1" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
+[node name="key_keyboard_f1" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -393,7 +393,7 @@ offset_bottom = 58.5
 theme_override_styles/normal = SubResource("StyleBoxFlat_7eof0")
 text = "F1"
 
-[node name="ButtonF2" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
+[node name="key_keyboard_f2" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -405,7 +405,7 @@ offset_bottom = 58.5
 text = "F2
 "
 
-[node name="ButtonF3" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
+[node name="key_keyboard_f3" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -417,7 +417,7 @@ offset_bottom = 58.5
 theme_override_styles/normal = SubResource("StyleBoxFlat_7eof0")
 text = "F3"
 
-[node name="ButtonF4" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
+[node name="key_keyboard_f4" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -428,7 +428,7 @@ offset_right = 286.0
 offset_bottom = 58.5
 text = "F4"
 
-[node name="ButtonF5" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
+[node name="key_keyboard_f5" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -439,7 +439,7 @@ offset_right = 382.0
 offset_bottom = 58.5
 text = "F5"
 
-[node name="ButtonF6" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
+[node name="key_keyboard_f6" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -451,7 +451,7 @@ offset_bottom = 58.5
 text = "F6
 "
 
-[node name="ButtonF7" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
+[node name="key_keyboard_f7" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -462,7 +462,7 @@ offset_right = 486.0
 offset_bottom = 58.5
 text = "F7"
 
-[node name="ButtonF8" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
+[node name="key_keyboard_f8" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -473,7 +473,7 @@ offset_right = 538.0
 offset_bottom = 58.5
 text = "F8"
 
-[node name="ButtonF9" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
+[node name="key_keyboard_f9" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -484,7 +484,7 @@ offset_right = 628.0
 offset_bottom = 58.5
 text = "F9"
 
-[node name="ButtonF10" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
+[node name="key_keyboard_f10" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -496,7 +496,7 @@ offset_bottom = 58.5
 text = "F10
 "
 
-[node name="ButtonF11" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
+[node name="key_keyboard_f11" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -507,7 +507,7 @@ offset_right = 732.0
 offset_bottom = 58.5
 text = "F11"
 
-[node name="ButtonF12" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
+[node name="key_keyboard_f12" type="Button" parent="VBoxContainer/KeyboardNode/FunctionKeys"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -524,7 +524,7 @@ offset_left = 29.0
 offset_right = 69.0
 offset_bottom = 40.0
 
-[node name="ButtonNumLock" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_num_lock" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -537,7 +537,7 @@ theme_override_font_sizes/font_size = 10
 text = "Num
 Lock"
 
-[node name="ButtonNumSlash" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_divide" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -548,7 +548,7 @@ offset_right = 1082.0
 offset_bottom = 108.58
 text = "/"
 
-[node name="ButtonNum*" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_multiply" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -559,7 +559,7 @@ offset_right = 1134.0
 offset_bottom = 108.58
 text = "*"
 
-[node name="ButtonNum-" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_subtract" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -570,7 +570,7 @@ offset_right = 1186.0
 offset_bottom = 108.58
 text = "-"
 
-[node name="ButtonNum7" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_7" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -581,7 +581,7 @@ offset_right = 1030.0
 offset_bottom = 158.58
 text = "7"
 
-[node name="ButtonNum8" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_8" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -592,7 +592,7 @@ offset_right = 1082.0
 offset_bottom = 158.58
 text = "8"
 
-[node name="ButtonNum9" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_9" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -603,7 +603,7 @@ offset_right = 1134.0
 offset_bottom = 158.58
 text = "9"
 
-[node name="ButtonNum4" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_4" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -614,7 +614,7 @@ offset_right = 1030.0
 offset_bottom = 208.58
 text = "4"
 
-[node name="ButtonNum5" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_5" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -625,7 +625,7 @@ offset_right = 1082.0
 offset_bottom = 208.58
 text = "5"
 
-[node name="ButtonNum6" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_6" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -636,7 +636,7 @@ offset_right = 1134.0
 offset_bottom = 208.58
 text = "6"
 
-[node name="ButtonNum1" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_1" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -647,7 +647,7 @@ offset_right = 1030.0
 offset_bottom = 258.58
 text = "1"
 
-[node name="ButtonNum2" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_2" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -658,7 +658,7 @@ offset_right = 1082.0
 offset_bottom = 258.58
 text = "2"
 
-[node name="ButtonNum3" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_3" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -669,7 +669,7 @@ offset_right = 1134.0
 offset_bottom = 258.58
 text = "3"
 
-[node name="ButtonNum0" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_0" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -680,7 +680,7 @@ offset_right = 1082.0
 offset_bottom = 309.08
 text = "0"
 
-[node name="ButtonNumPeriod" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_decimal" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -691,7 +691,7 @@ offset_right = 1134.0
 offset_bottom = 308.58
 text = "."
 
-[node name="ButtonNum+" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_add" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -702,7 +702,7 @@ offset_right = 1186.0
 offset_bottom = 211.08
 text = "+"
 
-[node name="ButtonNumEnter" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
+[node name="key_keyboard_keypad_enter" type="Button" parent="VBoxContainer/KeyboardNode/Numpad"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
@@ -721,29 +721,43 @@ offset_top = -8.0
 offset_right = 34.0
 offset_bottom = 32.0
 
-[node name="ButtonMouseLeft" type="Button" parent="VBoxContainer/KeyboardNode/Mouse"]
+[node name="key_mouse_left" type="Button" parent="VBoxContainer/KeyboardNode/Mouse"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
 anchor_bottom = 0.198
-offset_left = 1271.0
-offset_top = 72.08
-offset_right = 1329.0
-offset_bottom = 272.08
+offset_left = 1248.0
+offset_top = 76.08
+offset_right = 1306.0
+offset_bottom = 303.08
 theme_override_font_sizes/font_size = 12
 text = "Left 
 Mouse
 Button"
 
-[node name="ButtonMouseRight" type="Button" parent="VBoxContainer/KeyboardNode/Mouse"]
+[node name="key_mouse_middle" type="Button" parent="VBoxContainer/KeyboardNode/Mouse"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.198
 anchor_bottom = 0.198
-offset_left = 1346.0
-offset_top = 72.08
-offset_right = 1404.0
-offset_bottom = 272.08
+offset_left = 1314.0
+offset_top = 76.08
+offset_right = 1372.0
+offset_bottom = 202.08
+theme_override_font_sizes/font_size = 12
+text = "Middle
+Mouse
+Button"
+
+[node name="key_mouse_right" type="Button" parent="VBoxContainer/KeyboardNode/Mouse"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.198
+anchor_bottom = 0.198
+offset_left = 1380.0
+offset_top = 76.08
+offset_right = 1438.0
+offset_bottom = 304.08
 theme_override_font_sizes/font_size = 12
 text = "Right 
 Mouse

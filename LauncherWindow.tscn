@@ -48,6 +48,7 @@ bg_color = Color(0.109804, 0.776471, 0, 1)
 clip_contents = true
 custom_minimum_size = Vector2(1800, 900)
 layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = 0.000244141
