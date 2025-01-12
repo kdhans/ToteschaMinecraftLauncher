@@ -42,7 +42,8 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Logic
 
         //Typical use case:
         //var toteschaAPIKeys = await _webController.GetToteschaAPIKeysAsync();
-        //var selectedKey = toeschaAPIKeys.Single(x=> x.ID == modpackID);
+        //var iv = toteschaAPIKeys.Keys.Single(x => x.ID == serverID).Value;
+        //var selectedKey = toeschaAPIKeys.Keys.Single(x=> x.ID == );
         //var decryptedKey = await _toteschaDataEncryptor.DecryptStringAsync(selectedKey.Value, modpackName, modpackVersion);
 
         public async Task<string> DecryptStringAsync(string str, string key, string iv)
