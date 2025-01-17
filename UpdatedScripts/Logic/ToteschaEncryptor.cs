@@ -13,9 +13,16 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Logic
 {
     internal class ToteschaDataEncryptor
     {
+        /*
+         * Design purpose:
+         * Retrieve encoded API string from a web call. String is encrypted as such:
+         * Key is retrieved in the server pack file
+         * IV is calculated based on date of running
+         */
+
 
         private WebController _webController = new WebController();
-        public async Task<string> EncryptStringAsync(string str, string key, string iv)
+        public async Task<string> EncryptStringAsync(string str, string key)
         {
             if (string.IsNullOrEmpty(str))
                 return string.Empty;
@@ -24,7 +31,7 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Logic
             using (Aes aes = Aes.Create())
             {
                 aes.Key = GetKey(key);
-                aes.IV = GetIV(iv);
+                aes.IV = GetIV();
                 var data = Encoding.Unicode.GetBytes(str);
 
                 using (MemoryStream ms = new MemoryStream())
@@ -46,7 +53,7 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Logic
         //var selectedKey = toeschaAPIKeys.Keys.Single(x=> x.ID == );
         //var decryptedKey = await _toteschaDataEncryptor.DecryptStringAsync(selectedKey.Value, modpackName, modpackVersion);
 
-        public async Task<string> DecryptStringAsync(string str, string key, string iv)
+        public async Task<string> DecryptStringAsync(string str, string key)
         {
             if (string.IsNullOrEmpty(str))
                 return string.Empty;
@@ -55,7 +62,7 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Logic
             using (Aes aes = Aes.Create())
             {
                 aes.Key = GetKey(key);
-                aes.IV = GetIV(iv);
+                aes.IV = GetIV();
                 var data = Convert.FromBase64String(str);
 
                 using (MemoryStream input = new MemoryStream(data))
@@ -73,9 +80,11 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Logic
             return decryptedString;
         }
 
-        private byte[] GetIV(string iv)
+        private byte[] GetIV()
         {
-            var putTogetherString = $"TCV{iv}";
+            var iv = DateTime.Today.Year.ToString();
+
+            var putTogetherString = $"TCV{iv[2]}L{iv[0]}O{iv[3]}L{iv[1]}";
             var builder = new StringBuilder();
             for (int i = 0; i < putTogetherString.Length / 2; i++)
             {

@@ -4,9 +4,9 @@ using ToteschaMinecraftLauncher.UpdatedScripts.Contracts;
 
 namespace ToteschaMinecraftLauncher;
 
-public class ToteschaServerDetails
+public class OldServerDetails
 {
-	public List<Modpack> Modpacks { get; set; }
+	public List<OldModpack> Modpacks { get; set; }
 	public string ID { get; set; }
 	public string NewsImageUrl { get; set; }
 	public string News { get; set; }

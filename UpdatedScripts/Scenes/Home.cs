@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToteschaMinecraftLauncher.UpdatedScripts.Contracts;
+using ToteschaMinecraftLauncher.UpdatedScripts.Controllers;
 
 namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
 {
@@ -47,14 +48,14 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
             }
 
             FinishLoadingScreen();
-            ReloadModpacks(results.Item1.Modpacks);
+            ReloadModpackButtons(results.Item1.Modpacks);
             var imageData = await mainControl.GetImageDataAsync(results.Item1.NewsImageUrl);
             UpdateNews(imageData.Data, results.Item1.News);
         }
 
         private void SetLoadingScreen(bool showNewsContainer = false)
         {
-            ClearModpacks();
+            ClearModpackButtons();
             GetNode<Label>("VBoxContainer/ModpackSelectLabel").Text = "Loading...";
             launcherWindow.UpdateStatusBar(-1);
             if (!showNewsContainer)
@@ -85,43 +86,21 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
                 richTextBox.Text = newsText;
         }
 
-        private void ClearModpacks()
+        private void ClearModpackButtons()
         {
             var node = GetNode<HBoxContainer>("VBoxContainer/ScrollContainer/ButtonContainer");
             if (modpackButtons.Count > 0)
             {
                 foreach (var button in modpackButtons)
                 {
-                    button.OnModpackButtonClicked -= SelectModpack;
+                    button.OnModpackButtonClicked -= launcherWindow.SetSelectedModpack;
                     node.RemoveChild(button);
                 }
                 modpackButtons.Clear();
             }
         }
-        private void SelectModpack(string modpackName)
-        {
-            mainControl.SetModpack(modpackName);
-            launcherWindow.DisableNodes(disableAllNodes: false);
-        }
-        private ModpackInstalledState CheckIfModpackIsUpToDate(OldModpack modpack)
-        {
-            var settings = mainControl.GetSettings();
 
-            var installedModpacks = settings.InstalledModpacks;
-            if (installedModpacks == null || installedModpacks.Count == 0)
-                return ModpackInstalledState.Download;
-
-            var installedModpackNames = installedModpacks.Select(x => x.Name).ToList();
-            if (!installedModpackNames.Contains(modpack.Name))
-                return ModpackInstalledState.Download;
-
-            var selectedModpack = installedModpacks.First(x => x.Name == modpack.Name);
-            if (selectedModpack.ModpackVersion != modpack.ModpackVersion)
-                return ModpackInstalledState.NeedsUpdate;
-
-            return ModpackInstalledState.UpToDate;
-        }
-        private void ReloadModpacks(List<OldModpack>? modpacks)
+        private void ReloadModpackButtons(List<Modpack>? modpacks)
         {
             var toteschaSettings = mainControl.GetSettings();
             if (toteschaSettings == null)
@@ -136,7 +115,8 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
             var node = GetNode<HBoxContainer>("VBoxContainer/ScrollContainer/ButtonContainer");
             var scene = GD.Load<PackedScene>("res://modpack_button.tscn");
 
-            ClearModpacks();
+            ClearModpackButtons();
+            mainControl.SetModpacks(modpacks);
 
             if (string.IsNullOrEmpty(toteschaSettings.LastSelectedModpack) ||
                 !modpacks.Select(x => x.Name).Contains(toteschaSettings.LastSelectedModpack))
@@ -144,7 +124,7 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
 
             foreach (var modpack in modpacks)
             {
-                var installedState = CheckIfModpackIsUpToDate(modpack);
+                var installedState = mainControl.CheckIfModpackIsUpToDate(modpack);
                 ModpackButton modpackButton = (ModpackButton)scene.Instantiate();
                 modpackButton.SetText(modpack.Name, $"{modpack.ModLoader}-{modpack.MineceaftVersion}");
                 modpackButton.InstalledState = installedState;
@@ -152,10 +132,10 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
                 if (modpack.Name == toteschaSettings.LastSelectedModpack)
                 {
                     modpackButton.ToggleButton(true);
-                    SelectModpack(modpack.Name);
+                    launcherWindow.SetSelectedModpack(modpack.Name);
                 }
 
-                modpackButton.OnModpackButtonClicked += SelectModpack;
+                modpackButton.OnModpackButtonClicked += launcherWindow.SetSelectedModpack;
                 modpackButtons.Add(modpackButton);
                 node.AddChild(modpackButton);
             }

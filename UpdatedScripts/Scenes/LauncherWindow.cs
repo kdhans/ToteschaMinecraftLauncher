@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Godot;
 
@@ -122,6 +123,12 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
 				//The position is calculated by subtracting the window size from the display size and dividing by 2.
 				window.Position = new Vector2I((int)(display.Size.X - length) / 2, (int)(display.Size.Y - width) / 2);
 			}
+		}
+
+		internal void SetSelectedModpack(string modpackName)
+		{
+			DisableNodes(disableAllNodes: false);
+			_mainControl.SetSelectedModpack(modpackName);
 		}
 	}
 }

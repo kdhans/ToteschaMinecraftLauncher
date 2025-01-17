@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using ToteschaMinecraftLauncher.UpdatedScripts.Scenes;
 
 public partial class SettingsButton : Button
 {
@@ -17,10 +18,8 @@ public partial class SettingsButton : Button
 
 	private void OnButtonPressed()
 	{
-		var relatedScene = GD.Load<PackedScene>("res://Settings.tscn");
-		
-		var launcherWindow = GetNode<OldLauncherWindow>("/root/LauncherWindow");
-		var parentNode = GetNode<MarginContainer>(OldLauncherWindow.DisplayBoxNodePath);
-		launcherWindow.SetupSceneForButton(relatedScene, parentNode);
+		var relatedScene = GD.Load<PackedScene>("res://Settings.tscn");		
+		var launcherWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
+		launcherWindow.SetSceneInDisplayArea(relatedScene);
 	}
 }

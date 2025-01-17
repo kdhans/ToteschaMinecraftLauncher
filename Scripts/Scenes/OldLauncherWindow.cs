@@ -17,7 +17,7 @@ using static ToteschaMinecraftLauncher.Scripts.UIHelpers.LoginHelper;
 public partial class OldLauncherWindow : Control
 {
 	public OldToteschaSettings? ToteschaSettings { get; set; }
-	public ServerDetails? ServerDetails { get; set; }
+	public OldServerDetails? ServerDetails { get; set; }
 	public OldModpack? SelectedModpack { get; set; }
 	public MinecraftSession? Session { get; set; }
 	public string? LatestNews { get; set; }
@@ -69,7 +69,7 @@ public partial class OldLauncherWindow : Control
 		IsLoadingServerData = true;
 		SetLoadingStateForUI(false);
 		var webHelper = GetNode<WebHelper>("WebHelper");
-		var result = await webHelper.CallJsonGetRequestAsync<ServerDetails>(ToteschaSettings!.ServerURL);
+		var result = await webHelper.CallJsonGetRequestAsync<OldServerDetails>(ToteschaSettings!.ServerURL);
 		string statusText;
 
 		if (result.Error != null)

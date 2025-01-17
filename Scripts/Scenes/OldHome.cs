@@ -8,14 +8,14 @@ using System.Linq;
 #nullable enable
 public partial class OldHome : Control
 {
-	private List<ModpackButton> modpackButtons = new List<ModpackButton>();
+	private List<OldModpackButton> modpackButtons = new List<OldModpackButton>();
 	private OldLauncherWindow launcherWindow = null;
 
 	// Called when the node enters the scene tree for the first time.
 	public override async void _Ready()
 	{
 		launcherWindow = GetNode<OldLauncherWindow>("/root/LauncherWindow");
-		var refreshButton = GetNode<ReloadButton>("VBoxContainer/ScrollContainer/ButtonContainer/reloadButton");
+		var refreshButton = GetNode<OldReloadButton>("VBoxContainer/ScrollContainer/ButtonContainer/reloadButton");
 		refreshButton.OnRefreshPressed += TriggerReload;
 		await WaitForData();
 	}
@@ -84,7 +84,7 @@ public partial class OldHome : Control
 		foreach (var modpack in modpacks)
 		{
 			var installedState = CheckIfModpackIsUpToDate(modpack);
-			ModpackButton modpackButton = (ModpackButton)scene.Instantiate();
+			OldModpackButton modpackButton = (OldModpackButton)scene.Instantiate();
 			modpackButton.SetText(modpack.Name, $"{modpack.ModLoader}-{modpack.MineceaftVersion}");
 			modpackButton.InstalledState = installedState;
 

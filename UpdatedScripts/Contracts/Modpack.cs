@@ -10,6 +10,7 @@ public class Modpack
     public string ModpackVersion { get; set; }
     public string MineceaftVersion { get; set; }
     public string ModLoader { get; set; }
+    public string ModLoaderVersion { get; set; }
     public List<ModpackFile> Files { get; set; }
     public DateTime LastUpdated { get; set; }
     

@@ -34,14 +34,16 @@ namespace ToteschaMinecraftLauncher.UpdatedScripts.Scenes
         public async Task<ToteschaHttpResponse<T>> GetJsonWebRequestAsync<T>(string url) => await _webController.GetJsonWebRequestAsync<T>(url);
         public async Task<ToteschaHttpResponse<ImageTexture>> GetImageDataAsync(string url) => await _webController.GetImageDataAsync(url);
         public async Task<Tuple<ToteschaServerDetails?, string>> GetServerDetailsAsync(bool forceReload = false)=> await _modpackController.GetServerDetailsAsync(_settingsController.Settings.ServerURL, forceReload);     
-        public void SetModpack(string modpackName) => _modpackController.SetModpack(modpackName);
 
         public async Task<bool> TryStartMinecraftAsync(Action<double> updateStatusBar, Action<string> updateStatusText) => 
             await _minecraftController.TryStartMinecraftAsync(_settingsController, _modpackController, _loginController, updateStatusBar, updateStatusText);
 
-        public Modpack? GetSelectedModpack()
-        {
-            throw new NotImplementedException();
-        }
+        public Modpack? GetSelectedModpack() => _modpackController.SelectedModpack;
+
+        internal void SetModpacks(List<Modpack> modpacks) =>_modpackController.Modpacks = modpacks;
+
+        internal ModpackInstalledState CheckIfModpackIsUpToDate(Modpack modpack) => _modpackController.CheckIfModpackIsUpToDate(modpack, _settingsController.Settings);
+
+        internal void SetSelectedModpack(string name) => _modpackController.SetSelectedModpack(name);
     }
 }

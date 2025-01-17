@@ -1,5 +1,4 @@
 ﻿using CmlLib.Core;
-using CmlLib.Core.Installer.FabricMC;
 using CmlLib.Core.VersionMetadata;
 using Godot;
 using System;
@@ -21,7 +20,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
     {
         private System.Net.Http.HttpClient _httpClient;
         private MinecraftPath _minecraftPath;
-        private MVersionMetadata _versionMetadata;
+        private IVersionMetadata _versionMetadata;
         public event EventHandler<OldInstallationEventArgs> InstallationProgress;
         private float _totalInstallProgress = 0.0f;
         private string _currentLauncherStatus = string.Empty;
@@ -64,6 +63,7 @@ namespace ToteschaMinecraftLauncher.Scripts.Logic
             return modpackSuccessfullyInstalled;
         }
 
+     
         private async Task InstallModpack(string minecraftInstallationPath)
         {
             var minecraftPath = Path.Combine(minecraftInstallationPath, Modpack.Name);

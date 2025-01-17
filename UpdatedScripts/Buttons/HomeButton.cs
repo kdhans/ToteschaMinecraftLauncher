@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using ToteschaMinecraftLauncher.UpdatedScripts.Scenes;
 
 public partial class HomeButton : Button
 {
@@ -21,8 +22,7 @@ public partial class HomeButton : Button
 	{
 		var relatedScene = GD.Load<PackedScene>("res://Home.tscn");
 		
-		var launcherWindow = GetNode<OldLauncherWindow>("/root/LauncherWindow");
-		var parentNode = GetNode<MarginContainer>(OldLauncherWindow.DisplayBoxNodePath);
-		launcherWindow.SetupSceneForButton(relatedScene, parentNode);
+		var launcherWindow = GetNode<LauncherWindow>("/root/LauncherWindow");
+		launcherWindow.SetSceneInDisplayArea(relatedScene);
 	}
 }
